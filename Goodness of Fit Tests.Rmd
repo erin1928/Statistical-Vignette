@@ -1,0 +1,60 @@
+---
+title: "Goodness of Fit Tests"
+author: ""
+date: "`r Sys.Date()`"
+output: html_document
+---
+
+```{r setup, include=FALSE}
+knitr::opts_chunk$set(echo = TRUE)
+```
+
+## Introduction
+Before you can start working with a data set you have to figure out what kind of data it is. Goodness of fit tests report how well observed data matches with expected data. There are many types of goodness of fit test and each test is used to draw different conclusions. Kolmogorov-Smirnov test determines if the observed data matches a normally distributed population. Anderson-Darling test is derived from the Kolmogorov-Smirnov test and is more sensitive to the distribution edges. The Shapiro-Wilks test also determines if a random sample is from a normally distributed population but is used for smaller population under 2000.  
+
+## Chi-Squared Test
+
+Also known as the Pearson's test. Chi-squared allows you to determine if there is a relationship between categorical variables. It is only usable for discrete distributions  
+
+Null Hypothesis: The observed data is from the same population as the expected. 
+Alternate Hypothesis: The observed data is from a different population to the expected. 
+
+<img src="https://www.scribbr.com/wp-content/uploads/2022/05/chi-square-distribution-table.png">
+```{r Add data}
+set.seed(1)
+d <- iris
+Flower.color <- sample(x = c("purple", "white", "orange"), prob= c(.6, .35, 0.05), size = 150, replace = TRUE)
+i<- cbind(d, Flower.color) 
+head(i)
+```
+
+```{r New data}
+set.seed(1)
+d <- iris
+Flower.color <- sample(x = c("purple", "white", "orange"), prob= c(.4, .2, .4), size = 150, replace = TRUE)
+n<- cbind(d, Flower.color) 
+head(n)
+```
+
+I have data about Iris' collected in 1936 and new data collected in 2023 to know if the flower colors are significantly correlated between time periods.
+
+Null Hypothesis: All three flower colors Purple, White and Orange occur with the same frequency in both data sets.
+Alternative Hypothesis: All three flower colors do not occur at the same frequency in both data sets. 
+
+Formula for Chi-squared
+χ2=∑(o−e)^2/e
+
+The observed frequencies will be our new data. The expected frequencies are the old data
+```{r Count Colors}
+table(i$Flower.color) # Count how many of each color in the old set
+table(n$Flower.color) # Count how many of each color in the new set
+
+x2 <- ((71/150)-(6/150))^2/(6/150) + ((55/150)-(89/150))^2/(89/150) + ((24/150)-(55/150))^2/(55/150)
+x2
+```
+
+We set the significance pvalue=0.05 and there are 2 degrees of freedom since there are three colors available. Compare x2 to the table and we find that it is above the critical value and we can reject the null hypothesis. These two populations do not have significantly related color frequencies. 
+
+```{r Command}
+chisq.test(i$Flower.color, n$Flower.color)
+```
