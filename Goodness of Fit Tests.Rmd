@@ -27,9 +27,19 @@ Also known as the Pearson's test. Chi-squared allows you to determine if there i
 Null Hypothesis: The observed data is from the same population as the expected.<br>  
 Alternate Hypothesis: The observed data is from a different population to the expected. 
 
-<img src=https://www.gardenia.net/wp-content/uploads/2023/03/0EN9yBf0b1d0tfs6Ghn2aCUSGhJyjHHqPr0iqj33-1-780x520.webp width="700" height="400"> 
+<center> <img src=https://www.gardenia.net/wp-content/uploads/2023/03/0EN9yBf0b1d0tfs6Ghn2aCUSGhJyjHHqPr0iqj33-1-780x520.webp width="700" height="400"> </center>
 
+I have data about Iris' collected in 1936 and new data collected in 2023 and want to know if the flower colors are significantly correlated between time periods.
 
+Null Hypothesis: All three flower colors Purple, White and Orange occur with the same frequency in both data sets.
+Alternative Hypothesis: All three flower colors do not occur at the same frequency in both data sets. 
+
+Formula for Chi-squared
+χ2=∑(observed−expected)^2/expected
+
+The observed frequencies will be our new data. The expected frequencies are the old data
+
+### Iris Data from 1936
 ```{r Add data}
 set.seed(1)
 d <- iris
@@ -38,6 +48,7 @@ i<- cbind(d, Flower.color)
 head(i)
 ```
 
+### Iris Data from 2023
 ```{r New data}
 set.seed(1)
 d <- iris
@@ -46,27 +57,21 @@ n<- cbind(d, Flower.color)
 head(n)
 ```
 
-I have data about Iris' collected in 1936 and new data collected in 2023 to know if the flower colors are significantly correlated between time periods.
-
-Null Hypothesis: All three flower colors Purple, White and Orange occur with the same frequency in both data sets.
-Alternative Hypothesis: All three flower colors do not occur at the same frequency in both data sets. 
-
-Formula for Chi-squared
-χ2=∑(o−e)^2/e
-
-The observed frequencies will be our new data. The expected frequencies are the old data
+### Find the color frequencies
 ```{r Count Colors}
 table(i$Flower.color)/length(i$Flower.color) # Count how many of each color in the old set
 table(n$Flower.color)/length(n$Flower.color) # Count how many of each color in the new set
-x2 <- (0.47-0.04)^2/(0.04) + (.37-.59)^2/(.59) + (.16-.37)^2/(.37)
+x2 <- ((0.47-0.04)^2/(0.04)) + ((.37-.59)^2/(.59)) + ((.16-.37)^2/(.37))
 x2
 ```
 
 We use a distribution table to look up our p-value <br>
-<img src="https://www.scribbr.com/wp-content/uploads/2022/05/chi-square-distribution-table.png" width="500" height="600">
 
-We set the significance pvalue=0.05 and there are 2 degrees of freedom since there are three colors available. Compare x2 to the table and we find that it is above the critical value and we can reject the null hypothesis. These two populations do not have significantly related color frequencies. 
+<center><img src="https://www.scribbr.com/wp-content/uploads/2022/05/chi-square-distribution-table.png" width="500" height="600"></center>
 
+We set the significance pvalue=0.05 and there are 2 degrees of freedom since there are three colors available. Compare x2 to the table and we find that it is below the critical value and we cannot reject the null hypothesis. These two populations have significantly related color frequencies. 
+
+### Built in r Function
 ```{r Command}
-chisq.test(i$Flower.color, n$Flower.color)
+chisq.test(n$Flower.color, i$Flower.color, correct=TRUE)
 ```
