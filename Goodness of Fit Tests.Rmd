@@ -9,69 +9,103 @@ output: html_document
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-# Introduction
+## Introduction
 
-Before you can start working with a data set you have to figure out what kind of data it is. Goodness of fit tests report how well observed data matches with expected data. There are many types of goodness of fit test and each test is used to draw different conclusions. Kolmogorov-Smirnov test determines if the observed data matches a normally distributed population. Anderson-Darling test is derived from the Kolmogorov-Smirnov test and is more sensitive to the distribution edges. The Shapiro-Wilks test also determines if a random sample is from a normally distributed population but is used for smaller population under 2000.  
+Before starting to work with a data set you have to figure out what kind of data it is. Goodness of fit tests report if your data is normal or matches with expected data. Then you are able to pick the best statistical test to run on your data. Different data types have different goodness of fit tests and each test is used to draw different conclusions. The G test is a variation of the chi-squared test and determines if your data matches an expected distribution. The  Kolmogorov-Smirnov test determines if the observed data matches a normally distributed population. Anderson-Darling test is derived from the Kolmogorov-Smirnov test and is more sensitive to the distribution edges. The Shapiro-Wilks test also determines if a random sample is from a normally distributed population but is used for smaller sample populations under 2000.
+
 
 
 ## Packages
 ```{r Packages}
+# G test
+library(DescTools)
+library(curl)
 
 ```
 
+## G–test of goodness-of-fit
 
-## Chi-Squared Test
+Like the Chi-squared test in Module 14 the G test allows you to determine if there is a significant difference in proportions of a categorical variable to the theoretical expectation. Chi-squared test give approximately the same results as G test but you can perform more elaborate statistical analyses with G test results. Downside is that less people are familar with the G test compared to the Chi-squared test. You cannot use both and pick the one that gives you a better result. Pick one and stick with it. 
 
-Also known as the Pearson's test. Chi-squared allows you to determine if there is a relationship between categorical variables. It is only usable for discrete distributions  
+Both G test and Chi-squared Test data needs to fulfill certain assumptions: 
 
-Null Hypothesis: The observed data is from the same population as the expected.<br>  
-Alternate Hypothesis: The observed data is from a different population to the expected. 
+1. Random Sample <br>
+2. Independence between samples <br>
+3. Variable must be proportional or categorical <br>
+4. Mutually exclusive categories <br>
+5. Variables must have 2 or more options <br>
 
-<center> <img src=https://www.gardenia.net/wp-content/uploads/2023/03/0EN9yBf0b1d0tfs6Ghn2aCUSGhJyjHHqPr0iqj33-1-780x520.webp width="700" height="400"> </center>
 
-I have data about Iris' collected in 1936 and new data collected in 2023 and want to know if the flower colors are significantly correlated between time periods.
+You should use the G test over the Chi-squared Test if 
 
-Null Hypothesis: All three flower colors Purple, White and Orange occur with the same frequency in both data sets.
-Alternative Hypothesis: All three flower colors do not occur at the same frequency in both data sets. 
+1. There are more than 1000 values in total.
+2. There are outliers in the data
 
-Formula for Chi-squared
-χ2=∑(observed−expected)^2/expected
+Null Hypothesis: The observed data has the same porportions as the expected theoretical population. 
+Alternate Hypothesis: The observed data doesn't have the same porportions as the expected theoretical population. 
 
-The observed frequencies will be our new data. The expected frequencies are the old data
+## Running the Test
 
-### Iris Data from 1936
-```{r Add data}
+``` {r Generating Data, include=FALSE, eval=FALSE}
+
 set.seed(1)
-d <- iris
-Flower.color <- sample(x = c("purple", "white", "orange"), prob= c(.6, .35, 0.05), size = 150, replace = TRUE)
-i<- cbind(d, Flower.color) 
-head(i)
+Flower.color <- sample(x = c("purple", "white", "orange", "blue"), prob= c(.5, .35, 0.05, 0.1), size = 1200, replace = TRUE)
+
+Flower.size <- sample(x = c("Large", "Small"), prob= c(0.5, 0.5), size = 1200, replace = TRUE)
+
+
+Flower.species <- sample(x = c("Siberian", "Japanese", "Dutch", "Bearded"), prob= c(.25, .25, 0.25, 0.25), size = 1200, replace = TRUE)
+
+Flower.location <- sample(x = c("North", "East", "South", "West"), prob= c(.2, .30, 0.30, 0.2), size = 1200, replace = TRUE)
+
+Data <- cbind(Flower.color, Flower.size, Flower.species, Flower.location)
+head(Data)
+write.csv(Data, "C:\\Users\\Emily\\Documents\\Github\\Chisquare-repo\\Iris.csv", row.names=TRUE)
+```
+Formula <br>
+
+# G=2 * Σ[O * ln(O/E)]
+
+O = Observed
+E = Expected
+
+I was out in the field and collected data about 1200 Irises. I noted the color, size, species, and location of each flower. I want to know if there is proportionally equal amounts of each flower color. 
+
+<center><img src="https://bouqs.com/blog/iris-meaning-and-symbolism/"></center>
+
+```{r Tabulating Data}
+
+d <- read.csv("Iris.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE)
+head(d)
+
+table(d$Flower.color) # Count how many of each color
+
+G <- 2 * ((121 * log(121/300)) + (59 * log(59/300)) + (628 * log(628/300)) + (392 * log(392/300)))
+
+G
+
+pchisq(725.9525, df=3, lower.tail = FALSE) # Finding the p-value
+```
+We got an output of 725.95 and the degree of freedom is options-1 and calculated a p-value of 4.9e-157 which is below the critical p-value = 0.05. We can reject the null hypothesis and conclude that the flower color proportions of the Irises observed are not equally distributed. 
+
+```{r Coding}
+
+#perform the G-test 
+GTest(x = c(121, 59, 628, 392), #observed values
+      p = c(1/4, 1/4, 1/4, 1/4), #expected proportions
+      correct = "none") 
 ```
 
-### Iris Data from 2023
-```{r New data}
-set.seed(1)
-d <- iris
-Flower.color <- sample(x = c("purple", "white", "orange"), prob= c(.4, .2, .4), size = 150, replace = TRUE)
-n<- cbind(d, Flower.color) 
-head(n)
-```
+Once again the p-value is below 0.05. We can reject the null hypothesis and conclude that the flower color proportions of the Irises I observed are not equally distributed. 
 
-### Find the color frequencies
-```{r Count Colors}
-table(i$Flower.color)/length(i$Flower.color) # Count how many of each color in the old set
-table(n$Flower.color)/length(n$Flower.color) # Count how many of each color in the new set
-x2 <- ((0.47-0.04)^2/(0.04)) + ((.37-.59)^2/(.59)) + ((.16-.37)^2/(.37))
-x2
-```
 
-We use a distribution table to look up our p-value <br>
+## Challenges
 
-<center><img src="https://www.scribbr.com/wp-content/uploads/2022/05/chi-square-distribution-table.png" width="500" height="600"></center>
+Go through the same process with Flower.size, Flower.location and Flower.species.
 
-We set the significance pvalue=0.05 and there are 2 degrees of freedom since there are three colors available. Compare x2 to the table and we find that it is below the critical value and we cannot reject the null hypothesis. These two populations have significantly related color frequencies. 
-
-### Built in r Function
-```{r Command}
-chisq.test(n$Flower.color, i$Flower.color, correct=TRUE)
-```
+### Sources
+https://www.statology.org/g-test/ <br>
+https://www.statstest.com/g-test/ <br>
+https://www.biostathandbook.com/gtestgof.html <br>
+https://www.r-bloggers.com/2022/05/calculate-the-p-value-from-chi-square-statistic-in-r/ <br>
+https://stats.libretexts.org/Bookshelves/Applied_Statistics/Biological_Statistics_(McDonald)/02%3A_Tests_for_Nominal_Variables/2.04%3A_GTest_of_Goodness-of-Fit <br> <br>
