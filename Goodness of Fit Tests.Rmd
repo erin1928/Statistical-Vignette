@@ -80,9 +80,10 @@ head(d)
 
 table(d$Flower.color) # Count how many of each color
 
+# Find the G value
 G <- 2 * ((121 * log(121/300)) + (59 * log(59/300)) + (628 * log(628/300)) + (392 * log(392/300)))
 
-G
+G # Use G value to find p-value
 
 pchisq(725.9525, df=3, lower.tail = FALSE) # Finding the p-value
 ```
