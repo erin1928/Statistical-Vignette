@@ -468,7 +468,7 @@ Not normally distributed p-value <0.05
 
 To perform the S–W test for normality, assume that the sample is composed of n independent and identically distributed observations (x1,x2,…xn) from a normal distribution with unspecified mean and variance. If x[1],x[2],…x[n] represents the n observations arranged in ascending sequence, the test statistic is 
 
-![](/Users/amandawu/Downloads/Shapiro-Wilk-Test-001.webp)
+![](Shapiro-Wilk-Test-001.webp)
 
 ####### The denominator is essentially the sum of squares equation which calculates variances while the numerator is the estimate slope of the Q-Q plot. The a values are constants generated from the means, variances and co-variances of the order statistics of a sample size (n) from a normal distribution. They incorporate the normal order statistic, the structure of data around the best-fit line, and normalize for the sample size of the data. Ideally, the slope of the Q-Q plot should be equal to the standard deviation if it is normally distributed so if you were to square this value, then it should equal to variance. 
   + If the null hypothesis is true, then the W statistic should be variance over variance (both values are the same) which should equal to one. 
@@ -496,11 +496,15 @@ qqline(normdata, col = "dodgerblue4", lwd = 2)
   
   + To calculate the numerator, if the sample size is an even number, then it is calculated using k = n/2
     + If the sample size is odd, the median must not be included so it's calculated as k = (n-1)/2 using this formula: 
-    
+
+![](SW-equation-2.png)
+
   + The test statistic is finally calculated as W = b^2 / S^2 
-    + You analyze the value by using the critical threshold table
+    + You analyze the value by using the critical threshold table:
+![](SW-table-1.png)
       + If the test statistic is smaller than the critical threshold then the assumption of a normal distribution is rejected.
     
+However, the Shapiro-Wilk Test can be really difficult to calculate, especially if you have more values, so there's a simple command in R to conduct this test! 
 
 ```{r SW calculations }
 shapiro.test(normdata)
