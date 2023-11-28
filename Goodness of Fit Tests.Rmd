@@ -565,7 +565,7 @@ ad.test(goodness_of_fit)
 ```{r}
 shapiro.test(goodness_of_fit)
 ```
-Both p-values are relatively close being only 0.1122 points away from one another. The Shapiro-Wilk Test has a larger p-value, which may mean that it is able to more accurately test for normality. The Shapiro-Wilk test is best used for data sets smaller than 50, while the Anderson Darling test is best for data sets that are greater than seven, but are recommended to be greater than 20, as a reminder. 
+Both p-values are relatively close being only 0.1122 points away from one another. The Shapiro-Wilk test is best used for data sets smaller than 50, while the Anderson Darling test is best for data sets that are greater than seven, but are recommended to be greater than 20, as a reminder. 
 
 The p-value for each test is greater than 0.05 meaning that the null hypothesis can be accepted meaning the data set comes from normal distribution. This makes sense because it was created using the rnorm() function! 
 
