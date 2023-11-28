@@ -24,8 +24,12 @@ Before starting to work with a data set you have to figure out what kind of data
 # G test
 library(DescTools)
 library(curl)
+
 # Anderson Darling test
 library(nortest)
+
+#Shapiro-Wilks
+library(ggpubr)
 ```
 
 # G–test of goodness-of-fit
@@ -266,6 +270,7 @@ If you're curious about seeing a KS Test in action, feel free to check out <a hr
 
 
 # Anderson Darling 
+
 ## Anderson Darling Introduction
 
 The Anderson Darling test is a form of the Goodness of Fit test used to determine if a sample of data comes from a specific kind of distribution. It is commonly used to determine if the sample of data came from a normal distribution. It is a modification of the Kolmogorov-Smirnov test that gives more weight to the tails. The more weight on the tails, the more accurate the results. 
@@ -288,8 +293,9 @@ The test is useful to test normality which is common for regression, ANOVA, t-te
 The Anderson Darling Test starts with a null hypothesis that your data is not statistically different than normal. The alternate hypothesis is that it is different from normal. The results you will get will suggest you can either reject the null, or fail to reject the null. The test rejects the null hypothesis of normality when the p-value is less than or equal to 0.05 and accepts the null hypothesis (fails to reject the null) if it is greater than 0.05. 
 
 ## Using the Anderson-Darling Test with Data Known as "chickwts" 
-### Description of the Data Set: Newly hatched chicks were randomly allocated into six groups, and each group was given a different feed supplement. Their weights in grams after six weeks are given along with feed types. (https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts)
+<font size="+2"> Description of the Data Set: Newly hatched chicks were randomly allocated into six groups, and each group was given a different feed supplement. Their weights in grams after six weeks are given along with feed types. (https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts)</font>
 <br>
+
 ```{r}
 set.seed(1)
 d <- chickwts
@@ -433,7 +439,8 @@ Not normally distributed p-value <0.05
 
 # Shapiro-Wilk Goodness of Fit Test 
 
-##### Like the other Goodness of Fit tests, the **Shapiro-Wilk test** is a test of normality that is used to determine whether a sample came from a normal distribution. The S-W test compares the actual SD of data to the computed SD from the slope of a QQ plot for the data and looks at its ratio. If the data are sampled from a normal distribution, the values should be really similar and the ratio will be close to 1.0. 
+Like the other Goodness of Fit tests, the **Shapiro-Wilk test** is a test of normality that is used to determine whether a sample came from a normal distribution. The S-W test compares the actual SD of data to the computed SD from the slope of a QQ plot for the data and looks at its ratio. If the data are sampled from a normal distribution, the values should be really similar and the ratio will be close to 1.0.
+
   + **Null hypothesis:** the sample follows a normal distribution (p > 0.5); we have failed to reject the null
   + **Alt hypothesis:** the sample does not follow a normal distribution (p < 0.5); the null hypothesis is rejected
   
@@ -454,7 +461,7 @@ To perform the S–W test for normality, assume that the sample is composed of n
 
 ![](Shapiro-Wilk-Test-001.webp)
 
-####### The denominator is essentially the sum of squares equation which calculates variances while the numerator is the estimate slope of the Q-Q plot. The a values are constants generated from the means, variances and co-variances of the order statistics of a sample size (n) from a normal distribution. They incorporate the normal order statistic, the structure of data around the best-fit line, and normalize for the sample size of the data. Ideally, the slope of the Q-Q plot should be equal to the standard deviation if it is normally distributed so if you were to square this value, then it should equal to variance. 
+The denominator is essentially the sum of squares equation which calculates variances while the numerator is the estimate slope of the Q-Q plot. The a values are constants generated from the means, variances and co-variances of the order statistics of a sample size (n) from a normal distribution. They incorporate the normal order statistic, the structure of data around the best-fit line, and normalize for the sample size of the data. Ideally, the slope of the Q-Q plot should be equal to the standard deviation if it is normally distributed so if you were to square this value, then it should equal to variance. 
   + If the null hypothesis is true, then the W statistic should be variance over variance (both values are the same) which should equal to one. 
   + If the W statistic is less than one, then there is a difference between the data and its normal distribution 
     + The p value will determine whether the W statistic is significant 
@@ -462,7 +469,6 @@ To perform the S–W test for normality, assume that the sample is composed of n
 
 #### Let's conduct a Shapiro-Wilk Test on a normalized distribution to see how it is calculated!
 ```{r SW creating dataset}
-library(ggpubr)
 set.seed(123)
 normdata <- rnorm(35, mean = 25, sd = 3)
 hist(normdata)
@@ -470,7 +476,8 @@ qqnorm(normdata)
 qqline(normdata, col = "dodgerblue4", lwd = 2)
 ```
 
-## As we can see, the data set we created follows the guidelines of being normally distributed data but let's see how to test its normality with the Shapiro-Wilk test.
+As we can see, the data set we created follows the guidelines of being normally distributed data but let's see how to test its normality with the Shapiro-Wilk test.
+ 
   + **Null hypothesis:** the data follows a normal distribution
   + **Alt hypothesis:** the data does not follow a normal distribution 
 
@@ -549,7 +556,7 @@ length(goodness_of_fit)
 - We can rule out using the G-test as it is best used for categorical data.
 - We can rule out the Kolmorgorov-Smirnov Test because as described, we must use that for data sets that are greater than 50 points.
 
-The two tests that remain that are able to be used with data sets below 50 are the Anderson Darling test and the Shapiro-Wilk Test. Let's comapre their results using the built in R functions!
+The two tests that remain that are able to be used with data sets below 50 are the Anderson Darling test and the Shapiro-Wilk Test. Let's compare their results using the built in R functions!
 
 ```{r}
 ad.test(goodness_of_fit)
@@ -572,11 +579,17 @@ ks.test(goodness_of_fit, "rnorm")
 The p-value appears to be far below 0.05, 0.0000000000000003331, which would mean that the null hypothesis is rejected and that this test deems the data set to be not normally distributed. This is an example as to why it is important to select the right goodness of fit test when analyzing data. 
 
 ### Sources
+
+<p style="color: forestgreen">G test</p>
+
 https://www.statology.org/g-test/ <br>
 https://www.statstest.com/g-test/ <br>
 https://www.biostathandbook.com/gtestgof.html <br>
 https://www.r-bloggers.com/2022/05/calculate-the-p-value-from-chi-square-statistic-in-r/ <br>
 https://stats.libretexts.org/Bookshelves/Applied_Statistics/Biological_Statistics_(McDonald)/02%3A_Tests_for_Nominal_Variables/2.04%3A_GTest_of_Goodness-of-Fit <br>
+
+<p style="color: forestgreen">Kolmogorov Smirnov</p>
+
 https://www.tutorialspoint.com/statistics/kolmogorov_smirnov_test.htm <br>
 https://towardsdatascience.com/understanding-kolmogorov-smirnov-ks-tests-for-data-drift-on-profiled-data-5c8317796f78 <br>
 https://www.itl.nist.gov/div898/handbook/eda/section3/eda35g.htm <br>
