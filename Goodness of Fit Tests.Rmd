@@ -13,9 +13,15 @@ output:
 knitr::opts_chunk$set(echo = TRUE)
 ```
 
-## Introduction
+## Introduction to Goodness-of-Fit Tests
 
-Before starting to work with a data set you have to figure out what kind of data it is. Goodness of fit tests report if your data is normal or matches with expected data. Then you are able to pick the best statistical test to run on your data. Different data types have different goodness of fit tests and each test is used to draw different conclusions. The G test is a variation of the chi-squared test and determines if your data matches an expected distribution. The  Kolmogorov-Smirnov test determines if the observed data matches a normally distributed population. Anderson-Darling test is derived from the Kolmogorov-Smirnov test and is more sensitive to the distribution edges. The Shapiro-Wilks test also determines if a random sample is from a normally distributed population but is used for smaller sample populations under 2000.
+Before starting to work with a data set you have to figure out what kind of data it is. Goodness of fit tests report if your data is normal or matches with expected data. Then you are able to pick the best statistical test to run on your data. Different data types have different goodness of fit tests and each test is used to draw different conclusions. 
+
+#### Different Goodness-of-Fit tests we'll be covering:
+  + **G Test:** a variation of the chi-squared test and determines if your data matches an expected distribution. 
+  + **Kolmogorov-Smirnov Test:** determines if the observed data matches a normally distributed population.
+  + **Anderson-Darling Test:** derived from the Kolmogorov-Smirnov test and is more sensitive to the distribution edges. 
+  + **Shapiro-Wilks Test:** determines if a random sample is from a normally distributed population but is used for smaller sample populations under 2000.
 
 
 
@@ -33,9 +39,9 @@ library(ggpubr)
 library(dplyr)
 ```
 
-# G–test of goodness-of-fit
+# G–test 
 
-Like the Chi-squared test in Module 14 the G test allows you to determine if there is a significant difference in proportions of a categorical variable to the theoretical expectation. Chi-squared test give approximately the same results as G test but you can perform more elaborate statistical analyses with G test results. Downside is that less people are familar with the G test compared to the Chi-squared test. You cannot use both and pick the one that gives you a better result. Pick one and stick with it. 
+Like the Chi-squared test in Module 14, the G test allows you to determine if there is a significant difference in proportions of a categorical variable to the theoretical expectation. Chi-squared test give approximately the same results as G test but you can perform more elaborate statistical analyses with G test results. Downside is that less people are familiar with the G test compared to the Chi-squared test. As they give similar results, it's best to pick one method that is most applicable to your data set rather than using both methods. Pick one and stick with it. 
 
 Both G test and Chi-squared Test data needs to fulfill certain assumptions: 
 
@@ -46,13 +52,13 @@ Both G test and Chi-squared Test data needs to fulfill certain assumptions:
 5. Variables must have 2 or more options <br>
 
 
-You should use the G test over the Chi-squared Test if 
+It's more beneficial to use the G Test over the Chi-Squared Test if: 
 
-1. There are more than 1000 values in total.
-2. There are outliers in the data
+1. There are more than 1000 values in total <br> 
+2. There are outliers in the data <br>
 
-Null Hypothesis: The observed data has the same porportions as the expected theoretical population. 
-Alternate Hypothesis: The observed data doesn't have the same porportions as the expected theoretical population. 
+**Null Hypothesis:** The observed data has the same proportions as the expected theoretical population. 
+**Alternate Hypothesis:** The observed data doesn't have the same proportions as the expected theoretical population. 
 
 
 
@@ -73,12 +79,15 @@ head(Data)
 write.csv(Data, "C:\\Users\\Emily\\Documents\\Github\\Chisquare-repo\\Iris.csv", row.names=TRUE)
 ```
 
-### Formula
+## G Test Formula
 
 ![](Gtest_formula.png)
 
 O = Observed
 E = Expected
+
+
+#### Implementating the G Test on the iris data set
 
 I was out in the field and collected data about 1200 Irises. I noted the color, size, species, and location of each flower. I want to know if there is proportionally equal amounts of each flower color. 
 
@@ -98,7 +107,7 @@ G # Use G value to find p-value
 
 pchisq(725.9525, df=3, lower.tail = FALSE) # Finding the p-value
 ```
-We got an output of 725.95 and the degree of freedom is options-1 and calculated a p-value of 4.9e-157 which is below the critical p-value = 0.05. We can reject the null hypothesis and conclude that the flower color proportions of the Irises observed are not equally distributed. 
+We got an output of 725.95 and the degree of freedom is options-1. We calculated a p-value of 4.9e-157 which is below the critical p-value = 0.05. We can reject the null hypothesis and conclude that the flower color proportions of the Irises observed are not equally distributed. 
 
 ```{r Coding}
 
@@ -108,27 +117,38 @@ GTest(x = c(121, 59, 628, 392), #observed values
   
 ```
 
-Once again the p-value is below 0.05. We can reject the null hypothesis and conclude that the flower color proportions of the Irises I observed are not equally distributed. 
+Once again, the p-value is below 0.05. We can reject the null hypothesis and conclude that the flower color proportions of the Irises I observed are not equally distributed. 
 
 
-## Challenges
+## G Test Challenges
 
-Go through the same process with Flower.size, Flower.location and Flower.species.
+Perform the G test with following columns in the iris data set: Flower.size, Flower.location and Flower.species.
+
+<br>
+
 
 # Kolmorgorov-Smirnov Test
 
-We can use the <b>Kolmorgorov-Smirnov Test</b> as a way to reject null hypotheses. By using this statistical method we are aiming to prove that the two data sets we are working with do not come from the same distribution.
+We can use the <b>Kolmorgorov-Smirnov Test</b> as a way to reject null hypotheses. By using this statistical method, we are aiming to prove that the two data sets we are working with do not come from the same distribution.
 
-The most common way to reject the null is with a student's t-test, however, this can only be accurately used when we know our data set is <b>normal</b>. If we are using data that we aren't sure about, or know isn't of a normal distribution it can be trickier to reject this hypothesis. That's where the Kolmorgorov-Smirnov Test comes into play. The most important time to think about using this test is when you have a very large data set (n &ge; 50) as opposed to the Shapiro-Wilks test which is better for smaller data sets. 
+The most common way to reject the null is with a student's t-test, however, this can only be accurately used when we know our data set is <b>normal</b>. If we are using data that we aren't sure about, or know isn't of a normal distribution, it can be trickier to reject this hypothesis. This test is more effective with larger data sets (n &ge; 50) when compared to the Shapiro-Wilks test which is only effective for smaller data sets. 
 
-If we are running a one-sample K-S Test, our null is that the sample comes from the same distribution as the data set we are comparing it with.
+If we are running a one-sample K-S Test:
 
-If we are running a two-sample K-S Test, our null is that both samples come from the same distribution. 
+  1. **Null hypothesis:** The sample comes from the same distribution as the data set we are comparing it with <br>
+  2. **Alternative hypothesis:** The sample does not come from the same distribution <br>
 
-So why is it important to disprove the null?
+If we are running a two-sample K-S Test:
+
+  1. **Null hypothesis:** Both samples come from the same distribution <br>
+  2. **Alternative hypothesis:** Both samples do not come from the same distribution <br>
+
+
+**Why is it important to disprove the null?**
 Failing to reject a null hypothesis means there is no sufficient evidence for the expected or the observed results we see in our studies.
 
-## Equation 
+
+## Kolmorgorov-Smirnov Test Formula 
 
 ![](KS_Formula.png)
 
@@ -144,9 +164,11 @@ If the calculated value is <b>less</b> than the critical value <b>D</b> we must 
 
 If the calculated value is <b>greater</b> than the critical value we can <b> reject the null hypothesis</b>
 
-### One-Sample Test ###
-Let's do an example!
-Say we are zoologists studying turtles. We want to conduct an experiment to see if different species of turtle prefer to eat cucumbers or lettuce when presented with both. We are going to use 5 different species and count how many turtles go for each food choice first in each population (n = 150).
+
+## One-Sample Test ##
+Let's do an example! <br>
+We are zoologists studying turtles and we want to conduct an experiment to see if different species of turtle prefer to eat cucumbers or lettuce when presented with both. We will be including 5 different species and counting how many turtles go for each food choice first in each population (n = 150).
+
 ```{r 2, include=TRUE}
 # create matrix with 5 columns and 2 rows
 data <- matrix(c(16, 12, 1, 22, 11, 14, 18, 29, 8, 19), nrow = 2, ncol = 5, byrow = TRUE)
@@ -182,6 +204,7 @@ table
 Now it's time to analyze! To find our critical D value we need to look at our table and find the maximum difference between F<sub>0</sub>(x) and F<sub>r</sub>(x). We can see that our maximum value is that of C. amboinensis at 28/150. Our critical D value that we will use to compare our values to is 0.1867. Now we can look at our table and choose a value of alpha to work with. Say we are 5% certain we are going to make a Type 1 error, i.e. detecting a difference under the assumption of the null, we can use our table to choose our critical value.
 
 ![](Critical-D-Values.png)
+
 ```{r 6, include=TRUE}
 #denote the total number of turtles
 n <- 150
@@ -192,9 +215,10 @@ D
 ```
 Our critical value for our data set at an alpha level of 5% is 0.11, which is smaller than our critical value of 0.1867. Because our value is <b>greater</b> than the critical value, we can reject the null and conclude that there is difference among turtle species with their respect to choosing cucumber over lettuce for their snack of choice!
 
-## Challenge 1
 
-Assuming an alpha level of 0.01, what is the critical D value for our sample? Can we still reject the null?
+## Kolmorgorov-Smirnov Test Challenge
+
+Assuming an alpha level of 0.01, what is the critical D value for our sample of turtles? Can we still reject the null?
 
 ```{r 7, include=TRUE}
 #denote the total number of turtles
@@ -206,7 +230,8 @@ D
 ```
 YES! 0.133 &#8804; 0.1867, therefore we can still reject the null.
 
-Now let's do an example with a data set we are familiar with.
+
+Now, let's do an example with a data set we are familiar with.
 ```{r 8, include=TRUE}
 #prep to curl our data
 library(curl) 
@@ -226,6 +251,7 @@ age <- z$age
 ks.test(age, "pnorm")
 ```
 Our p-value is going to tell us if we can accept or reject the null, in this case, that the data we are working with is normally distributed. Since our value is &#60; 0.05 we can reject the null and say that our data is not normally distributed. 
+
 ```{r 12, include=TRUE}
 #denote the total number of turtles
 n <- 1001
@@ -236,9 +262,9 @@ D
 ```
 Our calculated value of D is 0.05 which is smaller than our critical value of 1. This also makes sense, and confirms our ability to reject the null.
 
-Now let's do a two-sample test.
+## Two-Sample Test
 
-First let's make two data sets, one random, and one normal.
+First, let's make two data sets, one random, and one normal.
 ```{r 13, include=TRUE}
 #make this example reproducible
 set.seed(0)
@@ -252,10 +278,10 @@ data2 <- rnorm(100)
 ks.test(data1, data2)
 ```
 
-Now we can look at both our D value and p-value. Our p-value is < 0.05 and therefore allows us to reject the null. Our data sets come from two different distributions, which is what we expected since we made them that way! Our D value is 0.95, going back to our previous table we can pick an alpha value of 0.05.
-
+Now, we can look at both our D value and p-value. Our p-value is < 0.05 and therefore allows us to reject the null. Our data sets come from two different distributions, which is what we expected since we made them that way! Our D value is 0.95, going back to our previous table we can pick an alpha value of 0.05.
 
 ![](Calculate_d.png)
+
 ```{r 15, include=TRUE}
 #denote the total number of turtles
 n12 <- (150 + 50)/(150*50)
@@ -267,19 +293,19 @@ D
 ```
 Our calculated value of D is 0.00816 which is smaller than our critical value of 0.95. This also makes sense, and confirms our ability to reject the null.
 
-If you're curious about seeing a KS Test in action, feel free to check out <a href="Mizumoto&al2022.pdf">this</a> paper on same-sex sexual behavior in termites.
+#### If you're curious about seeing a KS Test in action, feel free to check out <a href="Mizumoto&al2022.pdf">this</a> paper on same-sex sexual behavior in termites.
 
 
-# Anderson Darling 
+# Anderson Darling Test
 
-## Anderson Darling Introduction
+## Introduction
 
 The Anderson Darling test is a form of the Goodness of Fit test used to determine if a sample of data comes from a specific kind of distribution. It is commonly used to determine if the sample of data came from a normal distribution. It is a modification of the Kolmogorov-Smirnov test that gives more weight to the tails. The more weight on the tails, the more accurate the results. 
 
- - H0 is the data that follows a specific distribution
- - HA is the data that does not follow the specific distribution 
+  1. H0 is the data that follows a specific distribution
+  2. HA is the data that does not follow the specific distribution 
 
-The equation is as follows:
+## Anderson Darling Test Formula: 
 
  - A^2 = -N-S
 
@@ -288,12 +314,13 @@ The equation is as follows:
  - F is the cumulative distribution function of the specified distribution.
  - Yi is the ordered data. 
 
-The test is useful to test normality which is common for regression, ANOVA, t-tests and more. The data sets need to be greater than 7, but are advised to be greater than 20. 
+The test is useful to test normality which is common for regression, ANOVA, t-tests and more. The data sets need to be **greater than 7**, but are advised to be **greater than 20**. 
 
 
-The Anderson Darling Test starts with a null hypothesis that your data is not statistically different than normal. The alternate hypothesis is that it is different from normal. The results you will get will suggest you can either reject the null, or fail to reject the null. The test rejects the null hypothesis of normality when the p-value is less than or equal to 0.05 and accepts the null hypothesis (fails to reject the null) if it is greater than 0.05. 
+The Anderson Darling Test starts with a null hypothesis that your data is not statistically different than normal. The alternate hypothesis is that it is different from normal. The results will suggest that you can either reject the null, or fail to reject the null. The test rejects the null hypothesis of normality when the p-value is **less than or equal to 0.05** and accepts the null hypothesis (fails to reject the null) if it is **greater than 0.05.** 
 
 ## Using the Anderson-Darling Test with Data Known as "chickwts" 
+
 <font size="+2"> Description of the Data Set: Newly hatched chicks were randomly allocated into six groups, and each group was given a different feed supplement. Their weights in grams after six weeks are given along with feed types. (https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts)</font>
 <br>
 
@@ -302,14 +329,14 @@ set.seed(1)
 d <- chickwts
 head(d)
 ```
-### Select a The Weight Variable to Test 
+#### Select a The Weight Variable to Test 
 
 ```{r}
 a <- d$weight
 a
 ```
 
-### Determining the A Value Step by Step Needed to Determine the AA Value 
+#### Determining the A Value Step by Step Needed to Determine the AA Value 
 ```{r}
 x <- sort(a[complete.cases(a)]) #a is the data set that you want to test
 n <- length(x) #length must be greater than 7
@@ -320,41 +347,45 @@ A <- -n - mean(h)
 A # The alpha value is computed (In this case, the aplha value only matters in determining the p value.)
 ```
 
-### Determining the AA Value from the A Value Needed to Determine the P Value  
+#### Determining the AA Value from the A Value Needed to Determine the P Value  
 ```{r}
 AA <- (1 + 0.75/n + 2.25/n^2) * A
 AA #The AA value is computed
 ```
 
-### Determining the P Value Step by Step
+#### Determining the P Value Step by Step
 
 ### Criteria for Determining the P Value
 
-- Use this if AA > 10
+  + Use this if AA > 10
 pval <- 3.7e-24
 
-- Use this if AA < 0.2
+  + Use this if AA < 0.2
 pval <- 1 - exp(-13.436 + 101.14 * AA - 223.73 * AA^2
     
-- Use this if AA < 0.34  
+ + Use this if AA < 0.34  
 pval <- 1 - exp(-8.318 + 42.796 * AA - 59.938 * AA^2
 
-- Use this if AA < 0.6
+ + Use this if AA < 0.6
 pval <- exp(0.9177 - 4.279 * AA - 1.38 * AA^2
 
-- Use this if AA < 10
+ + Use this if AA < 10
 pval <- exp(1.2937 - 5.709 * AA + 0.0186 * AA^2
 
-- Use the AA Value to Determine the P Value 
+ + Use the AA Value to Determine the P Value 
 
-### Using the AA Value to Determine the P Value
+#### Using the AA Value to Determine the P Value
 ```{r}
 pval <- exp(1.2937 - 5.709 * AA + 0.0186 * AA^2)
 pval #The P Value is computed
 ```
 It can be concluded that the weight in chickwts is normally distributed because the p value is greater than 0.05. 
 
-### Challenge 1
+<br>
+
+
+## Anderson Darling Test Challenge 1
+
 Determine the A, AA, and P values of a sample of the chickwts data set. Compare the data of two diff variables. Are they both originating from normal distribution? How do you know this?
 
 ```{r}
@@ -362,7 +393,7 @@ set.seed(1)
 b <- sample(a, size=71, replace=TRUE, prob=NULL) #I chose 71 because that is the lenth of the initial data set
 b
 ```
-### Determine the A Value
+#### Determine the A Value
 
 ```{r}
 x <- sort(b[complete.cases(b)]) #a is the data set that you want to test, complete.cases() is for removing missing values from a vector
@@ -374,22 +405,24 @@ A <- -n - mean(h)
 A # The A value is computed 
 ```
 
-### Determining the AA Value
+#### Determining the AA Value
 ```{r}
 AA <- (1 + 0.75/n + 2.25/n^2) * A
 AA #The AA value is computed
 ```
 
-### Determine Which Equation to Use for the p Value based on the Criteria of AA
+#### Determine Which Equation to Use for the p Value based on the Criteria of AA
 ```{r}
 pval <- exp(0.9177 - 4.279 * AA - 1.38 * AA^2)
 pval
 ```
  The p-value is computed from the modified statistic Z=A(1.0+0.75/n+2.25/n2)Z=A(1.0+0.75/n+2.25/n 2)\ 
 
-## Perform the Anderson Darling Test on the Sample of Data using the ad.test() built in function
+<br>
 
-### Creating a function that is normally distributed 
+#### Perform the Anderson Darling Test on the Sample of Data using the ad.test() built in function
+
+#### Creating a function that is normally distributed 
 ```{r}
 set.seed(1) #Use the set.seed() function to allow the data to repeatable
 ndistribution <- rnorm(100, 25, 1) #The rnorm() function generates a random sample with a default mean of 0 and standard deviation of 1
@@ -401,12 +434,14 @@ ad.test(ndistribution)
 ```
 Because the P value is significant, greater than 0.05, it can be determined that the data is normally distributed and that the null hypothesis can be accepted. 
 
-### Plotting the Data 
+#### Plotting the Data 
 ```{r}
 hist(ndistribution, main = "Histogram Showing Normal Distribution")
 ```
 
-### Challenge 2
+<br> 
+
+## Anderson Darling Challenge 2
 Create a data set using a poisson function that is not distributed normally. Plot the data using a histogram and compare it to the normally distributed data. Use the ad.test() to confirm that the data is not normally distributed. Explain why your results confirm that 
 
 
@@ -421,12 +456,12 @@ ad.test(nodistribution)
 ```
 Because the P value is not significant, less than or equal to 0.05, it can be determined that the data is different than normal and the null hypothesis is rejected.
 
-### Plotting the Data 
+#### Plotting the Data 
 ```{r}
 hist(nodistribution, main= "Histogram Showing No Normality ")
 ```
 
-### Shortcut to Creating Data Sets and Using ad.test() all at once
+#### Shortcut to Creating Data Sets and Using ad.test() all at once
 ```{r}
 ad.test(rnorm(100, mean = 5, sd = 3))
 ```
@@ -438,7 +473,10 @@ ad.test(rpois(100,5))
 Not normally distributed p-value <0.05 
 
 
-# Shapiro-Wilk Goodness of Fit Test 
+<br> 
+
+
+# Shapiro-Wilk Test 
 
 Like the other Goodness of Fit tests, the **Shapiro-Wilk test** is a test of normality that is used to determine whether a sample came from a normal distribution. The S-W test compares the actual SD of data to the computed SD from the slope of a QQ plot for the data and looks at its ratio. If the data are sampled from a normal distribution, the values should be really similar and the ratio will be close to 1.0.
 
@@ -468,7 +506,9 @@ The denominator is essentially the sum of squares equation which calculates vari
     + The p value will determine whether the W statistic is significant 
 
 
-#### Let's conduct a Shapiro-Wilk Test on a normalized distribution to see how it is calculated!
+### Conducting a Shapiro-Wilk Test 
+
+Let's conduct a Shapiro-Wilk Test on a normalized distribution to see how it is calculated!
 ```{r SW creating dataset}
 set.seed(123)
 normdata <- rnorm(35, mean = 25, sd = 3)
@@ -479,22 +519,29 @@ qqline(normdata, col = "dodgerblue4", lwd = 2)
 
 As we can see, the data set we created follows the guidelines of being normally distributed data but let's see how to test its normality with the Shapiro-Wilk test.
  
-  + **Null hypothesis:** the data follows a normal distribution
-  + **Alt hypothesis:** the data does not follow a normal distribution 
+  1.  **Null hypothesis:** the data follows a normal distribution
+  2.  **Alt hypothesis:** the data does not follow a normal distribution 
 
-## In order to calculate the W statistic, here is the following procedure:
-  + First, the sample size of n has to be sorted in increasing order adn the resulting sorted sample is designated as y1, y2, ..yn 
-  + Then, you calculate the sum of squares using this formula:
-  
-  + To calculate the numerator, if the sample size is an even number, then it is calculated using k = n/2
-    + If the sample size is odd, the median must not be included so it's calculated as k = (n-1)/2 using this formula: 
+## Calculating the W statistic
 
-![](SW-equation-2.png)
+In order to calculate the W statistic, here is the following procedure:
 
-  + The test statistic is finally calculated as W = b^2 / S^2 
-    + You analyze the value by using the critical threshold table:
+  - First, the sample size of n has to be sorted in increasing order and the resulting sorted sample is designated as y1, y2, ..yn 
+  - Then, you calculate the sum of squares using this formula:
+
+![](SW-equation-SS.png) 
+
+  - To calculate the numerator, if the sample size is an even number, then it is calculated using k = n/2
+    - If the sample size is odd, the median must not be included so it's calculated as k = (n-1)/2 using this formula: 
+
+![](SW equation test.png)
+
+  - The test statistic is finally calculated as W = b^2 / S^2 
+    - You analyze the value by using the critical threshold table:
+    
 ![](SW-table-1.png)
-      + If the test statistic is smaller than the critical threshold then the assumption of a normal distribution is rejected.
+
+**If the test statistic is smaller than the critical threshold then the assumption of a normal distribution is rejected.**
     
 However, the Shapiro-Wilk Test can be really difficult to calculate, especially if you have more values, so there's a simple command in R to conduct this test! 
 
@@ -504,7 +551,7 @@ shapiro.test(normdata)
 The W statistic is really really close to 1 which means there's only a little variation and the p-value is greater than 0.05 which means that we have failed to have rejected the null hypothesis. 
 
 
-## Now, let's look at another data set where it may not be of normal distribution. 
+#### Now, let's look at another data set where it may not be of normal distribution. 
 ```{r SW non normal data}
 set.seed(1)
 dataset2 <- rpois(35, lambda = 3)
@@ -519,7 +566,8 @@ shapiro.test(dataset2)
 Here, while the W statistic is close to 1, the p-value is less than 0.05 so the null hypothesis is rejected. 
 
 
-## Challenge 1
+## Shapiro-Wilk Challenge 
+
 ToothGrowth is a data set in R showing the length of teeth of guinea pigs at three Vitamin C dosage levels(0.5, 1 and 2mg) with two delivery methods(orange juice or ascorbic acid). The column ‘len’ shows the tooth length. Test the normality of the distribution of these guinea pigs’ teeth lengths.
 
 ```{r SW ToothGrowth}
@@ -535,6 +583,10 @@ shapiro.test(ToothGrowth$len)
 ```
 
 Looks to be very normally distributed! 
+
+
+<br> 
+
 
 # Final Challenge
 
@@ -577,7 +629,9 @@ ks.test(goodness_of_fit, "rnorm")
 
 The p-value appears to be far below 0.05, 0.0000000000000003331, which would mean that the null hypothesis is rejected and that this test deems the data set to be not normally distributed. This is an example as to why it is important to select the right goodness of fit test when analyzing data. 
 
-### Sources
+<br>
+
+## Sources
 
 <p style="color: forestgreen">G test</p>
 
@@ -598,3 +652,10 @@ https://blogs.sas.com/content/iml/2019/05/15/kolmogorov-d-statistic.html <br>
 https://www.sciencedirect.com/topics/earth-and-planetary-sciences/kolmogorov-smirnov-test <br>
 https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html <br>
 https://www.statology.org/kolmogorov-smirnov-test-r/ <br>
+
+<p style="color: forestgreen">Shapiro-Wilk</p>
+http://www.statistics4u.info/fundstat_eng/ee_shapiro_wilk_test.html# <br>
+http://blog.excelmasterseries.com/2015/05/how-to-create-completely-automated_4.html <br>
+https://www.graphpad.com/guides/prism/latest/statistics/stat_choosing_a_normality_test.htm <br>
+https://www.sciencedirect.com/topics/mathematics/wilk-test <br> 
+
