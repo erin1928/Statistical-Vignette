@@ -1,6 +1,6 @@
 ---
 title: "Goodness of Fit Tests"
-author: ""
+author: "Erin Anderson, Lillian Holden, Amanda Wu, Emily Yang"
 date: "`r Sys.Date()`"
 output: 
   prettydoc::html_pretty:
@@ -24,10 +24,11 @@ Before starting to work with a data set you have to figure out what kind of data
 # G test
 library(DescTools)
 library(curl)
-
+# Anderson Darling test
+library(nortest)
 ```
 
-## G–test of goodness-of-fit
+# G–test of goodness-of-fit
 
 Like the Chi-squared test in Module 14 the G test allows you to determine if there is a significant difference in proportions of a categorical variable to the theoretical expectation. Chi-squared test give approximately the same results as G test but you can perform more elaborate statistical analyses with G test results. Downside is that less people are familar with the G test compared to the Chi-squared test. You cannot use both and pick the one that gives you a better result. Pick one and stick with it. 
 
@@ -48,7 +49,7 @@ You should use the G test over the Chi-squared Test if
 Null Hypothesis: The observed data has the same porportions as the expected theoretical population. 
 Alternate Hypothesis: The observed data doesn't have the same porportions as the expected theoretical population. 
 
-## Running the Test
+
 
 ``` {r Generating Data, include=FALSE, eval=FALSE}
 
@@ -66,16 +67,17 @@ Data <- cbind(Flower.color, Flower.size, Flower.species, Flower.location)
 head(Data)
 write.csv(Data, "C:\\Users\\Emily\\Documents\\Github\\Chisquare-repo\\Iris.csv", row.names=TRUE)
 ```
-Formula <br>
 
-# G=2 * Σ[O * ln(O/E)]
+### Formula
+
+![](Gtest_formula.png)
 
 O = Observed
 E = Expected
 
 I was out in the field and collected data about 1200 Irises. I noted the color, size, species, and location of each flower. I want to know if there is proportionally equal amounts of each flower color. 
 
-<center><img src="https://bouqs.com/blog/iris-meaning-and-symbolism/"></center>
+![](iris.png)
 
 ```{r Tabulating Data}
 
@@ -85,7 +87,7 @@ head(d)
 table(d$Flower.color) # Count how many of each color
 
 # Find the G value
-G <- 2 * ((121 * log(121/300)) + (59 * log(59/300)) + (628 * log(628/300)) + (392 * log(392/300)))
+G <- 2 * ((121 * log(121/300)) + (59 * log(59/300)) + (628 * log(628/300)) + (392 * log(392/300))) #log function in R is equivalent to ln
 
 G # Use G value to find p-value
 
@@ -108,13 +110,8 @@ Once again the p-value is below 0.05. We can reject the null hypothesis and conc
 
 Go through the same process with Flower.size, Flower.location and Flower.species.
 
-### Sources
-https://www.statology.org/g-test/ <br>
-https://www.statstest.com/g-test/ <br>
-https://www.biostathandbook.com/gtestgof.html <br>
-https://www.r-bloggers.com/2022/05/calculate-the-p-value-from-chi-square-statistic-in-r/ <br>
-https://stats.libretexts.org/Bookshelves/Applied_Statistics/Biological_Statistics_(McDonald)/02%3A_Tests_for_Nominal_Variables/2.04%3A_GTest_of_Goodness-of-Fit <br> <br>
-<br>
+# Kolmorgorov-Smirnov Test
+
 We can use the <b>Kolmorgorov-Smirnov Test</b> as a way to reject null hypotheses. By using this statistical method we are aiming to prove that the two data sets we are working with do not come from the same distribution.
 
 The most common way to reject the null is with a student's t-test, however, this can only be accurately used when we know our data set is <b>normal</b>. If we are using data that we aren't sure about, or know isn't of a normal distribution it can be trickier to reject this hypothesis. That's where the Kolmorgorov-Smirnov Test comes into play. The most important time to think about using this test is when you have a very large data set (n &ge; 50) as opposed to the Shapiro-Wilks test which is better for smaller data sets. 
@@ -126,7 +123,7 @@ If we are running a two-sample K-S Test, our null is that both samples come from
 So why is it important to disprove the null?
 Failing to reject a null hypothesis means there is no sufficient evidence for the expected or the observed results we see in our studies.
 
-## Equation ##
+## Equation 
 
 ![](KS_Formula.png)
 
@@ -267,19 +264,8 @@ Our calculated value of D is 0.00816 which is smaller than our critical value of
 
 If you're curious about seeing a KS Test in action, feel free to check out <a href="Mizumoto&al2022.pdf">this</a> paper on same-sex sexual behavior in termites.
 
-## Sources
-https://www.tutorialspoint.com/statistics/kolmogorov_smirnov_test.htm <br>
-https://towardsdatascience.com/understanding-kolmogorov-smirnov-ks-tests-for-data-drift-on-profiled-data-5c8317796f78 <br>
-https://www.itl.nist.gov/div898/handbook/eda/section3/eda35g.htm <br>
-https://www.researchgate.net/post/Interpret_P_and_D_values_in_Two-Sample_Kolmogorov-Smirnov_Test <br>
-https://www.statisticshowto.com/kolmogorov-smirnov-test/ <br>
-https://blogs.sas.com/content/iml/2019/05/15/kolmogorov-d-statistic.html <br>
-https://www.sciencedirect.com/topics/earth-and-planetary-sciences/kolmogorov-smirnov-test <br>
-https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html <br>
-https://www.statology.org/kolmogorov-smirnov-test-r/ <br>
 
-
-## Anderson Darling 
+# Anderson Darling 
 ## Anderson Darling Introduction
 
 The Anderson Darling test is a form of the Goodness of Fit test used to determine if a sample of data comes from a specific kind of distribution. It is commonly used to determine if the sample of data came from a normal distribution. It is a modification of the Kolmogorov-Smirnov test that gives more weight to the tails. The more weight on the tails, the more accurate the results. 
@@ -300,12 +286,6 @@ The test is useful to test normality which is common for regression, ANOVA, t-te
 
 
 The Anderson Darling Test starts with a null hypothesis that your data is not statistically different than normal. The alternate hypothesis is that it is different from normal. The results you will get will suggest you can either reject the null, or fail to reject the null. The test rejects the null hypothesis of normality when the p-value is less than or equal to 0.05 and accepts the null hypothesis (fails to reject the null) if it is greater than 0.05. 
-
-### Package to Install
-```{r}
-#install.packages("nortest")
-library(nortest)
-```
 
 ## Using the Anderson-Darling Test with Data Known as "chickwts" 
 ### Description of the Data Set: Newly hatched chicks were randomly allocated into six groups, and each group was given a different feed supplement. Their weights in grams after six weeks are given along with feed types. (https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts)
@@ -458,13 +438,13 @@ Not normally distributed p-value <0.05
   + **Alt hypothesis:** the sample does not follow a normal distribution (p < 0.5); the null hypothesis is rejected
   
   
-#### Why should you use the Shapiro-Wilk test?
+## Why should you use the Shapiro-Wilk test?
   + Used on one sample with univariate, continuous data 
   + More appropriate method for smaller samples (n<50)
       + May be better for wildlife samples that are typically smaller 
 
 
-#### Cautions when using the Shapiro-Wilk test
+## Cautions when using the Shapiro-Wilk test
   + The test does not work on larger samples because the test becomes more sensitive to small deviations which leads to the greater probability of rejecting the null hypothesis
   + You shouldn't use the Shapiro-Wilk test when evaluating assumptions for parametric tests (i.e. ANOVA, T tests) because it's too sensitive 
   + Not ideal if several values within the data are identical 
@@ -490,11 +470,11 @@ qqnorm(normdata)
 qqline(normdata, col = "dodgerblue4", lwd = 2)
 ```
 
-##### As we can see, the data set we created follows the guidelines of being normally distributed data but let's see how to test its normality with the Shapiro-Wilk test.
+## As we can see, the data set we created follows the guidelines of being normally distributed data but let's see how to test its normality with the Shapiro-Wilk test.
   + **Null hypothesis:** the data follows a normal distribution
   + **Alt hypothesis:** the data does not follow a normal distribution 
 
-##### In order to calculate the W statistic, here is the following procedure:
+## In order to calculate the W statistic, here is the following procedure:
   + First, the sample size of n has to be sorted in increasing order adn the resulting sorted sample is designated as y1, y2, ..yn 
   + Then, you calculate the sum of squares using this formula:
   
@@ -516,7 +496,7 @@ shapiro.test(normdata)
 The W statistic is really really close to 1 which means there's only a little variation and the p-value is greater than 0.05 which means that we have failed to have rejected the null hypothesis. 
 
 
-#### Now, let's look at another data set where it may not be of normal distribution. 
+## Now, let's look at another data set where it may not be of normal distribution. 
 ```{r SW non normal data}
 set.seed(1)
 library(dplyr)
@@ -532,7 +512,7 @@ shapiro.test(dataset2)
 Here, while the W statistic is close to 1, the p-value is less than 0.05 so the null hypothesis is rejected. 
 
 
-### Challenge 1
+## Challenge 1
 ToothGrowth is a data set in R showing the length of teeth of guinea pigs at three Vitamin C dosage levels(0.5, 1 and 2mg) with two delivery methods(orange juice or ascorbic acid). The column ‘len’ shows the tooth length. Test the normality of the distribution of these guinea pigs’ teeth lengths.
 
 ```{r SW ToothGrowth}
@@ -590,3 +570,19 @@ ks.test(goodness_of_fit, "rnorm")
 ```
 
 The p-value appears to be far below 0.05, 0.0000000000000003331, which would mean that the null hypothesis is rejected and that this test deems the data set to be not normally distributed. This is an example as to why it is important to select the right goodness of fit test when analyzing data. 
+
+### Sources
+https://www.statology.org/g-test/ <br>
+https://www.statstest.com/g-test/ <br>
+https://www.biostathandbook.com/gtestgof.html <br>
+https://www.r-bloggers.com/2022/05/calculate-the-p-value-from-chi-square-statistic-in-r/ <br>
+https://stats.libretexts.org/Bookshelves/Applied_Statistics/Biological_Statistics_(McDonald)/02%3A_Tests_for_Nominal_Variables/2.04%3A_GTest_of_Goodness-of-Fit <br>
+https://www.tutorialspoint.com/statistics/kolmogorov_smirnov_test.htm <br>
+https://towardsdatascience.com/understanding-kolmogorov-smirnov-ks-tests-for-data-drift-on-profiled-data-5c8317796f78 <br>
+https://www.itl.nist.gov/div898/handbook/eda/section3/eda35g.htm <br>
+https://www.researchgate.net/post/Interpret_P_and_D_values_in_Two-Sample_Kolmogorov-Smirnov_Test <br>
+https://www.statisticshowto.com/kolmogorov-smirnov-test/ <br>
+https://blogs.sas.com/content/iml/2019/05/15/kolmogorov-d-statistic.html <br>
+https://www.sciencedirect.com/topics/earth-and-planetary-sciences/kolmogorov-smirnov-test <br>
+https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html <br>
+https://www.statology.org/kolmogorov-smirnov-test-r/ <br>
