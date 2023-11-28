@@ -30,6 +30,7 @@ library(nortest)
 
 #Shapiro-Wilks
 library(ggpubr)
+library(dplyr)
 ```
 
 # G–test of goodness-of-fit
@@ -506,7 +507,6 @@ The W statistic is really really close to 1 which means there's only a little va
 ## Now, let's look at another data set where it may not be of normal distribution. 
 ```{r SW non normal data}
 set.seed(1)
-library(dplyr)
 dataset2 <- rpois(35, lambda = 3)
 hist(dataset2) # looks skewed
 qqnorm(dataset2) 
