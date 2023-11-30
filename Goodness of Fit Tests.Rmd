@@ -304,9 +304,6 @@ The Anderson Darling test is a form of the Goodness of Fit test used to determin
 
  - H0 is the data that follows a specific distribution (null hypothesis)
  - HA is the data that does not follow the specific distribution (alternative hypothesis)
- <br>
- 
- Source: https://www.itl.nist.gov/div898/handbook/eda/section3/eda35e.htm
 
 ## Anderson Darling Test Formula: 
 
@@ -319,18 +316,11 @@ The Anderson Darling test is a form of the Goodness of Fit test used to determin
 
 The test is useful to test normality which is common for regression, ANOVA, t-tests and more. The data sets need to be **greater than 7**, but are advised to be **greater than 20**. 
 
-Source: https://www.itl.nist.gov/div898/handbook/eda/section3/eda35e.htm
-
 The Anderson Darling Test starts with a null hypothesis that your data is not statistically different than normal. The alternate hypothesis is that it is different from normal. The results will suggest that you can either reject the null, or fail to reject the null. The test rejects the null hypothesis of normality when the p-value is **less than or equal to 0.05** and accepts the null hypothesis (fails to reject the null) if it is **greater than 0.05.** 
-
-Source: https://www.statology.org/anderson-darling-test-r/ and https://variation.com/wp-content/distribution_analyzer_help/hs140.htm
 
 ## Using the Anderson-Darling Test with Data Known as "chickwts" 
 
-<font size="+2"> Description of the Data Set: Newly hatched chicks were randomly allocated into six groups, and each group was given a different feed supplement. Their weights in grams after six weeks are given along with feed types. 
-<br>
-
-Source:https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts</font>
+<font size="+2"> Description of the Data Set: Newly hatched chicks were randomly allocated into six groups, and each group was given a different feed supplement. Their weights in grams after six weeks are given along with feed types. </font>
 <br>
 
 ```{r}
@@ -364,9 +354,6 @@ AA #The AA value is computed
 
 #### Determining the P Value Step by Step
 "The p-value is derived from a modified statistic Z = A(1.0 + 0.75/n + 2.25/n^2) according to Table 4.9 in Stephens (1986)."
-<br>
-
-Source: https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=d973dfd21d5c3ee5b5860191ee0de9635111dda1
 
 ### Criteria for Determining the P Value
 
@@ -486,7 +473,7 @@ ad.test(rpois(100,5))
 ```
 Not normally distributed p-value <0.05 
 
-Source: https://search.r-project.org/CRAN/refmans/nortest/html/ad.test.html
+
 <br> 
 
 
@@ -666,6 +653,15 @@ https://blogs.sas.com/content/iml/2019/05/15/kolmogorov-d-statistic.html <br>
 https://www.sciencedirect.com/topics/earth-and-planetary-sciences/kolmogorov-smirnov-test <br>
 https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html <br>
 https://www.statology.org/kolmogorov-smirnov-test-r/ <br>
+
+<p style="color: forestgreen">Anderson Darling</p>
+https://www.itl.nist.gov/div898/handbook/eda/section3/eda35e.htm <br>
+https://www.statology.org/anderson-darling-test-r/ <br> https://variation.com/wp-content/distribution_analyzer_help/hs140.htm <br>
+https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts <br>
+https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=d973dfd21d5c3ee5b5860191ee0de9635111dda1 <br>
+https://search.r-project.org/CRAN/refmans/nortest/html/ad.test.html <br>
+
+
 
 <p style="color: forestgreen">Shapiro-Wilk</p>
 http://www.statistics4u.info/fundstat_eng/ee_shapiro_wilk_test.html# <br>

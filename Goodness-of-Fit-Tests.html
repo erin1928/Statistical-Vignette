@@ -589,9 +589,8 @@ weight on the tails, the more accurate the results.</p>
 <li>H0 is the data that follows a specific distribution (null
 hypothesis)</li>
 <li>HA is the data that does not follow the specific distribution
-(alternative hypothesis) <br></li>
+(alternative hypothesis)</li>
 </ul>
-<p>Source: <a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda35e.htm" class="uri">https://www.itl.nist.gov/div898/handbook/eda/section3/eda35e.htm</a></p>
 </div>
 <div id="anderson-darling-test-formula" class="section level2">
 <h2>Anderson Darling Test Formula:</h2>
@@ -605,7 +604,6 @@ distribution.</p></li>
 <p>The test is useful to test normality which is common for regression,
 ANOVA, t-tests and more. The data sets need to be <strong>greater than
 7</strong>, but are advised to be <strong>greater than 20</strong>.</p>
-<p>Source: <a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda35e.htm" class="uri">https://www.itl.nist.gov/div898/handbook/eda/section3/eda35e.htm</a></p>
 <p>The Anderson Darling Test starts with a null hypothesis that your
 data is not statistically different than normal. The alternate
 hypothesis is that it is different from normal. The results will suggest
@@ -614,17 +612,13 @@ test rejects the null hypothesis of normality when the p-value is
 <strong>less than or equal to 0.05</strong> and accepts the null
 hypothesis (fails to reject the null) if it is <strong>greater than
 0.05.</strong></p>
-<p>Source: <a href="https://www.statology.org/anderson-darling-test-r/" class="uri">https://www.statology.org/anderson-darling-test-r/</a> and
-<a href="https://variation.com/wp-content/distribution_analyzer_help/hs140.htm" class="uri">https://variation.com/wp-content/distribution_analyzer_help/hs140.htm</a></p>
 </div>
 <div id="using-the-anderson-darling-test-with-data-known-as-chickwts" class="section level2">
 <h2>Using the Anderson-Darling Test with Data Known as “chickwts”</h2>
 <p><font size="+2"> Description of the Data Set: Newly hatched chicks
 were randomly allocated into six groups, and each group was given a
 different feed supplement. Their weights in grams after six weeks are
-given along with feed types. <br></p>
-<p>Source:<a href="https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts" class="uri">https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts</a></font>
-<br></p>
+given along with feed types. </font> <br></p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a>d <span class="ot">&lt;-</span> chickwts</span>
 <span id="cb40-3"><a href="#cb40-3" tabindex="-1"></a><span class="fu">head</span>(d)</span></code></pre></div>
@@ -666,8 +660,7 @@ Value</h4>
 <div id="determining-the-p-value-step-by-step" class="section level4">
 <h4>Determining the P Value Step by Step</h4>
 <p>“The p-value is derived from a modified statistic Z = A(1.0 + 0.75/n
-+ 2.25/n^2) according to Table 4.9 in Stephens (1986).” <br></p>
-<p>Source: <a href="https://citeseerx.ist.psu.edu/document?repid=rep1&amp;type=pdf&amp;doi=d973dfd21d5c3ee5b5860191ee0de9635111dda1" class="uri">https://citeseerx.ist.psu.edu/document?repid=rep1&amp;type=pdf&amp;doi=d973dfd21d5c3ee5b5860191ee0de9635111dda1</a></p>
++ 2.25/n^2) according to Table 4.9 in Stephens (1986).”</p>
 </div>
 <div id="criteria-for-determining-the-p-value" class="section level3">
 <h3>Criteria for Determining the P Value</h3>
@@ -815,8 +808,7 @@ hypothesis is rejected.</p>
 ## data:  rpois(100, 5)
 ## A = 1.2168, p-value = 0.003419</code></pre>
 <p>Not normally distributed p-value &lt;0.05</p>
-<p>Source: <a href="https://search.r-project.org/CRAN/refmans/nortest/html/ad.test.html" class="uri">https://search.r-project.org/CRAN/refmans/nortest/html/ad.test.html</a>
-<br></p>
+<p><br></p>
 </div>
 </div>
 </div>
@@ -1070,6 +1062,16 @@ Kolmogorov Smirnov
 <br> <a href="https://www.sciencedirect.com/topics/earth-and-planetary-sciences/kolmogorov-smirnov-test" class="uri">https://www.sciencedirect.com/topics/earth-and-planetary-sciences/kolmogorov-smirnov-test</a>
 <br> <a href="https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html" class="uri">https://stat.ethz.ch/R-manual/R-devel/library/stats/html/ks.test.html</a>
 <br> <a href="https://www.statology.org/kolmogorov-smirnov-test-r/" class="uri">https://www.statology.org/kolmogorov-smirnov-test-r/</a>
+<br></p>
+<p style="color: forestgreen">
+Anderson Darling
+</p>
+<p><a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda35e.htm" class="uri">https://www.itl.nist.gov/div898/handbook/eda/section3/eda35e.htm</a>
+<br> <a href="https://www.statology.org/anderson-darling-test-r/" class="uri">https://www.statology.org/anderson-darling-test-r/</a> <br>
+<a href="https://variation.com/wp-content/distribution_analyzer_help/hs140.htm" class="uri">https://variation.com/wp-content/distribution_analyzer_help/hs140.htm</a>
+<br> <a href="https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts" class="uri">https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts</a>
+<br> <a href="https://citeseerx.ist.psu.edu/document?repid=rep1&amp;type=pdf&amp;doi=d973dfd21d5c3ee5b5860191ee0de9635111dda1" class="uri">https://citeseerx.ist.psu.edu/document?repid=rep1&amp;type=pdf&amp;doi=d973dfd21d5c3ee5b5860191ee0de9635111dda1</a>
+<br> <a href="https://search.r-project.org/CRAN/refmans/nortest/html/ad.test.html" class="uri">https://search.r-project.org/CRAN/refmans/nortest/html/ad.test.html</a>
 <br></p>
 <p style="color: forestgreen">
 Shapiro-Wilk
