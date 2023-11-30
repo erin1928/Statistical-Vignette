@@ -12,7 +12,7 @@
 
 <meta name="author" content="Erin Anderson, Lillian Holden, Amanda Wu, Emily Yang" />
 
-<meta name="date" content="2023-11-28" />
+<meta name="date" content="2023-11-29" />
 
 <title>Goodness of Fit Tests</title>
 
@@ -151,7 +151,7 @@ code span.ot { color: #007020; }
 <h1 class="title toc-ignore project-name">Goodness of Fit Tests</h1>
 <h4 class="author project-author">Erin Anderson, Lillian Holden, Amanda
 Wu, Emily Yang</h4>
-<h4 class="date project-date">2023-11-28</h4>
+<h4 class="date project-date">2023-11-29</h4>
 </section>
 
 
@@ -249,7 +249,7 @@ populations under 2000.</li>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># G test</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(DescTools)</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(curl)</span></code></pre></div>
-<pre><code>## Using libcurl 7.79.1 with LibreSSL/3.3.5</code></pre>
+<pre><code>## Using libcurl 8.1.2 with LibreSSL/3.3.6</code></pre>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Anderson Darling test</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(nortest)</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
@@ -585,10 +585,13 @@ distribution. It is commonly used to determine if the sample of data
 came from a normal distribution. It is a modification of the
 Kolmogorov-Smirnov test that gives more weight to the tails. The more
 weight on the tails, the more accurate the results.</p>
-<ol style="list-style-type: decimal">
-<li>H0 is the data that follows a specific distribution</li>
-<li>HA is the data that does not follow the specific distribution</li>
-</ol>
+<ul>
+<li>H0 is the data that follows a specific distribution (null
+hypothesis)</li>
+<li>HA is the data that does not follow the specific distribution
+(alternative hypothesis) <br></li>
+</ul>
+<p>Source: <a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda35e.htm" class="uri">https://www.itl.nist.gov/div898/handbook/eda/section3/eda35e.htm</a></p>
 </div>
 <div id="anderson-darling-test-formula" class="section level2">
 <h2>Anderson Darling Test Formula:</h2>
@@ -602,6 +605,7 @@ distribution.</p></li>
 <p>The test is useful to test normality which is common for regression,
 ANOVA, t-tests and more. The data sets need to be <strong>greater than
 7</strong>, but are advised to be <strong>greater than 20</strong>.</p>
+<p>Source: <a href="https://www.itl.nist.gov/div898/handbook/eda/section3/eda35e.htm" class="uri">https://www.itl.nist.gov/div898/handbook/eda/section3/eda35e.htm</a></p>
 <p>The Anderson Darling Test starts with a null hypothesis that your
 data is not statistically different than normal. The alternate
 hypothesis is that it is different from normal. The results will suggest
@@ -610,13 +614,16 @@ test rejects the null hypothesis of normality when the p-value is
 <strong>less than or equal to 0.05</strong> and accepts the null
 hypothesis (fails to reject the null) if it is <strong>greater than
 0.05.</strong></p>
+<p>Source: <a href="https://www.statology.org/anderson-darling-test-r/" class="uri">https://www.statology.org/anderson-darling-test-r/</a> and
+<a href="https://variation.com/wp-content/distribution_analyzer_help/hs140.htm" class="uri">https://variation.com/wp-content/distribution_analyzer_help/hs140.htm</a></p>
 </div>
 <div id="using-the-anderson-darling-test-with-data-known-as-chickwts" class="section level2">
 <h2>Using the Anderson-Darling Test with Data Known as “chickwts”</h2>
 <p><font size="+2"> Description of the Data Set: Newly hatched chicks
 were randomly allocated into six groups, and each group was given a
 different feed supplement. Their weights in grams after six weeks are
-given along with feed types. (<a href="https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts" class="uri">https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts</a>)</font>
+given along with feed types. <br></p>
+<p>Source:<a href="https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts" class="uri">https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts</a></font>
 <br></p>
 <div class="sourceCode" id="cb40"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
 <span id="cb40-2"><a href="#cb40-2" tabindex="-1"></a>d <span class="ot">&lt;-</span> chickwts</span>
@@ -640,13 +647,13 @@ given along with feed types. (<a href="https://www.rdocumentation.org/packages/d
 <div id="determining-the-a-value-step-by-step-needed-to-determine-the-aa-value" class="section level4">
 <h4>Determining the A Value Step by Step Needed to Determine the AA
 Value</h4>
-<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sort</span>(a[<span class="fu">complete.cases</span>(a)]) <span class="co">#a is the data set that you want to test</span></span>
+<div class="sourceCode" id="cb44"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb44-1"><a href="#cb44-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sort</span>(a[<span class="fu">complete.cases</span>(a)]) <span class="co">#a is the data set that you want to test, complete.cases() is for removing missing values from q vector</span></span>
 <span id="cb44-2"><a href="#cb44-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(x) <span class="co">#length must be greater than 7</span></span>
 <span id="cb44-3"><a href="#cb44-3" tabindex="-1"></a>logp1 <span class="ot">&lt;-</span> <span class="fu">pnorm</span>((x <span class="sc">-</span> <span class="fu">mean</span>(x))<span class="sc">/</span><span class="fu">sd</span>(x), <span class="at">log.p =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb44-4"><a href="#cb44-4" tabindex="-1"></a>logp2 <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(<span class="sc">-</span>(x <span class="sc">-</span> <span class="fu">mean</span>(x))<span class="sc">/</span><span class="fu">sd</span>(x), <span class="at">log.p =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb44-5"><a href="#cb44-5" tabindex="-1"></a>h <span class="ot">&lt;-</span> (<span class="dv">2</span> <span class="sc">*</span> <span class="fu">seq</span>(<span class="dv">1</span><span class="sc">:</span>n) <span class="sc">-</span> <span class="dv">1</span>) <span class="sc">*</span> (logp1 <span class="sc">+</span> <span class="fu">rev</span>(logp2))</span>
 <span id="cb44-6"><a href="#cb44-6" tabindex="-1"></a>A <span class="ot">&lt;-</span> <span class="sc">-</span>n <span class="sc">-</span> <span class="fu">mean</span>(h)</span>
-<span id="cb44-7"><a href="#cb44-7" tabindex="-1"></a>A <span class="co"># The alpha value is computed (In this case, the aplha value only matters in determining the p value.)</span></span></code></pre></div>
+<span id="cb44-7"><a href="#cb44-7" tabindex="-1"></a>A <span class="co"># The test statistic is computed </span></span></code></pre></div>
 <pre><code>## [1] 0.4648545</code></pre>
 </div>
 <div id="determining-the-aa-value-from-the-a-value-needed-to-determine-the-p-value" class="section level4">
@@ -658,6 +665,9 @@ Value</h4>
 </div>
 <div id="determining-the-p-value-step-by-step" class="section level4">
 <h4>Determining the P Value Step by Step</h4>
+<p>“The p-value is derived from a modified statistic Z = A(1.0 + 0.75/n
++ 2.25/n^2) according to Table 4.9 in Stephens (1986).” <br></p>
+<p>Source: <a href="https://citeseerx.ist.psu.edu/document?repid=rep1&amp;type=pdf&amp;doi=d973dfd21d5c3ee5b5860191ee0de9635111dda1" class="uri">https://citeseerx.ist.psu.edu/document?repid=rep1&amp;type=pdf&amp;doi=d973dfd21d5c3ee5b5860191ee0de9635111dda1</a></p>
 </div>
 <div id="criteria-for-determining-the-p-value" class="section level3">
 <h3>Criteria for Determining the P Value</h3>
@@ -687,10 +697,10 @@ distributed because the p value is greater than 0.05.</p>
 <div id="anderson-darling-test-challenge-1" class="section level2">
 <h2>Anderson Darling Test Challenge 1</h2>
 <p>Determine the A, AA, and P values of a sample of the chickwts data
-set. Compare the data of two diff variables. Are they both originating
-from normal distribution? How do you know this?</p>
+set. Is this sample of the data set originating from normal
+distribution? How do you know this?</p>
 <div class="sourceCode" id="cb50"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb50-1"><a href="#cb50-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb50-2"><a href="#cb50-2" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">sample</span>(a, <span class="at">size=</span><span class="dv">71</span>, <span class="at">replace=</span><span class="cn">TRUE</span>, <span class="at">prob=</span><span class="cn">NULL</span>) <span class="co">#I chose 71 because that is the lenth of the initial data set</span></span>
+<span id="cb50-2"><a href="#cb50-2" tabindex="-1"></a>b <span class="ot">&lt;-</span> <span class="fu">sample</span>(a, <span class="at">size=</span><span class="dv">71</span>, <span class="at">replace=</span><span class="cn">TRUE</span>, <span class="at">prob=</span><span class="cn">NULL</span>) <span class="co">#I chose 71 because that is the length of the initial data set</span></span>
 <span id="cb50-3"><a href="#cb50-3" tabindex="-1"></a>b</span></code></pre></div>
 <pre><code>##  [1] 216 392 179 171 320 141 258 303 244 153 108 423 423 171 295 199 158 283 226
 ## [20] 340 257 250 257 295 283 339 295 248 283 392 303 226 168 230 267 141 160 334
@@ -698,7 +708,7 @@ from normal distribution? How do you know this?</p>
 ## [58] 318 404 368 303 171 140 179 320 258 327 260 344 193 230</code></pre>
 <div id="determine-the-a-value" class="section level4">
 <h4>Determine the A Value</h4>
-<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sort</span>(b[<span class="fu">complete.cases</span>(b)]) <span class="co">#a is the data set that you want to test, complete.cases() is for removing missing values from a vector</span></span>
+<div class="sourceCode" id="cb52"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb52-1"><a href="#cb52-1" tabindex="-1"></a>x <span class="ot">&lt;-</span> <span class="fu">sort</span>(b[<span class="fu">complete.cases</span>(b)]) <span class="co">#b is the data set that you want to test, complete.cases() is for removing missing values from q vector</span></span>
 <span id="cb52-2"><a href="#cb52-2" tabindex="-1"></a>n <span class="ot">&lt;-</span> <span class="fu">length</span>(x) <span class="co">#length must be greater than 7</span></span>
 <span id="cb52-3"><a href="#cb52-3" tabindex="-1"></a>logp1 <span class="ot">&lt;-</span> <span class="fu">pnorm</span>((x <span class="sc">-</span> <span class="fu">mean</span>(x))<span class="sc">/</span><span class="fu">sd</span>(x), <span class="at">log.p =</span> <span class="cn">TRUE</span>)</span>
 <span id="cb52-4"><a href="#cb52-4" tabindex="-1"></a>logp2 <span class="ot">&lt;-</span> <span class="fu">pnorm</span>(<span class="sc">-</span>(x <span class="sc">-</span> <span class="fu">mean</span>(x))<span class="sc">/</span><span class="fu">sd</span>(x), <span class="at">log.p =</span> <span class="cn">TRUE</span>)</span>
@@ -719,8 +729,8 @@ Criteria of AA</h4>
 <div class="sourceCode" id="cb56"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb56-1"><a href="#cb56-1" tabindex="-1"></a>pval <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fl">0.9177</span> <span class="sc">-</span> <span class="fl">4.279</span> <span class="sc">*</span> AA <span class="sc">-</span> <span class="fl">1.38</span> <span class="sc">*</span> AA<span class="sc">^</span><span class="dv">2</span>)</span>
 <span id="cb56-2"><a href="#cb56-2" tabindex="-1"></a>pval</span></code></pre></div>
 <pre><code>## [1] 0.1822702</code></pre>
-<p>The p-value is computed from the modified statistic
-Z=A(1.0+0.75/n+2.25/n2)Z=A(1.0+0.75/n+2.25/n 2) </p>
+<p>The p-value is greater than 0.05, so the test fails to reject the
+null hypothesis meaning it originates from normal distribution.</p>
 <p><br></p>
 </div>
 <div id="perform-the-anderson-darling-test-on-the-sample-of-data-using-the-ad.test-built-in-function" class="section level4">
@@ -751,9 +761,9 @@ ad.test() built in function</h4>
 ## 
 ## data:  ndistribution
 ## A = 0.16021, p-value = 0.9471</code></pre>
-<p>Because the P value is significant, greater than 0.05, it can be
-determined that the data is normally distributed and that the null
-hypothesis can be accepted.</p>
+<p>Because the p-value is greater than 0.05, it can be determined that
+the data is normally distributed and that the null hypothesis can be
+accepted.</p>
 </div>
 <div id="plotting-the-data" class="section level4">
 <h4>Plotting the Data</h4>
@@ -781,8 +791,8 @@ normally distributed. Explain why your results confirm that</p>
 ## 
 ## data:  nodistribution
 ## A = 0.34642, p-value = 0.4751</code></pre>
-<p>Because the P value is not significant, less than or equal to 0.05,
-it can be determined that the data is different than normal and the null
+<p>Because the p-value is less than or equal to 0.05, it can be
+determined that the data is different than normal and the null
 hypothesis is rejected.</p>
 <div id="plotting-the-data-1" class="section level4">
 <h4>Plotting the Data</h4>
@@ -805,7 +815,8 @@ hypothesis is rejected.</p>
 ## data:  rpois(100, 5)
 ## A = 1.2168, p-value = 0.003419</code></pre>
 <p>Not normally distributed p-value &lt;0.05</p>
-<p><br></p>
+<p>Source: <a href="https://search.r-project.org/CRAN/refmans/nortest/html/ad.test.html" class="uri">https://search.r-project.org/CRAN/refmans/nortest/html/ad.test.html</a>
+<br></p>
 </div>
 </div>
 </div>

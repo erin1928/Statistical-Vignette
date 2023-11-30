@@ -302,8 +302,11 @@ Our calculated value of D is 0.00816 which is smaller than our critical value of
 
 The Anderson Darling test is a form of the Goodness of Fit test used to determine if a sample of data comes from a specific kind of distribution. It is commonly used to determine if the sample of data came from a normal distribution. It is a modification of the Kolmogorov-Smirnov test that gives more weight to the tails. The more weight on the tails, the more accurate the results. 
 
-  1. H0 is the data that follows a specific distribution
-  2. HA is the data that does not follow the specific distribution 
+ - H0 is the data that follows a specific distribution (null hypothesis)
+ - HA is the data that does not follow the specific distribution (alternative hypothesis)
+ <br>
+ 
+ Source: https://www.itl.nist.gov/div898/handbook/eda/section3/eda35e.htm
 
 ## Anderson Darling Test Formula: 
 
@@ -316,12 +319,18 @@ The Anderson Darling test is a form of the Goodness of Fit test used to determin
 
 The test is useful to test normality which is common for regression, ANOVA, t-tests and more. The data sets need to be **greater than 7**, but are advised to be **greater than 20**. 
 
+Source: https://www.itl.nist.gov/div898/handbook/eda/section3/eda35e.htm
 
 The Anderson Darling Test starts with a null hypothesis that your data is not statistically different than normal. The alternate hypothesis is that it is different from normal. The results will suggest that you can either reject the null, or fail to reject the null. The test rejects the null hypothesis of normality when the p-value is **less than or equal to 0.05** and accepts the null hypothesis (fails to reject the null) if it is **greater than 0.05.** 
 
+Source: https://www.statology.org/anderson-darling-test-r/ and https://variation.com/wp-content/distribution_analyzer_help/hs140.htm
+
 ## Using the Anderson-Darling Test with Data Known as "chickwts" 
 
-<font size="+2"> Description of the Data Set: Newly hatched chicks were randomly allocated into six groups, and each group was given a different feed supplement. Their weights in grams after six weeks are given along with feed types. (https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts)</font>
+<font size="+2"> Description of the Data Set: Newly hatched chicks were randomly allocated into six groups, and each group was given a different feed supplement. Their weights in grams after six weeks are given along with feed types. 
+<br>
+
+Source:https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts</font>
 <br>
 
 ```{r}
@@ -338,13 +347,13 @@ a
 
 #### Determining the A Value Step by Step Needed to Determine the AA Value 
 ```{r}
-x <- sort(a[complete.cases(a)]) #a is the data set that you want to test
+x <- sort(a[complete.cases(a)]) #a is the data set that you want to test, complete.cases() is for removing missing values from q vector
 n <- length(x) #length must be greater than 7
 logp1 <- pnorm((x - mean(x))/sd(x), log.p = TRUE)
 logp2 <- pnorm(-(x - mean(x))/sd(x), log.p = TRUE)
 h <- (2 * seq(1:n) - 1) * (logp1 + rev(logp2))
 A <- -n - mean(h)
-A # The alpha value is computed (In this case, the aplha value only matters in determining the p value.)
+A # The test statistic is computed 
 ```
 
 #### Determining the AA Value from the A Value Needed to Determine the P Value  
@@ -354,6 +363,10 @@ AA #The AA value is computed
 ```
 
 #### Determining the P Value Step by Step
+"The p-value is derived from a modified statistic Z = A(1.0 + 0.75/n + 2.25/n^2) according to Table 4.9 in Stephens (1986)."
+<br>
+
+Source: https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=d973dfd21d5c3ee5b5860191ee0de9635111dda1
 
 ### Criteria for Determining the P Value
 
@@ -386,17 +399,18 @@ It can be concluded that the weight in chickwts is normally distributed because 
 
 ## Anderson Darling Test Challenge 1
 
-Determine the A, AA, and P values of a sample of the chickwts data set. Compare the data of two diff variables. Are they both originating from normal distribution? How do you know this?
+Determine the A, AA, and P values of a sample of the chickwts data set. Is this sample of the data set originating from normal distribution? How do you know this?
+
 
 ```{r}
 set.seed(1)
-b <- sample(a, size=71, replace=TRUE, prob=NULL) #I chose 71 because that is the lenth of the initial data set
+b <- sample(a, size=71, replace=TRUE, prob=NULL) #I chose 71 because that is the length of the initial data set
 b
 ```
 #### Determine the A Value
 
 ```{r}
-x <- sort(b[complete.cases(b)]) #a is the data set that you want to test, complete.cases() is for removing missing values from a vector
+x <- sort(b[complete.cases(b)]) #b is the data set that you want to test, complete.cases() is for removing missing values from q vector
 n <- length(x) #length must be greater than 7
 logp1 <- pnorm((x - mean(x))/sd(x), log.p = TRUE)
 logp2 <- pnorm(-(x - mean(x))/sd(x), log.p = TRUE)
@@ -416,7 +430,7 @@ AA #The AA value is computed
 pval <- exp(0.9177 - 4.279 * AA - 1.38 * AA^2)
 pval
 ```
- The p-value is computed from the modified statistic Z=A(1.0+0.75/n+2.25/n2)Z=A(1.0+0.75/n+2.25/n 2)\ 
+The p-value is greater than 0.05, so the test fails to reject the null hypothesis meaning it originates from normal distribution. 
 
 <br>
 
@@ -432,7 +446,7 @@ ndistribution
 ```{r}
 ad.test(ndistribution)
 ```
-Because the P value is significant, greater than 0.05, it can be determined that the data is normally distributed and that the null hypothesis can be accepted. 
+Because the p-value is greater than 0.05, it can be determined that the data is normally distributed and that the null hypothesis can be accepted. 
 
 #### Plotting the Data 
 ```{r}
@@ -454,7 +468,7 @@ nodistribution
 ```{r}
 ad.test(nodistribution)
 ```
-Because the P value is not significant, less than or equal to 0.05, it can be determined that the data is different than normal and the null hypothesis is rejected.
+Because the p-value is less than or equal to 0.05, it can be determined that the data is different than normal and the null hypothesis is rejected.
 
 #### Plotting the Data 
 ```{r}
@@ -472,7 +486,7 @@ ad.test(rpois(100,5))
 ```
 Not normally distributed p-value <0.05 
 
-
+Source: https://search.r-project.org/CRAN/refmans/nortest/html/ad.test.html
 <br> 
 
 
