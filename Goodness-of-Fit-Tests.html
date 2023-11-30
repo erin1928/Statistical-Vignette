@@ -249,7 +249,7 @@ populations under 2000.</li>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># G test</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(DescTools)</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(curl)</span></code></pre></div>
-<pre><code>## Using libcurl 8.1.2 with LibreSSL/3.3.6</code></pre>
+<pre><code>## Using libcurl 7.79.1 with LibreSSL/3.3.5</code></pre>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Anderson Darling test</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(nortest)</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
@@ -866,12 +866,18 @@ normal distribution. They incorporate the normal order statistic, the
 structure of data around the best-fit line, and normalize for the sample
 size of the data. Ideally, the slope of the Q-Q plot should be equal to
 the standard deviation if it is normally distributed so if you were to
-square this value, then it should equal to variance. + If the null
-hypothesis is true, then the W statistic should be variance over
-variance (both values are the same) which should equal to one. + If the
-W statistic is less than one, then there is a difference between the
-data and its normal distribution + The p value will determine whether
-the W statistic is significant</p>
+square this value, then it should equal to variance.</p>
+<ul>
+<li>If the null hypothesis is true, then the W statistic should be
+variance over variance (both values are the same) which should equal to
+one.</li>
+<li>If the W statistic is less than one, then there is a difference
+between the data and its normal distribution
+<ul>
+<li>The p value will determine whether the W statistic is
+significant</li>
+</ul></li>
+</ul>
 <div id="conducting-a-shapiro-wilk-test" class="section level3">
 <h3>Conducting a Shapiro-Wilk Test</h3>
 <p>Let’s conduct a Shapiro-Wilk Test on a normalized distribution to see

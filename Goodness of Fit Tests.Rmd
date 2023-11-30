@@ -504,9 +504,10 @@ To perform the S–W test for normality, assume that the sample is composed of n
 ![](Shapiro-Wilk-Test-001.webp)
 
 The denominator is essentially the sum of squares equation which calculates variances while the numerator is the estimate slope of the Q-Q plot. The a values are constants generated from the means, variances and co-variances of the order statistics of a sample size (n) from a normal distribution. They incorporate the normal order statistic, the structure of data around the best-fit line, and normalize for the sample size of the data. Ideally, the slope of the Q-Q plot should be equal to the standard deviation if it is normally distributed so if you were to square this value, then it should equal to variance. 
-  + If the null hypothesis is true, then the W statistic should be variance over variance (both values are the same) which should equal to one. 
-  + If the W statistic is less than one, then there is a difference between the data and its normal distribution 
-    + The p value will determine whether the W statistic is significant 
+
+  - If the null hypothesis is true, then the W statistic should be variance over variance (both values are the same) which should equal to one. 
+  - If the W statistic is less than one, then there is a difference between the data and its normal distribution 
+    - The p value will determine whether the W statistic is significant 
 
 
 ### Conducting a Shapiro-Wilk Test 
