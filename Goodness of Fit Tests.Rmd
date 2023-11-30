@@ -642,7 +642,7 @@ https://www.biostathandbook.com/gtestgof.html <br>
 https://www.r-bloggers.com/2022/05/calculate-the-p-value-from-chi-square-statistic-in-r/ <br>
 https://stats.libretexts.org/Bookshelves/Applied_Statistics/Biological_Statistics_(McDonald)/02%3A_Tests_for_Nominal_Variables/2.04%3A_GTest_of_Goodness-of-Fit <br>
 
-<p style="color: forestgreen">Kolmogorov Smirnov</p>
+<p style="color: forestgreen">Kolmogorov-Smirnov</p>
 
 https://www.tutorialspoint.com/statistics/kolmogorov_smirnov_test.htm <br>
 https://towardsdatascience.com/understanding-kolmogorov-smirnov-ks-tests-for-data-drift-on-profiled-data-5c8317796f78 <br>
