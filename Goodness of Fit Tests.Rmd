@@ -307,23 +307,25 @@ Our calculated value of D is 0.00816 which is smaller than our critical value of
 
 ## Introduction
 
-The Anderson Darling test is a form of the Goodness of Fit test used to determine if a sample of data comes from a specific kind of distribution. It is commonly used to determine if the sample of data came from a normal distribution. It is a modification of the Kolmogorov-Smirnov test that gives more weight to the tails. The more weight on the tails, the more accurate the results. 
+The Anderson Darling test is a form of the Goodness of Fit test used to determine if a sample of data comes from a specific kind of distribution. It is commonly used to determine if the sample of data came from a normal distribution. It is a modification of the Kolmogorov-Smirnov test that gives more weight to the tails. The more narrow the tails, the less disparities in the confidence intervals, meaning the results are more accurate. 
+
+The test is useful to test normality which is common for regression, ANOVA, t-tests and more. The data sets need to be **greater than 7**, but are advised to be **greater than 20**. 
+
+The Anderson Darling Test starts with a null hypothesis that your data is not statistically different than normal. The alternate hypothesis is that it is different from normal. The results will suggest that you can either reject the null, or fail to reject the null. The test rejects the null hypothesis of normality when the p-value is **less than or equal to 0.05** and accepts the null hypothesis (fails to reject the null) if it is **greater than 0.05.** 
 
  - H0 is the data that follows a specific distribution (null hypothesis)
  - HA is the data that does not follow the specific distribution (alternative hypothesis)
 
 ## Anderson Darling Test Formula: 
 
- - A^2 = -N-S
-
-- where S=N∑i=1((2i−1)/N)(lnF(Yi)+ln(1−F(YN+1−i)) 
-
- - F is the cumulative distribution function of the specified distribution.
+The formula below gets you the test statistic for your specified distribution, which will be modified to find the p-value. 
+ 
+A^2 = -N-S, where S= N∑i=1 ((2i−1)/N)(lnF(Yi)+ln(1−F(YN+1−i)) 
+ 
+ - n is the sample size
+ - F is the cumulative distribution function of the specified distribution. This gives you the cumulative (aditive) probability associated with a function. 
  - Yi is the ordered data. 
 
-The test is useful to test normality which is common for regression, ANOVA, t-tests and more. The data sets need to be **greater than 7**, but are advised to be **greater than 20**. 
-
-The Anderson Darling Test starts with a null hypothesis that your data is not statistically different than normal. The alternate hypothesis is that it is different from normal. The results will suggest that you can either reject the null, or fail to reject the null. The test rejects the null hypothesis of normality when the p-value is **less than or equal to 0.05** and accepts the null hypothesis (fails to reject the null) if it is **greater than 0.05.** 
 
 ## Using the Anderson-Darling Test with Data Known as "chickwts" 
 
@@ -356,7 +358,7 @@ A # The test statistic is computed
 #### Determining the AA Value from the A Value Needed to Determine the P Value  
 ```{r}
 AA <- (1 + 0.75/n + 2.25/n^2) * A
-AA #The AA value is computed
+AA #The AA value is computed (modified test statistic)
 ```
 
 #### Determining the P Value Step by Step
@@ -384,7 +386,7 @@ pval <- exp(1.2937 - 5.709 * AA + 0.0186 * AA^2
 #### Using the AA Value to Determine the P Value
 ```{r}
 pval <- exp(1.2937 - 5.709 * AA + 0.0186 * AA^2)
-pval #The P Value is computed
+pval #The p-value is computed
 ```
 It can be concluded that the weight in chickwts is normally distributed because the p value is greater than 0.05. 
 
@@ -433,7 +435,7 @@ The p-value is greater than 0.05, so the test fails to reject the null hypothesi
 #### Creating a function that is normally distributed 
 ```{r}
 set.seed(1) #Use the set.seed() function to allow the data to repeatable
-ndistribution <- rnorm(100, 25, 1) #The rnorm() function generates a random sample with a default mean of 0 and standard deviation of 1
+ndistribution <- rnorm(100, 25, 1) #The rnorm() function generates a random sample that is normally distributed
 ndistribution
 ```
 
@@ -450,12 +452,12 @@ hist(ndistribution, main = "Histogram Showing Normal Distribution")
 <br> 
 
 ## Anderson Darling Challenge 2
-Create a data set using a poisson function that is not distributed normally. Plot the data using a histogram and compare it to the normally distributed data. Use the ad.test() to confirm that the data is not normally distributed. Explain why your results confirm that 
+Create a data set using a poisson function that is not distributed normally. Plot the data using a histogram and compare it to the normally distributed data. Use the ad.test() to confirm that the data is not normally distributed. 
 
 
 ```{r}
 set.seed(1)
-nodistribution <- rpois(100, 25)
+nodistribution <- rpois(100, 25) #rpois() can be used to create a sample that is not normally distributed
 nodistribution
 ```
 
@@ -509,9 +511,10 @@ To perform the S–W test for normality, assume that the sample is composed of n
 ![](Shapiro-Wilk-Test-001.webp)
 
 The denominator is essentially the sum of squares equation which calculates variances while the numerator is the estimate slope of the Q-Q plot. The a values are constants generated from the means, variances and co-variances of the order statistics of a sample size (n) from a normal distribution. They incorporate the normal order statistic, the structure of data around the best-fit line, and normalize for the sample size of the data. Ideally, the slope of the Q-Q plot should be equal to the standard deviation if it is normally distributed so if you were to square this value, then it should equal to variance. 
-  + If the null hypothesis is true, then the W statistic should be variance over variance (both values are the same) which should equal to one. 
-  + If the W statistic is less than one, then there is a difference between the data and its normal distribution 
-    + The p value will determine whether the W statistic is significant 
+
+  - If the null hypothesis is true, then the W statistic should be variance over variance (both values are the same) which should equal to one. 
+  - If the W statistic is less than one, then there is a difference between the data and its normal distribution 
+    - The p value will determine whether the W statistic is significant 
 
 
 ### Conducting a Shapiro-Wilk Test 
@@ -667,6 +670,7 @@ https://www.statology.org/anderson-darling-test-r/ <br> https://variation.com/wp
 https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts <br>
 https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=d973dfd21d5c3ee5b5860191ee0de9635111dda1 <br>
 https://search.r-project.org/CRAN/refmans/nortest/html/ad.test.html <br>
+https://www.statisticshowto.com/anderson-darling-test/ <br>
 
 
 

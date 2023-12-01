@@ -12,7 +12,7 @@
 
 <meta name="author" content="Erin Anderson, Lillian Holden, Amanda Wu, Emily Yang" />
 
-<meta name="date" content="2023-11-29" />
+<meta name="date" content="2023-11-30" />
 
 <title>Goodness of Fit Tests</title>
 
@@ -151,7 +151,7 @@ code span.ot { color: #007020; }
 <h1 class="title toc-ignore project-name">Goodness of Fit Tests</h1>
 <h4 class="author project-author">Erin Anderson, Lillian Holden, Amanda
 Wu, Emily Yang</h4>
-<h4 class="date project-date">2023-11-29</h4>
+<h4 class="date project-date">2023-11-30</h4>
 </section>
 
 
@@ -249,7 +249,7 @@ populations under 2000.</li>
 <div class="sourceCode" id="cb1"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" tabindex="-1"></a><span class="co"># G test</span></span>
 <span id="cb1-2"><a href="#cb1-2" tabindex="-1"></a><span class="fu">library</span>(DescTools)</span>
 <span id="cb1-3"><a href="#cb1-3" tabindex="-1"></a><span class="fu">library</span>(curl)</span></code></pre></div>
-<pre><code>## Using libcurl 8.1.2 with LibreSSL/3.3.6</code></pre>
+<pre><code>## Using libcurl 7.79.1 with LibreSSL/3.3.5</code></pre>
 <div class="sourceCode" id="cb3"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" tabindex="-1"></a><span class="co"># Anderson Darling test</span></span>
 <span id="cb3-2"><a href="#cb3-2" tabindex="-1"></a><span class="fu">library</span>(nortest)</span>
 <span id="cb3-3"><a href="#cb3-3" tabindex="-1"></a></span>
@@ -584,23 +584,8 @@ to determine if a sample of data comes from a specific kind of
 distribution. It is commonly used to determine if the sample of data
 came from a normal distribution. It is a modification of the
 Kolmogorov-Smirnov test that gives more weight to the tails. The more
-weight on the tails, the more accurate the results.</p>
-<ul>
-<li>H0 is the data that follows a specific distribution (null
-hypothesis)</li>
-<li>HA is the data that does not follow the specific distribution
-(alternative hypothesis)</li>
-</ul>
-</div>
-<div id="anderson-darling-test-formula" class="section level2">
-<h2>Anderson Darling Test Formula:</h2>
-<ul>
-<li><p>A^2 = -N-S</p></li>
-<li><p>where S=N∑i=1((2i−1)/N)(lnF(Yi)+ln(1−F(YN+1−i))</p></li>
-<li><p>F is the cumulative distribution function of the specified
-distribution.</p></li>
-<li><p>Yi is the ordered data.</p></li>
-</ul>
+narrow the tails, the less disparities in the confidence intervals,
+meaning the results are more accurate.</p>
 <p>The test is useful to test normality which is common for regression,
 ANOVA, t-tests and more. The data sets need to be <strong>greater than
 7</strong>, but are advised to be <strong>greater than 20</strong>.</p>
@@ -612,6 +597,25 @@ test rejects the null hypothesis of normality when the p-value is
 <strong>less than or equal to 0.05</strong> and accepts the null
 hypothesis (fails to reject the null) if it is <strong>greater than
 0.05.</strong></p>
+<ul>
+<li>H0 is the data that follows a specific distribution (null
+hypothesis)</li>
+<li>HA is the data that does not follow the specific distribution
+(alternative hypothesis)</li>
+</ul>
+</div>
+<div id="anderson-darling-test-formula" class="section level2">
+<h2>Anderson Darling Test Formula:</h2>
+<p>The formula below gets you the test statistic for your specified
+distribution, which will be modified to find the p-value.</p>
+<p>A^2 = -N-S, where S= N∑i=1 ((2i−1)/N)(lnF(Yi)+ln(1−F(YN+1−i))</p>
+<ul>
+<li>n is the sample size</li>
+<li>F is the cumulative distribution function of the specified
+distribution. This gives you the cumulative (aditive) probability
+associated with a function.</li>
+<li>Yi is the ordered data.</li>
+</ul>
 </div>
 <div id="using-the-anderson-darling-test-with-data-known-as-chickwts" class="section level2">
 <h2>Using the Anderson-Darling Test with Data Known as “chickwts”</h2>
@@ -654,7 +658,7 @@ Value</h4>
 <h4>Determining the AA Value from the A Value Needed to Determine the P
 Value</h4>
 <div class="sourceCode" id="cb46"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb46-1"><a href="#cb46-1" tabindex="-1"></a>AA <span class="ot">&lt;-</span> (<span class="dv">1</span> <span class="sc">+</span> <span class="fl">0.75</span><span class="sc">/</span>n <span class="sc">+</span> <span class="fl">2.25</span><span class="sc">/</span>n<span class="sc">^</span><span class="dv">2</span>) <span class="sc">*</span> A</span>
-<span id="cb46-2"><a href="#cb46-2" tabindex="-1"></a>AA <span class="co">#The AA value is computed</span></span></code></pre></div>
+<span id="cb46-2"><a href="#cb46-2" tabindex="-1"></a>AA <span class="co">#The AA value is computed (modified test statistic)</span></span></code></pre></div>
 <pre><code>## [1] 0.4699724</code></pre>
 </div>
 <div id="determining-the-p-value-step-by-step" class="section level4">
@@ -679,7 +683,7 @@ pval &lt;- 1 - exp(-8.318 + 42.796 * AA - 59.938 * AA^2</p></li>
 <div id="using-the-aa-value-to-determine-the-p-value" class="section level4">
 <h4>Using the AA Value to Determine the P Value</h4>
 <div class="sourceCode" id="cb48"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb48-1"><a href="#cb48-1" tabindex="-1"></a>pval <span class="ot">&lt;-</span> <span class="fu">exp</span>(<span class="fl">1.2937</span> <span class="sc">-</span> <span class="fl">5.709</span> <span class="sc">*</span> AA <span class="sc">+</span> <span class="fl">0.0186</span> <span class="sc">*</span> AA<span class="sc">^</span><span class="dv">2</span>)</span>
-<span id="cb48-2"><a href="#cb48-2" tabindex="-1"></a>pval <span class="co">#The P Value is computed</span></span></code></pre></div>
+<span id="cb48-2"><a href="#cb48-2" tabindex="-1"></a>pval <span class="co">#The p-value is computed</span></span></code></pre></div>
 <pre><code>## [1] 0.2502576</code></pre>
 <p>It can be concluded that the weight in chickwts is normally
 distributed because the p value is greater than 0.05.</p>
@@ -733,7 +737,7 @@ ad.test() built in function</h4>
 <div id="creating-a-function-that-is-normally-distributed" class="section level4">
 <h4>Creating a function that is normally distributed</h4>
 <div class="sourceCode" id="cb58"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb58-1"><a href="#cb58-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>) <span class="co">#Use the set.seed() function to allow the data to repeatable</span></span>
-<span id="cb58-2"><a href="#cb58-2" tabindex="-1"></a>ndistribution <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">25</span>, <span class="dv">1</span>) <span class="co">#The rnorm() function generates a random sample with a default mean of 0 and standard deviation of 1</span></span>
+<span id="cb58-2"><a href="#cb58-2" tabindex="-1"></a>ndistribution <span class="ot">&lt;-</span> <span class="fu">rnorm</span>(<span class="dv">100</span>, <span class="dv">25</span>, <span class="dv">1</span>) <span class="co">#The rnorm() function generates a random sample that is normally distributed</span></span>
 <span id="cb58-3"><a href="#cb58-3" tabindex="-1"></a>ndistribution</span></code></pre></div>
 <pre><code>##   [1] 24.37355 25.18364 24.16437 26.59528 25.32951 24.17953 25.48743 25.73832
 ##   [9] 25.57578 24.69461 26.51178 25.38984 24.37876 22.78530 26.12493 24.95507
@@ -770,9 +774,9 @@ accepted.</p>
 <p>Create a data set using a poisson function that is not distributed
 normally. Plot the data using a histogram and compare it to the normally
 distributed data. Use the ad.test() to confirm that the data is not
-normally distributed. Explain why your results confirm that</p>
+normally distributed.</p>
 <div class="sourceCode" id="cb63"><pre class="sourceCode r"><code class="sourceCode r"><span id="cb63-1"><a href="#cb63-1" tabindex="-1"></a><span class="fu">set.seed</span>(<span class="dv">1</span>)</span>
-<span id="cb63-2"><a href="#cb63-2" tabindex="-1"></a>nodistribution <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="dv">100</span>, <span class="dv">25</span>)</span>
+<span id="cb63-2"><a href="#cb63-2" tabindex="-1"></a>nodistribution <span class="ot">&lt;-</span> <span class="fu">rpois</span>(<span class="dv">100</span>, <span class="dv">25</span>) <span class="co">#rpois() can be used to create a sample that is not normally distributed</span></span>
 <span id="cb63-3"><a href="#cb63-3" tabindex="-1"></a>nodistribution</span></code></pre></div>
 <pre><code>##   [1] 21 31 31 27 17 27 28 27 23 32 26 21 23 22 24 29 29 27 29 28 25 15 27 30 21
 ##  [26] 22 23 22 26 24 18 29 22 30 28 24 23 28 27 21 17 28 24 29 26 21 21 32 34 23
@@ -862,12 +866,18 @@ normal distribution. They incorporate the normal order statistic, the
 structure of data around the best-fit line, and normalize for the sample
 size of the data. Ideally, the slope of the Q-Q plot should be equal to
 the standard deviation if it is normally distributed so if you were to
-square this value, then it should equal to variance. + If the null
-hypothesis is true, then the W statistic should be variance over
-variance (both values are the same) which should equal to one. + If the
-W statistic is less than one, then there is a difference between the
-data and its normal distribution + The p value will determine whether
-the W statistic is significant</p>
+square this value, then it should equal to variance.</p>
+<ul>
+<li>If the null hypothesis is true, then the W statistic should be
+variance over variance (both values are the same) which should equal to
+one.</li>
+<li>If the W statistic is less than one, then there is a difference
+between the data and its normal distribution
+<ul>
+<li>The p value will determine whether the W statistic is
+significant</li>
+</ul></li>
+</ul>
 <div id="conducting-a-shapiro-wilk-test" class="section level3">
 <h3>Conducting a Shapiro-Wilk Test</h3>
 <p>Let’s conduct a Shapiro-Wilk Test on a normalized distribution to see
@@ -1072,6 +1082,7 @@ Anderson Darling
 <br> <a href="https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts" class="uri">https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts</a>
 <br> <a href="https://citeseerx.ist.psu.edu/document?repid=rep1&amp;type=pdf&amp;doi=d973dfd21d5c3ee5b5860191ee0de9635111dda1" class="uri">https://citeseerx.ist.psu.edu/document?repid=rep1&amp;type=pdf&amp;doi=d973dfd21d5c3ee5b5860191ee0de9635111dda1</a>
 <br> <a href="https://search.r-project.org/CRAN/refmans/nortest/html/ad.test.html" class="uri">https://search.r-project.org/CRAN/refmans/nortest/html/ad.test.html</a>
+<br> <a href="https://www.statisticshowto.com/anderson-darling-test/" class="uri">https://www.statisticshowto.com/anderson-darling-test/</a>
 <br></p>
 <p style="color: forestgreen">
 Shapiro-Wilk
