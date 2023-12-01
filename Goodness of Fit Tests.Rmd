@@ -165,7 +165,7 @@ Failing to reject a null hypothesis means there is no sufficient evidence for th
 
 <b>F<sub>r</sub>(x)</b> = the theoretical frequency distribution
 
-<b>D</b> = the critical value between 0 and 1 indicating the magnitude of the observed difference in distributions. Values closer to 1 difference, while values closer to 0 indicate high likeness. Unlike a p-value which has a set threshold for whether something is significant or not--although this is also not necessarily the be-all-end-all of significance!--the D value produced from the K-S test is relative to each individual distribution. <b>Different data sets will produce different D values!</b>
+<b>D</b> = the critical value between 0 and 1 indicating the magnitude of the observed difference in distributions. Values closer to 1 indicate high difference, while values closer to 0 indicate high likeness. Unlike a p-value which has a set threshold for whether something is significant or not--although this is also not necessarily the be-all-end-all of significance!--the D value produced from the K-S test is relative to each individual distribution. <b>Different data sets will produce different D values!</b>
 
 If the calculated value is <b>less</b> than the critical value <b>D</b> we must <b>accept the null hypothesis</b>
 
@@ -242,37 +242,8 @@ D
 ```
 YES! 0.133 &#8804; 0.1867, therefore we can still reject the null.
 
+Now let's learn the easy way! Our KS Test is in base R so we can just go ahead and use it as is.
 
-Now, let's do an example with a data set we are familiar with.
-```{r 8, include=TRUE}
-#prep to curl our data
-library(curl) 
-#curl our data
-f <- curl("https://raw.githubusercontent.com/fuzzyatelin/fuzzyatelin.github.io/master/AN588_Fall23/zombies.csv")
-#read our csv
-z <- read.csv(f, header = TRUE, sep = ",", stringsAsFactors = TRUE)
-#call our data set
-head(z)
-```
-
-Now for the easy way! The function for a KS test is built into R, a one-sample test can be called using the ks.test() function. With a one-sided test we are looking to see if the data follows a normal distribution, hence the "pnorm" is what we are testing for. Let's look at age:
-```{r 9, include=TRUE}
-#call our column of interest
-age <- z$age
-#use our function!
-ks.test(age, "pnorm")
-```
-Our p-value is going to tell us if we can accept or reject the null, in this case, that the data we are working with is normally distributed. Since our value is &#60; 0.05 we can reject the null and say that our data is not normally distributed. 
-
-```{r 12, include=TRUE}
-#denote the total number of turtles
-n <- 1001
-#grab our formula
-D <- 1.63/sqrt(n)
-#calculate!
-D
-```
-Our calculated value of D is 0.05 which is smaller than our critical value of 1. This also makes sense, and confirms our ability to reject the null.
 
 ## Two-Sample Test
 
@@ -286,24 +257,13 @@ data2 <- rnorm(100)
 ```
 
 ```{r 14, include=TRUE}
-#using our function, we are going to fill both arguments with the data sets to ensure a comparison
+#using our pre-made function, we are going to fill both arguments with the data sets to ensure a comparison
 ks.test(data1, data2)
 ```
+To visually represent why D is interpreted the way it is, let's take a look at this graph.
 
-Now, we can look at both our D value and p-value. Our p-value is < 0.05 and therefore allows us to reject the null. Our data sets come from two different distributions, which is what we expected since we made them that way! Our D value is 0.95, going back to our previous table we can pick an alpha value of 0.05.
-
-![](Calculate_D.png)
-
-```{r 15, include=TRUE}
-#denote the total number of turtles
-n12 <- (150 + 50)/(150*50)
-#grab our formula
-n12 <- sqrt(n12)
-#calculate!
-D <- n12*0.05
-D
-```
-Our calculated value of D is 0.00816 which is smaller than our critical value of 0.95. This also makes sense, and confirms our ability to reject the null.
+![](Visualize_D.png)
+Here we can see that D is showing us the maximum distance between 2 graphs. If the two data sets come from the exact same distribution, our D value (i.e. distance between the graphs) would be small (theoretically 0). If we have data coming from two very distributions our maximum distance between our graphs is large (maximum of 1).
 
 #### If you're curious about seeing a KS Test in action, feel free to check out <a href="Mizumoto&al2022.pdf">this</a> paper on same-sex sexual behavior in termites.
 
