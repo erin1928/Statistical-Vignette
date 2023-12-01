@@ -23,7 +23,14 @@ Before starting to work with a data set you have to figure out what kind of data
   + **Anderson-Darling Test:** derived from the Kolmogorov-Smirnov test and is more sensitive to the distribution edges. 
   + **Shapiro-Wilks Test:** determines if a random sample is from a normally distributed population but is used for smaller sample populations under 2000.
 
+## Objectives
+[1] Understand what a goodness of fit test is and how to apply it
 
+[2] Be able identify which test is most appropriate for your dataset
+
+[K-S] Understand what a Kolmogorov-Smirnov Test is and how to interpret the results. 
+
+[K-S] Learn what conditions are ideal for a K-S
 
 ## Packages
 ```{r Packages, warning=FALSE}
