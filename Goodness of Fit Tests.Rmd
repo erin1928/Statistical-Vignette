@@ -287,7 +287,7 @@ ks.test(data1, data2)
 
 Now, we can look at both our D value and p-value. Our p-value is < 0.05 and therefore allows us to reject the null. Our data sets come from two different distributions, which is what we expected since we made them that way! Our D value is 0.95, going back to our previous table we can pick an alpha value of 0.05.
 
-![](Calculate_d.png)
+![](Calculate_D.png)
 
 ```{r 15, include=TRUE}
 #denote the total number of turtles
