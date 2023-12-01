@@ -215,7 +215,7 @@ table
 ```
 Now it's time to analyze! To find our critical D value we need to look at our table and find the maximum difference between F<sub>0</sub>(x) and F<sub>r</sub>(x). We can see that our maximum value is that of C. amboinensis at 28/150. Our critical D value that we will use to compare our values to is 0.1867. Now we can look at our table and choose a value of alpha to work with. Say we are 5% certain we are going to make a Type 1 error, i.e. detecting a difference under the assumption of the null, we can use our table to choose our critical value.
 
-![](Critical-D-Values.png)
+![](Critical-D-Values copy.png)
 
 ```{r 6, include=TRUE}
 #denote the total number of turtles
