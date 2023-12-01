@@ -161,7 +161,7 @@ Failing to reject a null hypothesis means there is no sufficient evidence for th
 
 <b>F<sub>0</sub>(x)</b> = the total observed frequency distribution of a random sample
 
-<b>F<sub>0</sub>(x) = <sup>k</sup>&frasl;<sub>n</sub></b> where k = the number of observations and n is the total number of observations
+<b>F<sub>0</sub>(x) = <sup>k</sup>&frasl;<sub>n</sub></b> where k = the number of observations and n is the total number of predicted observations
 
 <b>F<sub>r</sub>(x)</b> = the theoretical frequency distribution
 
