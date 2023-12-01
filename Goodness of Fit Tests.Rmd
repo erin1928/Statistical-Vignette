@@ -30,7 +30,7 @@ Before starting to work with a data set you have to figure out what kind of data
 
 [K-S] Understand what a Kolmogorov-Smirnov Test is and how to interpret the results. 
 
-[K-S] Learn what conditions are ideal for a K-S.
+[K-S] Learn what conditions are ideal for a K-S Test.
 
 ## Packages
 ```{r Packages, warning=FALSE}
