@@ -174,6 +174,10 @@ If the calculated value is <b>greater</b> than the critical value we can <b> rej
 
 ## One-Sample Test ##
 Let's do an example! <br>
+
+![](Cute_Turtle.jpeg)
+
+
 We are zoologists studying turtles and we want to conduct an experiment to see if different species of turtle prefer to eat cucumbers or lettuce when presented with both. We will be including 5 different species and counting how many turtles go for each food choice first in each population (n = 150).
 
 ```{r 2, include=TRUE}
@@ -190,6 +194,7 @@ final
 <b>H<sub>0</sub></b> = There is no difference among turtle species with respect to their choice of cucumber over lettuce.
 
 <b>H<sub>1</sub></b> = There is a difference among turtle species with respect to their choice of cucumber over lettuce
+
 
 Let's say we predict 18 turtles from each species choose cucumber and make a new table with our prediction.
 
