@@ -32,6 +32,14 @@ Before starting to work with a data set you have to figure out what kind of data
 
 [K-S] Learn what conditions are ideal for a K-S Test.
 
+[A-D] Learn the Anderson Darling Equation and how it can be used in R.  
+
+[A-D]Go through the Anderson Darling Test step-by-step and how to interpret the results. 
+
+[A-D]Use the ad.test() built in function with Poisson functions. 
+
+
+
 ## Packages
 ```{r Packages, warning=FALSE}
 # G test
@@ -294,7 +302,10 @@ A^2 = -N-S, where S= N∑i=1 ((2i−1)/N)(lnF(Yi)+ln(1−F(YN+1−i))
 
 ## Using the Anderson-Darling Test with Data Known as "chickwts" 
 
-<font size="+2"> Description of the Data Set: Newly hatched chicks were randomly allocated into six groups, and each group was given a different feed supplement. Their weights in grams after six weeks are given along with feed types. </font>
+<font size="+2"> Newly hatched chicks were randomly allocated into six groups, and each group was given a different feed supplement. Their weights in grams after six weeks are given along with feed types. </font>
+
+![](chickwts.png)
+
 <br>
 
 ```{r}
@@ -411,7 +422,7 @@ Because the p-value is greater than 0.05, it can be determined that the data is 
 
 #### Plotting the Data 
 ```{r}
-hist(ndistribution, main = "Histogram Showing Normal Distribution")
+hist(ndistribution, main = "Histogram Showing Normal Distribution", col="blue")
 ```
 
 <br> 
@@ -433,7 +444,7 @@ Because the p-value is less than or equal to 0.05, it can be determined that the
 
 #### Plotting the Data 
 ```{r}
-hist(nodistribution, main= "Histogram Showing No Normality ")
+hist(nodistribution, main= "Histogram Showing No Normal Distribution", col="red")
 ```
 
 #### Shortcut to Creating Data Sets and Using ad.test() all at once
@@ -636,6 +647,7 @@ https://www.rdocumentation.org/packages/datasets/versions/3.6.2/topics/chickwts 
 https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=d973dfd21d5c3ee5b5860191ee0de9635111dda1 <br>
 https://search.r-project.org/CRAN/refmans/nortest/html/ad.test.html <br>
 https://www.statisticshowto.com/anderson-darling-test/ <br>
+https://welcometochickenlandia.com/blog/the-age-old-practice-of-cold-brooding-baby-chicks/ <br>
 
 
 
