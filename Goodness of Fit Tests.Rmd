@@ -3,15 +3,19 @@ title: "Goodness of Fit Tests"
 author: "Erin Anderson, Lillian Holden, Amanda Wu, Emily Yang"
 date: "`r Sys.Date()`"
 output: 
-  prettydoc::html_pretty:
-    theme: caymen
-    highlight: github
-    toc: yes
+  html_document:
+    toc: true
+    toc_float:
+      toc_collapsed: true
+    toc_depth: 3
+    theme: lumen
+    
 ---
 
 ```{r setup, include=FALSE}
 knitr::opts_chunk$set(echo = TRUE)
 ```
+
 
 ## Introduction to Goodness-of-Fit Tests
 
@@ -37,6 +41,10 @@ Before starting to work with a data set you have to figure out what kind of data
 [A-D]Go through the Anderson Darling Test step-by-step and how to interpret the results. 
 
 [A-D]Use the ad.test() built in function with Poisson functions. 
+
+[S-W]Learn the Shapiro-Wilk Function and how it is derived.
+
+[S-W]Use the shapiro.test() function in R and interpret the results. 
 
 
 
@@ -555,6 +563,7 @@ Here, while the W statistic is close to 1, the p-value is less than 0.05 so the 
 
 ## Shapiro-Wilk Challenge 
 
+![](S-W-PIC.jpeg)
 ToothGrowth is a data set in R showing the length of teeth of guinea pigs at three Vitamin C dosage levels(0.5, 1 and 2mg) with two delivery methods(orange juice or ascorbic acid). The column ‘len’ shows the tooth length. Test the normality of the distribution of these guinea pigs’ teeth lengths.
 
 ```{r SW ToothGrowth}
