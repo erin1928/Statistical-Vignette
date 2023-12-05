@@ -122,8 +122,8 @@ I was out in the field and collected data about 1200 Irises. I noted the color, 
 ![](iris.png)
 
 ```{r Tabulating Data}
-
-d <- read.csv("Iris.csv", header = TRUE, sep = ",", stringsAsFactors = FALSE)
+f <- curl("https://raw.githubusercontent.com/YYangEmily/Chisquare-repo/main/Iris.csv")
+d <- read.csv(f, header = TRUE, sep = ",", stringsAsFactors = FALSE)
 head(d)
 
 table(d$Flower.color) # Count how many of each color
@@ -174,12 +174,27 @@ As you can see this time the p-value = 0.1842 which is above the critical p-valu
 
 Perform the G test with following columns in the iris data set: Flower.location and Flower.species. <br>
 
-## G test of Independence
+## G Test of Independence
 
 In addition to goodness of fit test you can also use the G test for Independence. For example I want to test if flower color and flower size are independent variables. 
 
 **Null Hypothesis:** The two test variables are independent. <br>
 **Alternate Hypothesis:** The two variables are dependent.
+
+```{r Independence}
+d$Flower.color <- as.factor(d$Flower.color)
+d$Flower.size <- as.factor(d$Flower.size)
+d %>% 
+  count(Flower.color, Flower.size)
+
+obs <- rbind(c(64, 22, 327, 210), # Small
+             c(57, 37, 301, 182)) # Large
+ 
+GTest(obs, # Compare small vs large
+      correct = "none") # no correction
+
+```
+We find a p-value of 0.1342 which is above  the critical p-value of 0.05 and fail to reject the null hypothesis. We conclude that the two variables are independent.
 
 
 # Kolmorgorov-Smirnov Test
@@ -666,6 +681,7 @@ The p-value appears to be far below 0.05, 0.0000000000000003331, which would mea
 https://www.statology.org/g-test/ <br>
 https://www.statstest.com/g-test/ <br>
 https://www.biostathandbook.com/gtestgof.html <br>
+https://www.biostathandbook.com/gtestind.html<br>
 https://www.r-bloggers.com/2022/05/calculate-the-p-value-from-chi-square-statistic-in-r/ <br>
 https://stats.libretexts.org/Bookshelves/Applied_Statistics/Biological_Statistics_(McDonald)/02%3A_Tests_for_Nominal_Variables/2.04%3A_GTest_of_Goodness-of-Fit <br>
 
