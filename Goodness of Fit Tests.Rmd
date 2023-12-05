@@ -506,9 +506,9 @@ The denominator is essentially the sum of squares equation which calculates vari
 Let's conduct a Shapiro-Wilk Test on a normalized distribution to see how it is calculated!
 ```{r SW creating dataset}
 set.seed(123)
-normdata <- rnorm(35, mean = 25, sd = 3)
-hist(normdata)
-qqnorm(normdata)
+normdata <- rnorm(35, mean = 25, sd = 3) # making a normally distributed graph
+hist(normdata) 
+qqnorm(normdata) 
 qqline(normdata, col = "dodgerblue4", lwd = 2)
 ```
 
@@ -541,7 +541,7 @@ In order to calculate the W statistic, here is the following procedure:
 However, the Shapiro-Wilk Test can be really difficult to calculate, especially if you have more values, so there's a simple command in R to conduct this test! 
 
 ```{r SW calculations }
-shapiro.test(normdata)
+shapiro.test(normdata) 
 ```
 The W statistic is really really close to 1 which means there's only a little variation and the p-value is greater than 0.05 which means that we have failed to have rejected the null hypothesis. 
 
@@ -549,7 +549,7 @@ The W statistic is really really close to 1 which means there's only a little va
 #### Now, let's look at another data set where it may not be of normal distribution. 
 ```{r SW non normal data}
 set.seed(1)
-dataset2 <- rpois(35, lambda = 3)
+dataset2 <- rpois(35, lambda = 3) # making a poisson distributed data set
 hist(dataset2) # looks skewed
 qqnorm(dataset2) 
 qqline(dataset2, col = "dodgerblue4", lwd = 2)
