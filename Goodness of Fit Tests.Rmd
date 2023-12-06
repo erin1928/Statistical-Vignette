@@ -350,9 +350,9 @@ Hypotheses
  
 The results will suggest that you can either reject the null, or fail to reject the null. The test rejects the null hypothesis of normality when the p-value is **less than or equal to 0.05** and accepts the null hypothesis (fails to reject the null) if it is **greater than 0.05.** 
 
-## Anderson Darling Test Formula: 
+## Anderson Darling Test Statistic Formula: 
 
-The formula below gets you the test statistic for your specified distribution, which will be modified to find the p-value. The test statistic needs to be modified for small data sets. 
+The formula below gives you the test statistic for your specified distribution, which will be modified to find the p-value. The test statistic needs to be modified for small data sets. Once we have the p-value, we can determine whether we can reject the null hypothesis or fail to reject the null.
  
 ![](Anderson-formula.png)
 
@@ -387,39 +387,50 @@ a
 
 <br>
 
-#### Determining the Test Statistic (A Value) Step by Step 
-The set of equations below are derived from the formula depicted above and taken from ad.test() the built in R function we will use later in this module: 
+#### Calculating the Test Statistic in R Step-By-Step 
+The several equations below are derived from the formula depicted above and taken from ad.test(), the built in R function we will use later in this module: 
 ```{r}
 x <- sort(a) #a is the data set that you want to test, sort() puts the data in ascending order, which is necessary to compute the anderson darling test statistic 
 x
 ```
+<br>
 
 ```{r}
 n <- length(x) 
 n #n is 71 
 ```
 
+<br>
+
+#### Calculating F(Xi) 
 ```{r}
 logp1 <- pnorm((x - mean(x))/sd(x), log.p = TRUE) #F(Xi) is the cumulative distribution and pnorm() allows us to calculate the cumulative probability for each data point using each data point and subtracting the data sets mean/standard deviation from each, log.p() gives each of these probabilities as a log()
 logp1
 ```
+<br>
 
+#### Calculating -F(Xn-i+1)
 ```{r}
 logp2 <- pnorm(-(x - mean(x))/sd(x), log.p = TRUE) #using pnorm() to find -F(Xn-i+1) for each data point
 logp2
 ```
+<br>
 
+#### Calculating the Summation Portion of the Equation
 ```{r}
 h <- (2 * seq(1:n) - 1) * (logp1 + rev(logp2)) #summation part of the equation, rev() is used to reverse the formula we computed in logp2)
 ```
 
+<br>
+
+#### Calculating the Test Statistic 
 ```{r}
 A <- -n - mean(h) #computing the test statistic by combining the first half of the equation with the second half
 A # The test statistic is computed 
 ```
 <br>
 
-#### Determining the Modified Test Statistic  
+#### Calculating the Modified Test Statistic  
 ```{r}
 # Z = AD(1.0 + 0.75/n + 2.25/n^2)
 AA <- (1 + 0.75/n + 2.25/n^2) * A
@@ -455,7 +466,7 @@ pval <- exp(1.2937 - 5.709 * AA + 0.0186 * AA^2)
  
  <br>
 
-#### Determining the p-value
+#### Calculating the p-value
 ```{r}
 pval <- exp(0.9177 - 4.279 * AA - 1.38 * AA^2)
 pval #The p-value is computed
@@ -478,7 +489,7 @@ b
 
 <br>
 
-#### Determine the Test Statistic (A) 
+#### Calculate the Test Statistic (A) 
 
 ```{r}
 x <- sort(b) 
@@ -492,7 +503,7 @@ A
 
 <br>
 
-#### Determine the Modified Test Statistic (AA) 
+#### Calculate the Modified Test Statistic (AA) 
 ```{r}
 AA <- (1 + 0.75/n + 2.25/n^2) * A
 AA 

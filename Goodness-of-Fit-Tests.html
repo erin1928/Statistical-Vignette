@@ -1927,11 +1927,13 @@ when the p-value is <strong>less than or equal to 0.05</strong> and
 accepts the null hypothesis (fails to reject the null) if it is
 <strong>greater than 0.05.</strong></p>
 </div>
-<div id="anderson-darling-test-formula" class="section level2">
-<h2>Anderson Darling Test Formula:</h2>
-<p>The formula below gets you the test statistic for your specified
+<div id="anderson-darling-test-statistic-formula" class="section level2">
+<h2>Anderson Darling Test Statistic Formula:</h2>
+<p>The formula below gives you the test statistic for your specified
 distribution, which will be modified to find the p-value. The test
-statistic needs to be modified for small data sets.</p>
+statistic needs to be modified for small data sets. Once we have the
+p-value, we can determine whether we can reject the null hypothesis or
+fail to reject the null.</p>
 <p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAawAAABVCAMAAAAi/CD7AAAAclBMVEX///8AAAD/tma2ZgDb//8AZra2//8AOpDbkDo6kNv//7aQ2/8AAGZmtv///9uQOgD/25BmAAAAADpmADo6AGY6AACQOjq2Zjq2kJDb25A6OpBmOpA6ADpmAGa2/7a2tv+Q29tmZma225AAOjo6kLaQOmbHAqeFAAAEo0lEQVR4nO2bi3bbIAyGY7ystrPcuqWX3a/v/4oDIWRBDHG6uHHO/u+sXZfaEuIHgYW3WAAAAAAAAAAAAAAAAAAAAAAAAACvw+6wNNXdm2s3A4zh6fmw7D5BrNugWS7M8tqNAOOo1/bPE6bWLdC9Xy3qan3tZgAAwKvh8h64DZrq3dtrtwGMo25NEKupEu4x5eaGiNXt48pFDbFmh4i12B2qVv1i9xlizY1eLJsI9WTaPECsuaHEsk/D2G3MGi2WXbZQFpwzRqe+ZNkCs8Ike/Tmnzfs1mIxlzbJYVl96bmcOiiivdfVjeWVzTY9eRwdO8dtilJttkczt3zDue0YcFCEvAfJLj5wPLsDFcZrNzEu6iFZtnzs9YknZF+y8r3uvjdpm6idbhg0LRm1k6/PuGZIhsQEa5CrjYn9QQdFyDsPmInE4lOMbr+2Xxc9hbdpTB2QuNhdR222KqaUULLq406jdu10x5rc2TTU5JrNVhwqMWITpEG+NhbsDzso4r37ATONWOa3H2n04Mqz7FLoHuk7r8knKylZUdz0c5NEvftgPzStTKJ6redTLTNAiRWZ8J+r2lhCsJ9xUKRuQ9OnEWvz560PkBpEw6p4+fZ+ZUY/Qullqw/YLhn2FxlHoQ9do4JYplraScoyNMmiYO6eP/Zd2S9HsVi9idCOnFii7LCDIt479eckYjVrHo1kncWyfTlcgN08fN/+WJ6UVOj2YkFaT3dnT1NCH7q4ZWa5VSfMx5pXlDCHur3udZMRqzchGmTECvYzDop47yTZFGK5t4/ILufbwcVfa9ftZbmIJZUKe3yntDnE7h3teLAeDYvQhyYSK/zDS21aZc9E2wffXYnVyITcx46Sa8V+xkER791MJZbsAX2ttT6ZnF1KH5vCo+UpxO7/Tlci4ZRYtKSQnSW35yd9wuXHXBrMizUQ36CDBO/Pb1aidDCdWDTAyYXffvFKkk2D/uJsTx+ZV/sVbj33VZ1LpMNpsBdL1PAjxkqidoC6j7JildNgr/awg+RqF023/8VyetsTpUHfDDLuAjIjniZqt/duzahFq9sre5wiXAyPK5tsHocXrZCIXbDSub1YfV4lMSgAlw5cdl6Utu5iQjYYmYwfqy0OkteL2R/PLJ6O7J10urhY/oyQdklprSh/i2v8yCweJVWK3XqsXA0ptxuUZsjW3bXOffF5ZiO7QtdR9sOWi5BNv6VV/oJRZYKfujPxKvuxA3692P7sb2zoczbCYoUFc7Kt+4QkY7c5p3ijiwEZ4uxEE3U3tLqkjG5H7CB5vdgnhmhmRZLdmFjpA3Yh9R/fS3GfKuSqmdt9+fptxPbozHZog/HrxeQvFosv9j/fWCFXZf/AuM4850LhjIehl5g/er2Y/Xmx3JY6TNeX2H590tpGoagErkxa2xjebIGZoGobya5d11fBLIhqG3HqPvcYD0yNrm0kC5bBf/yZGaq24R8XNRBrVqjahpQW8a47AOC/JXq7feQbYuB6hKJ0f9wDZgkf9zCjiuHgakTnEBBr3jyujs/mwDzh4x4GYs2a6HhJH/cAAAAAAAAAAAAAAAAAAAAAAAAAAAAwMX8BM+Yz3Hcs4z4AAAAASUVORK5CYII=" /></p>
 <ul>
 <li>n = the sample size</li>
@@ -1971,20 +1973,25 @@ a</code></pre>
 ## [58] 344 258 368 390 379 260 404 318 352 359 216 222 283 332</code></pre>
 <p><br></p>
 </div>
-<div id="determining-the-test-statistic-a-value-step-by-step" class="section level4">
-<h4>Determining the Test Statistic (A Value) Step by Step</h4>
-<p>The set of equations below are derived from the formula depicted
-above and taken from ad.test() the built in R function we will use later
-in this module:</p>
+<div id="calculating-the-test-statistic-in-r-step-by-step" class="section level4">
+<h4>Calculating the Test Statistic in R Step-By-Step</h4>
+<p>The several equations below are derived from the formula depicted
+above and taken from ad.test(), the built in R function we will use
+later in this module:</p>
 <pre class="r"><code>x &lt;- sort(a) #a is the data set that you want to test, sort() puts the data in ascending order, which is necessary to compute the anderson darling test statistic 
 x</code></pre>
 <pre><code>##  [1] 108 124 136 140 141 143 148 153 158 160 168 169 171 179 181 193 199 203 206
 ## [20] 213 216 217 222 226 227 229 230 242 243 244 248 248 250 257 257 258 260 260
 ## [39] 263 267 271 271 283 295 297 303 309 315 316 318 318 320 322 325 327 329 332
 ## [58] 334 339 340 341 344 352 359 368 379 380 390 392 404 423</code></pre>
+<p><br></p>
 <pre class="r"><code>n &lt;- length(x) 
 n #n is 71 </code></pre>
 <pre><code>## [1] 71</code></pre>
+<p><br></p>
+</div>
+<div id="calculating-fxi" class="section level4">
+<h4>Calculating F(Xi)</h4>
 <pre class="r"><code>logp1 &lt;- pnorm((x - mean(x))/sd(x), log.p = TRUE) #F(Xi) is the cumulative distribution and pnorm() allows us to calculate the cumulative probability for each data point using each data point and subtracting the data sets mean/standard deviation from each, log.p() gives each of these probabilities as a log()
 logp1</code></pre>
 <pre><code>##  [1] -3.69751578 -3.23621401 -2.91425020 -2.81145133 -2.78610263 -2.73582529
@@ -1999,6 +2006,10 @@ logp1</code></pre>
 ## [55] -0.22322578 -0.21439463 -0.20165026 -0.19348172 -0.17417117 -0.17049452
 ## [61] -0.16687823 -0.15638537 -0.13090592 -0.11140167 -0.08980016 -0.06811938
 ## [67] -0.06638164 -0.05091853 -0.04821581 -0.03438676 -0.01936601</code></pre>
+<p><br></p>
+</div>
+<div id="calculating--fxn-i1" class="section level4">
+<h4>Calculating -F(Xn-i+1)</h4>
 <pre class="r"><code>logp2 &lt;- pnorm(-(x - mean(x))/sd(x), log.p = TRUE) #using pnorm() to find -F(Xn-i+1) for each data point
 logp2</code></pre>
 <pre><code>##  [1] -0.02509734 -0.04010605 -0.05577140 -0.06200060 -0.06364405 -0.06703815
@@ -2013,14 +2024,22 @@ logp2</code></pre>
 ## [55] -1.60910906 -1.64521975 -1.70035188 -1.73775378 -1.83353865 -1.85308852
 ## [61] -1.87276993 -1.93260586 -2.09801545 -2.24979674 -2.45473259 -2.72035988
 ## [67] -2.74534199 -3.00287964 -3.05607935 -3.38722770 -3.95390325</code></pre>
+<p><br></p>
+</div>
+<div id="calculating-the-summation-portion-of-the-equation" class="section level4">
+<h4>Calculating the Summation Portion of the Equation</h4>
 <pre class="r"><code>h &lt;- (2 * seq(1:n) - 1) * (logp1 + rev(logp2)) #summation part of the equation, rev() is used to reverse the formula we computed in logp2)</code></pre>
+<p><br></p>
+</div>
+<div id="calculating-the-test-statistic" class="section level4">
+<h4>Calculating the Test Statistic</h4>
 <pre class="r"><code>A &lt;- -n - mean(h) #computing the test statistic by combining the first half of the equation with the second half
 A # The test statistic is computed </code></pre>
 <pre><code>## [1] 0.4648545</code></pre>
 <p><br></p>
 </div>
-<div id="determining-the-modified-test-statistic" class="section level4">
-<h4>Determining the Modified Test Statistic</h4>
+<div id="calculating-the-modified-test-statistic" class="section level4">
+<h4>Calculating the Modified Test Statistic</h4>
 <pre class="r"><code># Z = AD(1.0 + 0.75/n + 2.25/n^2)
 AA &lt;- (1 + 0.75/n + 2.25/n^2) * A
 AA #The modified test statistic is computed </code></pre>
@@ -2046,8 +2065,8 @@ of Fit Techniques:</p>
 </ul>
 <p><br></p>
 </div>
-<div id="determining-the-p-value" class="section level4">
-<h4>Determining the p-value</h4>
+<div id="calculating-the-p-value" class="section level4">
+<h4>Calculating the p-value</h4>
 <pre class="r"><code>pval &lt;- exp(0.9177 - 4.279 * AA - 1.38 * AA^2)
 pval #The p-value is computed</code></pre>
 <pre><code>## [1] 0.2470614</code></pre>
@@ -2069,8 +2088,8 @@ b</code></pre>
 ## [39] 169 271 318 283 283 181 339 318 243 193 181 271 250 318 199 334 244 316 148
 ## [58] 318 404 368 303 171 140 179 320 258 327 260 344 193 230</code></pre>
 <p><br></p>
-<div id="determine-the-test-statistic-a" class="section level4">
-<h4>Determine the Test Statistic (A)</h4>
+<div id="calculate-the-test-statistic-a" class="section level4">
+<h4>Calculate the Test Statistic (A)</h4>
 <pre class="r"><code>x &lt;- sort(b) 
 n &lt;- length(x) 
 logp1 &lt;- pnorm((x - mean(x))/sd(x), log.p = TRUE)
@@ -2081,8 +2100,8 @@ A  </code></pre>
 <pre><code>## [1] 0.5180958</code></pre>
 <p><br></p>
 </div>
-<div id="determine-the-modified-test-statistic-aa" class="section level4">
-<h4>Determine the Modified Test Statistic (AA)</h4>
+<div id="calculate-the-modified-test-statistic-aa" class="section level4">
+<h4>Calculate the Modified Test Statistic (AA)</h4>
 <pre class="r"><code>AA &lt;- (1 + 0.75/n + 2.25/n^2) * A
 AA </code></pre>
 <pre><code>## [1] 0.5237999</code></pre>
