@@ -19,7 +19,7 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction to Goodness-of-Fit Tests
 
-Before starting to work with a data set you have to figure out what kind of data it is. Goodness of fit tests report if your data is normal or matches with expected data. Then you are able to pick the best statistical test to run on your data. Different data types have different goodness of fit tests and each test is used to draw different conclusions. 
+Before starting to work with a data set, you have to figure out what kind of data it is. Goodness of fit tests report if your data is normal or matches with expected data. Then you are able to pick the best statistical test to run on your data. Different data types have different goodness of fit tests and each test is used to draw different conclusions. 
 
 #### Different Goodness-of-Fit tests we'll be covering:
   + **G Test:** a variation of the chi-squared test and determines if your data matches an expected distribution. 
@@ -32,10 +32,6 @@ Before starting to work with a data set you have to figure out what kind of data
 
 [2] Be able identify which test is most appropriate for your data set.
 
-[S-W] Learn the Shapiro-Wilk Function and how it is derived.
-
-[S-W] Use the shapiro.test() function in R and interpret the results. 
-
 
 
 ## Packages
@@ -46,10 +42,6 @@ library(curl)
 
 # Anderson Darling test
 library(nortest)
-
-#Shapiro-Wilks
-library(ggpubr)
-library(dplyr)
 ```
 
 # G Test 
@@ -173,6 +165,7 @@ In addition to goodness of fit test you can also use the G test for Independence
 **Alternate Hypothesis:** The two variables are dependent.
 
 ```{r Independence}
+library(dplyr)
 d$Flower.color <- as.factor(d$Flower.color)
 d$Flower.size <- as.factor(d$Flower.size)
 d %>% 
@@ -566,7 +559,7 @@ set.seed(1)
 nodistribution <- rpois(100, 5) #rpois() can be used to create a sample that is not normally distributed
 nodistribution
 ```
-<br?
+<br>
 
 #### Using the ad.test() function 
 ```{r}
@@ -603,6 +596,13 @@ The data set does not follow normal distribution because the p-value <0.05
 
 # Shapiro-Wilk Test 
 
+***Objectives:***
+
+[1] Learn the Shapiro-Wilk Function and how it is derived.
+
+[2] Use the shapiro.test() function in R and interpret the results. 
+
+
 Like the other Goodness of Fit tests, the **Shapiro-Wilk test** is a test of normality that is used to determine whether a sample came from a normal distribution. The S-W test compares the actual SD of data to the computed SD from the slope of a QQ plot for the data and looks at its ratio. If the data are sampled from a normal distribution, the values should be really similar and the ratio will be close to 1.0.
 
   + **Null hypothesis:** the sample follows a normal distribution (p > 0.5); we have failed to reject the null
@@ -613,6 +613,7 @@ Like the other Goodness of Fit tests, the **Shapiro-Wilk test** is a test of nor
   + Used on one sample with univariate, continuous data 
   + More appropriate method for smaller samples (n<50)
       + May be better for wildlife samples that are typically smaller 
+  + More powerful than the Anderson-Darling test
 
 
 ## Cautions when using the Shapiro-Wilk test
@@ -621,32 +622,17 @@ Like the other Goodness of Fit tests, the **Shapiro-Wilk test** is a test of nor
   + Not ideal if several values within the data are identical 
 
 
-To perform the S–W test for normality, assume that the sample is composed of n independent and identically distributed observations (x1,x2,…xn) from a normal distribution with unspecified mean and variance. If x[1],x[2],…x[n] represents the n observations arranged in ascending sequence, the test statistic is 
+To perform the S–W test for normality, assume that the sample is composed of n independent and identically distributed observations (x1,x2,…xn) from a normal distribution with unspecified mean and variance. If x[1],x[2],…x[n] represents the n observations arranged in ascending sequence, the test statistic is:
 
 ![](Shapiro-Wilk-Test-001.webp)
 
-The denominator is essentially the sum of squares equation which calculates variances while the numerator is the estimate slope of the Q-Q plot. The a values are constants generated from the means, variances and co-variances of the order statistics of a sample size (n) from a normal distribution. They incorporate the normal order statistic, the structure of data around the best-fit line, and normalize for the sample size of the data. Ideally, the slope of the Q-Q plot should be equal to the standard deviation if it is normally distributed so if you were to square this value, then it should equal to variance. 
+The denominator is essentially the sum of squares equation which calculates variances while the numerator is the estimate slope of the Q-Q plot. The a values are constants generated from the means, variances and co-variances of the order statistics of a sample size (n) from a normal distribution. Ideally, the slope of the Q-Q plot should be equal to the standard deviation if it is normally distributed so if you were to square this value, then it should equal to variance. 
 
   - If the null hypothesis is true, then the W statistic should be variance over variance (both values are the same) which should equal to one. 
   - If the W statistic is less than one, then there is a difference between the data and its normal distribution 
     - The p value will determine whether the W statistic is significant 
 
-
-### Conducting a Shapiro-Wilk Test 
-
-Let's conduct a Shapiro-Wilk Test on a normalized distribution to see how it is calculated!
-```{r SW creating dataset}
-set.seed(123)
-normdata <- rnorm(35, mean = 25, sd = 3) # making a normally distributed graph
-hist(normdata) 
-qqnorm(normdata) 
-qqline(normdata, col = "dodgerblue4", lwd = 2)
-```
-
-As we can see, the data set we created follows the guidelines of being normally distributed data but let's see how to test its normality with the Shapiro-Wilk test.
- 
-  1.  **Null hypothesis:** the data follows a normal distribution
-  2.  **Alt hypothesis:** the data does not follow a normal distribution 
+<br>
 
 ## Calculating the W statistic
 
@@ -662,38 +648,70 @@ In order to calculate the W statistic, here is the following procedure:
 
 ![](SW equation test.png)
 
-  - The test statistic is finally calculated as W = b^2 / S^2 
+  - The test statistic is finally calculated as W = b^2 / (n-1)*S^2 
     - You analyze the value by using the critical threshold table:
     
 ![](SW-table-1.png)
 
 **If the test statistic is smaller than the critical threshold then the assumption of a normal distribution is rejected.**
-    
-However, the Shapiro-Wilk Test can be really difficult to calculate, especially if you have more values, so there's a simple command in R to conduct this test! 
+  
+<br> 
+
+### Conducting a Shapiro-Wilk Test 
+
+Let's go through with a very small list of values to see how the W statistic can be calculated. We will work to a 95% degree of confidence (0.05). 
+```{r SW calc 1}
+example <- c(20, 20, 21, 26, 43, 43, 54, 54, 55) # list of numbers in chronological order 
+
+hist(example) # looking at the data 
+qqnorm(example) 
+qqline(example, col = "dodgerblue4", lwd = 2)
+
+# using coefficients for n=9 to calculate the numerator
+0.5888*(55-20) + 0.3244*(54-20) + 0.1976*(54-21) + 0.0947*(43-26) 
+
+# calculating the standard deviation
+sd(example)
+
+# calculating the W statistic
+((39.7683)^2) / ((9-1)*15.52^2) 
+```
+
+Our calculated value of 0.8207 is less than the critical threshold for n=9 (0.829) which means that our data is not normally distributed! 
+
+
+As you can see, the Shapiro-Wilk Test can be really difficult to calculate, especially if you have more values, so there's a simple command in R to conduct this test! 
 
 ```{r SW calculations }
-shapiro.test(normdata) 
+shapiro.test(example) 
 ```
-The W statistic is really really close to 1 which means there's only a little variation and the p-value is greater than 0.05 which means that we have failed to have rejected the null hypothesis. 
+Although the W statistic is pretty close to 1, it is under the critical threshold and the p-value is under 0.05 which reinforces the idea that this data is not normally distributed. 
 
 
-#### Now, let's look at another data set where it may not be of normal distribution. 
-```{r SW non normal data}
-set.seed(1)
-dataset2 <- rpois(35, lambda = 3) # making a poisson distributed data set
-hist(dataset2) # looks skewed
-qqnorm(dataset2) 
-qqline(dataset2, col = "dodgerblue4", lwd = 2)
+#### Now, let's look at another data set where it may be of normal distribution. 
+```{r SW creating dataset}
+library(ggpubr)
+library(dplyr)
+set.seed(123)
+normdata <- rnorm(35, mean = 25, sd = 3) # making a normally distributed graph
+hist(normdata) 
+qqnorm(normdata) 
+qqline(normdata, col = "dodgerblue4", lwd = 2)
 ```
+
+As we can see, the data set we created follows the guidelines of being normally distributed data but let's see how to test its normality with the Shapiro-Wilk test.
+ 
+  1.  **Null hypothesis:** the data follows a normal distribution
+  2.  **Alt hypothesis:** the data does not follow a normal distribution 
+  
 
 ```{r SW not normal dist}
-shapiro.test(dataset2)
+shapiro.test(normdata)
 ```
-Here, while the W statistic is close to 1, the p-value is less than 0.05 so the null hypothesis is rejected. 
+Here, the W statistic is really close to 1 and the p-value is greater than 0.05 so the null hypothesis is not rejected.  
 
 
 ## Shapiro-Wilk Challenge 
-
 
 
 ![](S-W-PIC.jpeg)
@@ -702,7 +720,7 @@ ToothGrowth is a data set in R showing the length of teeth of guinea pigs at thr
 ```{r SW ToothGrowth}
 data("ToothGrowth")
 head(ToothGrowth)
-hist(ToothGrowth$len)
+hist(ToothGrowth$len)  
 qqnorm(ToothGrowth$len)
 qqline(ToothGrowth$len, col = "dodgerblue4", lwd = 2) #looks fairly normal but might have some difference
 ```
