@@ -360,7 +360,7 @@ The formula below gets you the test statistic for your specified distribution, w
 - F(X) = CDF (cumulative distribution function) for the specified distribution
 - i = the ith sample, calculated when the data is sorted in ascending order (1:n)
 
- Using the test statistic, you will then modify it using the following equation: Z = A(1.0 + 0.75/n + 2.25/n^2)
+ Using the test statistic, you will then modify it using the following equation: Z = AD(1.0 + 0.75/n + 2.25/n^2)
 
 
 ## Using the Anderson-Darling Test with Data Known as "chickwts" 
@@ -392,8 +392,8 @@ The set of equations below are derived from the formula depicted above and taken
 ```{r}
 x <- sort(a[complete.cases(a)]) #a is the data set that you want to test, complete.cases() is for removing missing values from a vector
 n <- length(x) # reminder that your sample data has to be greater than 7 
-logp1 <- pnorm((x - mean(x))/sd(x), log.p = TRUE) #pnorm() provides the cumulative density of the normal distribution (of the equation F(Xi)
-logp2 <- pnorm(-(x - mean(x))/sd(x), log.p = TRUE) #finding the cumulative density of the equation: -F(Xn-i+1)
+logp1 <- pnorm((x - mean(x))/sd(x), log.p = TRUE) #pnorm() provides the cumulative density of the normal distribution: of the equation F(Xi)
+logp2 <- pnorm(-(x - mean(x))/sd(x), log.p = TRUE) #finding the cumulative density of the normal distribution: of the equation -F(Xn-i+1)
 h <- (2 * seq(1:n) - 1) * (logp1 + rev(logp2)) #second half of the equation 
 A <- -n - mean(h) #first half of the equation
 A # The test statistic is computed 
@@ -402,7 +402,7 @@ A # The test statistic is computed
 
 #### Determining the Modified Test Statistic  
 ```{r}
-# Z = A(1.0 + 0.75/n + 2.25/n^2)
+# Z = AD(1.0 + 0.75/n + 2.25/n^2)
 AA <- (1 + 0.75/n + 2.25/n^2) * A
 AA #The modified test statistic is computed 
 ```
@@ -446,7 +446,7 @@ It can be concluded that the weight in chickwts is normally distributed because 
 <br>
 
 
-## Anderson Darling Test Challenge 1
+## Challenge 1
 
 Determine the test statistic (A), modified test statistic (AA), and p-value of a sample of the chickwts data set. Is this sample of the data set originating from normal distribution? How do you know this?
 
@@ -520,7 +520,7 @@ lines(density(ndistribution), col = 4, lwd = 2)
 
 <br> 
 
-## Anderson Darling Challenge 2
+## Challenge 2
 Create a data set using a poisson function that is not distributed normally. Use the ad.test() to confirm that the data is not normally distributed. Plot the data using a histogram.
 
 ```{r}
@@ -535,6 +535,7 @@ ad.test(nodistribution)
 Because the p-value is less than or equal to 0.05, it can be determined that the data is different than normal and the null hypothesis is rejected.
 
 <br>
+
 #### Plotting the Data 
 ```{r}
 hist(nodistribution, main= "Histogram Showing No Normal Distribution", prob = TRUE, col="red")
