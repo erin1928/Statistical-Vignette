@@ -36,9 +36,6 @@ Before starting to work with a data set you have to figure out what kind of data
 
 [G] Be able to run the G test by hand and through R package.
 
-[K-S] Understand what a Kolmogorov-Smirnov Test is and how to interpret the results. 
-
-[K-S] Learn what conditions are ideal for a K-S Test.
 
 [S-W] Learn the Shapiro-Wilk Function and how it is derived.
 
@@ -213,6 +210,12 @@ Failing to reject a null hypothesis means there is no sufficient evidence for th
 
 
 ## Kolmorgorov-Smirnov Test Formula 
+
+## Objectives 
+
+[1] Understand what a Kolmogorov-Smirnov Test is and how to interpret the results. 
+
+[2] Learn what conditions are ideal for a K-S Test.
 
 ![](KS_Formula.png)
 
