@@ -1935,7 +1935,7 @@ statistic needs to be modified for small data sets.</p>
 <p><img src="data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAawAAABVCAMAAAAi/CD7AAAAclBMVEX///8AAAD/tma2ZgDb//8AZra2//8AOpDbkDo6kNv//7aQ2/8AAGZmtv///9uQOgD/25BmAAAAADpmADo6AGY6AACQOjq2Zjq2kJDb25A6OpBmOpA6ADpmAGa2/7a2tv+Q29tmZma225AAOjo6kLaQOmbHAqeFAAAEo0lEQVR4nO2bi3bbIAyGY7ystrPcuqWX3a/v/4oDIWRBDHG6uHHO/u+sXZfaEuIHgYW3WAAAAAAAAAAAAAAAAAAAAAAAAACvw+6wNNXdm2s3A4zh6fmw7D5BrNugWS7M8tqNAOOo1/bPE6bWLdC9Xy3qan3tZgAAwKvh8h64DZrq3dtrtwGMo25NEKupEu4x5eaGiNXt48pFDbFmh4i12B2qVv1i9xlizY1eLJsI9WTaPECsuaHEsk/D2G3MGi2WXbZQFpwzRqe+ZNkCs8Ike/Tmnzfs1mIxlzbJYVl96bmcOiiivdfVjeWVzTY9eRwdO8dtilJttkczt3zDue0YcFCEvAfJLj5wPLsDFcZrNzEu6iFZtnzs9YknZF+y8r3uvjdpm6idbhg0LRm1k6/PuGZIhsQEa5CrjYn9QQdFyDsPmInE4lOMbr+2Xxc9hbdpTB2QuNhdR222KqaUULLq406jdu10x5rc2TTU5JrNVhwqMWITpEG+NhbsDzso4r37ATONWOa3H2n04Mqz7FLoHuk7r8knKylZUdz0c5NEvftgPzStTKJ6redTLTNAiRWZ8J+r2lhCsJ9xUKRuQ9OnEWvz560PkBpEw6p4+fZ+ZUY/Qullqw/YLhn2FxlHoQ9do4JYplraScoyNMmiYO6eP/Zd2S9HsVi9idCOnFii7LCDIt479eckYjVrHo1kncWyfTlcgN08fN/+WJ6UVOj2YkFaT3dnT1NCH7q4ZWa5VSfMx5pXlDCHur3udZMRqzchGmTECvYzDop47yTZFGK5t4/ILufbwcVfa9ftZbmIJZUKe3yntDnE7h3teLAeDYvQhyYSK/zDS21aZc9E2wffXYnVyITcx46Sa8V+xkER791MJZbsAX2ttT6ZnF1KH5vCo+UpxO7/Tlci4ZRYtKSQnSW35yd9wuXHXBrMizUQ36CDBO/Pb1aidDCdWDTAyYXffvFKkk2D/uJsTx+ZV/sVbj33VZ1LpMNpsBdL1PAjxkqidoC6j7JildNgr/awg+RqF023/8VyetsTpUHfDDLuAjIjniZqt/duzahFq9sre5wiXAyPK5tsHocXrZCIXbDSub1YfV4lMSgAlw5cdl6Utu5iQjYYmYwfqy0OkteL2R/PLJ6O7J10urhY/oyQdklprSh/i2v8yCweJVWK3XqsXA0ptxuUZsjW3bXOffF5ZiO7QtdR9sOWi5BNv6VV/oJRZYKfujPxKvuxA3692P7sb2zoczbCYoUFc7Kt+4QkY7c5p3ijiwEZ4uxEE3U3tLqkjG5H7CB5vdgnhmhmRZLdmFjpA3Yh9R/fS3GfKuSqmdt9+fptxPbozHZog/HrxeQvFosv9j/fWCFXZf/AuM4850LhjIehl5g/er2Y/Xmx3JY6TNeX2H590tpGoagErkxa2xjebIGZoGobya5d11fBLIhqG3HqPvcYD0yNrm0kC5bBf/yZGaq24R8XNRBrVqjahpQW8a47AOC/JXq7feQbYuB6hKJ0f9wDZgkf9zCjiuHgakTnEBBr3jyujs/mwDzh4x4GYs2a6HhJH/cAAAAAAAAAAAAAAAAAAAAAAAAAAAAwMX8BM+Yz3Hcs4z4AAAAASUVORK5CYII=" /></p>
 <ul>
 <li>n = the sample size</li>
-<li>F(X) = CDF (cumulative distribution function) for the specified
+<li>F(Xi) = CDF (cumulative distribution function) for the specified
 distribution</li>
 <li>i = the ith sample, calculated when the data is sorted in ascending
 order (1:n)</li>
@@ -1976,18 +1976,44 @@ a</code></pre>
 <p>The set of equations below are derived from the formula depicted
 above and taken from ad.test() the built in R function we will use later
 in this module:</p>
-<pre class="r"><code>x &lt;- sort(a[complete.cases(a)]) #a is the data set that you want to test, complete.cases() is for removing missing values from a vector, sort() puts the data in ascending order, which is necessary to compute the anderson darling test statistic 
+<pre class="r"><code>x &lt;- sort(a) #a is the data set that you want to test, sort() puts the data in ascending order, which is necessary to compute the anderson darling test statistic 
 x</code></pre>
 <pre><code>##  [1] 108 124 136 140 141 143 148 153 158 160 168 169 171 179 181 193 199 203 206
 ## [20] 213 216 217 222 226 227 229 230 242 243 244 248 248 250 257 257 258 260 260
 ## [39] 263 267 271 271 283 295 297 303 309 315 316 318 318 320 322 325 327 329 332
 ## [58] 334 339 340 341 344 352 359 368 379 380 390 392 404 423</code></pre>
-<pre class="r"><code>n &lt;- length(x) # reminder that your sample data has to be greater than 7 
+<pre class="r"><code>n &lt;- length(x) 
 n #n is 71 </code></pre>
 <pre><code>## [1] 71</code></pre>
-<pre class="r"><code>logp1 &lt;- pnorm((x - mean(x))/sd(x), log.p = TRUE) #F(Xi) is the cumulative distribution and pnorm() allows us to calculate that - the mean/standard deviation of each data point is subtracted from each data point and then log.p() is used 
-logp2 &lt;- pnorm(-(x - mean(x))/sd(x), log.p = TRUE) #using pnorm() to find the compared cumulative distribution which is the equation -F(Xn-i+1)</code></pre>
-<pre class="r"><code>h &lt;- (2 * seq(1:n) - 1) * (logp1 + rev(logp2)) #summation part of the equation (seq 1:n makes sure to order your data in ascending order, rev() is used to reverse the formula we computed in logp2)</code></pre>
+<pre class="r"><code>logp1 &lt;- pnorm((x - mean(x))/sd(x), log.p = TRUE) #F(Xi) is the cumulative distribution and pnorm() allows us to calculate the cumulative probability for each data point using each data point and subtracting the data sets mean/standard deviation from each, log.p() gives each of these probabilities as a log()
+logp1</code></pre>
+<pre><code>##  [1] -3.69751578 -3.23621401 -2.91425020 -2.81145133 -2.78610263 -2.73582529
+##  [7] -2.61257413 -2.49279405 -2.37646196 -2.33088919 -2.15404421 -2.13254785
+## [13] -2.08995895 -1.92495515 -1.88503299 -1.65651337 -1.54924135 -1.48027517
+## [19] -1.42987556 -1.31664473 -1.26996936 -1.25465553 -1.17990637 -1.12227085
+## [25] -1.10815964 -1.08029194 -1.06653474 -0.91049018 -0.89822839 -0.88607892
+## [31] -0.83859602 -0.83859602 -0.81551781 -0.73816842 -0.73816842 -0.72754756
+## [37] -0.70662323 -0.70662323 -0.67602336 -0.63667261 -0.59895033 -0.59895033
+## [43] -0.49524221 -0.40503449 -0.39124772 -0.35193782 -0.31560764 -0.28213146
+## [49] -0.27682060 -0.26642363 -0.26642363 -0.25632230 -0.24651179 -0.23233062
+## [55] -0.22322578 -0.21439463 -0.20165026 -0.19348172 -0.17417117 -0.17049452
+## [61] -0.16687823 -0.15638537 -0.13090592 -0.11140167 -0.08980016 -0.06811938
+## [67] -0.06638164 -0.05091853 -0.04821581 -0.03438676 -0.01936601</code></pre>
+<pre class="r"><code>logp2 &lt;- pnorm(-(x - mean(x))/sd(x), log.p = TRUE) #using pnorm() to find -F(Xn-i+1) for each data point
+logp2</code></pre>
+<pre><code>##  [1] -0.02509734 -0.04010605 -0.05577140 -0.06200060 -0.06364405 -0.06703815
+##  [7] -0.07617449 -0.08629742 -0.09747900 -0.10226450 -0.12331408 -0.12616987
+## [13] -0.13203789 -0.15768627 -0.16466718 -0.21171298 -0.23877643 -0.25822044
+## [19] -0.27356710 -0.31202001 -0.32967173 -0.33571621 -0.36716912 -0.39384247
+## [25] -0.40072540 -0.41475270 -0.42189818 -0.51471143 -0.52305102 -0.53148614
+## [31] -0.56619222 -0.56619222 -0.58413168 -0.65006583 -0.65006583 -0.65989093
+## [37] -0.67985032 -0.67985032 -0.71056934 -0.75300304 -0.79714864 -0.79714864
+## [43] -0.94013087 -1.09947409 -1.12766823 -1.21511414 -1.30691239 -1.40313347
+## [49] -1.41960507 -1.45292366 -1.45292366 -1.48674473 -1.52107064 -1.57351109
+## [55] -1.60910906 -1.64521975 -1.70035188 -1.73775378 -1.83353865 -1.85308852
+## [61] -1.87276993 -1.93260586 -2.09801545 -2.24979674 -2.45473259 -2.72035988
+## [67] -2.74534199 -3.00287964 -3.05607935 -3.38722770 -3.95390325</code></pre>
+<pre class="r"><code>h &lt;- (2 * seq(1:n) - 1) * (logp1 + rev(logp2)) #summation part of the equation, rev() is used to reverse the formula we computed in logp2)</code></pre>
 <pre class="r"><code>A &lt;- -n - mean(h) #computing the test statistic by combining the first half of the equation with the second half
 A # The test statistic is computed </code></pre>
 <pre><code>## [1] 0.4648545</code></pre>
@@ -2045,7 +2071,7 @@ b</code></pre>
 <p><br></p>
 <div id="determine-the-test-statistic-a" class="section level4">
 <h4>Determine the Test Statistic (A)</h4>
-<pre class="r"><code>x &lt;- sort(b[complete.cases(b)]) 
+<pre class="r"><code>x &lt;- sort(b) 
 n &lt;- length(x) 
 logp1 &lt;- pnorm((x - mean(x))/sd(x), log.p = TRUE)
 logp2 &lt;- pnorm(-(x - mean(x))/sd(x), log.p = TRUE)

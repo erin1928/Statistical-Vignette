@@ -357,7 +357,7 @@ The formula below gets you the test statistic for your specified distribution, w
 ![](Anderson-formula.png)
 
 - n = the sample size
-- F(X) = CDF (cumulative distribution function) for the specified distribution
+- F(Xi) = CDF (cumulative distribution function) for the specified distribution
 - i = the ith sample, calculated when the data is sorted in ascending order (1:n)
 
  Using the test statistic, you will then modify it using the following equation: Z = AD(1.0 + 0.75/n + 2.25/n^2)
@@ -390,23 +390,27 @@ a
 #### Determining the Test Statistic (A Value) Step by Step 
 The set of equations below are derived from the formula depicted above and taken from ad.test() the built in R function we will use later in this module: 
 ```{r}
-x <- sort(a[complete.cases(a)]) #a is the data set that you want to test, complete.cases() is for removing missing values from a vector, sort() puts the data in ascending order, which is necessary to compute the anderson darling test statistic 
+x <- sort(a) #a is the data set that you want to test, sort() puts the data in ascending order, which is necessary to compute the anderson darling test statistic 
 x
 ```
 
 ```{r}
-n <- length(x) # reminder that your sample data has to be greater than 7 
+n <- length(x) 
 n #n is 71 
 ```
 
 ```{r}
-logp1 <- pnorm((x - mean(x))/sd(x), log.p = TRUE) #F(Xi) is the cumulative distribution and pnorm() allows us to calculate that - the mean/standard deviation of each data point is subtracted from each data point and then log.p() is used 
-logp2 <- pnorm(-(x - mean(x))/sd(x), log.p = TRUE) #using pnorm() to find the compared cumulative distribution which is the equation -F(Xn-i+1)
-
+logp1 <- pnorm((x - mean(x))/sd(x), log.p = TRUE) #F(Xi) is the cumulative distribution and pnorm() allows us to calculate the cumulative probability for each data point using each data point and subtracting the data sets mean/standard deviation from each, log.p() gives each of these probabilities as a log()
+logp1
 ```
 
 ```{r}
-h <- (2 * seq(1:n) - 1) * (logp1 + rev(logp2)) #summation part of the equation (seq 1:n makes sure to order your data in ascending order, rev() is used to reverse the formula we computed in logp2)
+logp2 <- pnorm(-(x - mean(x))/sd(x), log.p = TRUE) #using pnorm() to find -F(Xn-i+1) for each data point
+logp2
+```
+
+```{r}
+h <- (2 * seq(1:n) - 1) * (logp1 + rev(logp2)) #summation part of the equation, rev() is used to reverse the formula we computed in logp2)
 ```
 
 ```{r}
@@ -477,7 +481,7 @@ b
 #### Determine the Test Statistic (A) 
 
 ```{r}
-x <- sort(b[complete.cases(b)]) 
+x <- sort(b) 
 n <- length(x) 
 logp1 <- pnorm((x - mean(x))/sd(x), log.p = TRUE)
 logp2 <- pnorm(-(x - mean(x))/sd(x), log.p = TRUE)
