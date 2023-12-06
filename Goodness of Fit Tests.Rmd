@@ -332,7 +332,7 @@ Here we can see that D is showing us the maximum distance between 2 graphs. If t
 Objectives
 <br>
 
-- Learn the Anderson Darling Equation and understand how it can be used in R.  
+- Learn about the Anderson Darling Equation and understand how it can be used in R.  
 
 - Go through the Anderson Darling Test step-by-step and how to interpret the results. 
 
@@ -340,9 +340,9 @@ Objectives
 
 ## Introduction
 
-The Anderson Darling test is a form of the Goodness of Fit test used to determine if a sample of data comes from a specific kind of distribution, commonly normal distribution. It is a modification of the Kolmogorov-Smirnov test and focuses more on whether or not the tails follow normal distribution, rather than the peak. 
+The Anderson Darling test is a type of the goodness of fit test used to determine if a sample of data comes follows a specific kind of distribution, more commonly normal distribution. It is a modification of the Kolmogorov-Smirnov test that focuses more on whether or not the tails follow normal distribution, rather than the peak. 
 
-The test is useful to test normality which is common for regression, ANOVA, t-tests and more. The data sets need to be **greater than 7**, but are advised to be **greater than 20**. 
+It is important to note that the length of the sample data  must be **greater than 7**, but is advised to be **greater than 20**. 
 
 Hypotheses 
  - H0 is the data that follows a specific distribution (null hypothesis)
@@ -350,9 +350,9 @@ Hypotheses
  
 The results will suggest that you can either reject the null, or fail to reject the null. The test rejects the null hypothesis of normality when the p-value is **less than or equal to 0.05** and accepts the null hypothesis (fails to reject the null) if it is **greater than 0.05.** 
 
-## Anderson Darling Test Statistic Formula: 
+## Anderson Darling Test Statistic Equation: 
 
-The formula below gives you the test statistic for your specified distribution, which will be modified to find the p-value. The test statistic needs to be modified for small data sets. Once we have the p-value, we can determine whether we can reject the null hypothesis or fail to reject the null.
+The equation below gives you the test statistic for your specified distribution. 
  
 ![](Anderson-formula.png)
 
@@ -360,7 +360,7 @@ The formula below gives you the test statistic for your specified distribution, 
 - F(Xi) = CDF (cumulative distribution function) for the specified distribution
 - i = the ith sample, calculated when the data is sorted in ascending order (1:n)
 
- Using the test statistic, you will then modify it using the following equation: Z = AD(1.0 + 0.75/n + 2.25/n^2)
+Once the test statistic is calculated, you will then modify it using the following equation: Z = AD(1.0 + 0.75/n + 2.25/n^2). From here, the p-value can be calculated based on an equation that is determined by the modified test statistic. Once we calculate the p-value, we can determine whether we can reject the null hypothesis or fail to reject the null.
 
 
 ## Using the Anderson-Darling Test with Data Known as "chickwts" 
@@ -378,7 +378,7 @@ head(d)
 ```
 <br>
 
-#### Determining if the Weight Variable is Normally Distributed 
+#### Determining if the Chick Weight Data follows Normal Distribution 
 
 ```{r}
 a <- d$weight #assign the weight variable to a vector
@@ -396,13 +396,13 @@ x
 <br>
 
 ```{r}
-n <- length(x) 
+n <- length(x) #determine the length of the sample of data
 n #n is 71 
 ```
 
 <br>
 
-#### Calculating F(Xi) 
+#### Calculating the Cumulative Distribution F(Xi) 
 ```{r}
 logp1 <- pnorm((x - mean(x))/sd(x), log.p = TRUE) #F(Xi) is the cumulative distribution and pnorm() allows us to calculate the cumulative probability for each data point using each data point and subtracting the data sets mean/standard deviation from each, log.p() gives each of these probabilities as a log()
 logp1
@@ -462,7 +462,6 @@ pval <- exp(0.9177 - 4.279 * AA - 1.38 * AA^2)
  <br>
 pval <- exp(1.2937 - 5.709 * AA + 0.0186 * AA^2)
 
- + Use the AA Value to Determine the P Value 
  
  <br>
 
@@ -471,7 +470,7 @@ pval <- exp(1.2937 - 5.709 * AA + 0.0186 * AA^2)
 pval <- exp(0.9177 - 4.279 * AA - 1.38 * AA^2)
 pval #The p-value is computed
 ```
-It can be concluded that the weight in chickwts is normally distributed because the p value is greater than 0.05. 
+It can be concluded that chick weight data follows normal distribution because the p-value is greater than 0.05. 
 
 <br>
 
@@ -511,19 +510,19 @@ AA
 
 <br>
 
-#### Find the p-value based on the criteria of the Modified Test Statistic (AA)
+#### Calculating the p-value with the equation based on the modified test statistic (AA)
 ```{r}
 pval <- exp(0.9177 - 4.279 * AA - 1.38 * AA^2)
 pval
 ```
-The p-value is greater than 0.05, so the test fails to reject the null hypothesis meaning it originates from normal distribution. 
+The p-value is greater than 0.05, so the test fails to reject the null hypothesis meaning the sample of chick weight data follows normal distribution. 
 
 <br>
 
-#### Perform the Anderson Darling Test on the Sample of Data using the ad.test() built in function
+#### Performing the Anderson Darling Test on the Sample of Data using the ad.test() built in function
 
 ```{r} 
-library(nortest)
+library(nortest) #make sure your package is loaded 
 ```
 
 <br>
@@ -535,14 +534,17 @@ ndistribution <- rnorm(100, 5, 1) #The rnorm() function generates a random sampl
 ndistribution
 ```
 
+<br>
+
+#### Using the ad.test() function 
 ```{r}
 ad.test(ndistribution) #that was easy!
 ```
-Because the p-value is greater than 0.05, it can be determined that the data is normally distributed and that the null hypothesis can be accepted. 
+Because the p-value is greater than 0.05, it can be determined that the data follows normal distribution and that the null hypothesis has failed being rejected. 
 
 <br>
 
-#### Plotting the Data 
+#### Visualizing Results 
 ```{r}
 hist(ndistribution, main = "Histogram Showing Normal Distribution", prob = TRUE, col="blue")
 lines(density(ndistribution), col = 4, lwd = 2)
@@ -551,14 +553,16 @@ lines(density(ndistribution), col = 4, lwd = 2)
 <br> 
 
 ## Challenge 2
-Create a data set using a poisson function that is not distributed normally. Use the ad.test() to confirm that the data is not normally distributed. Plot the data using a histogram.
+Create a data set using a poisson function that is not normally distributed. Use the ad.test() to confirm that the data is not normally distributed. Plot the data using a histogram to visualize your results.
 
 ```{r}
 set.seed(1)
 nodistribution <- rpois(100, 5) #rpois() can be used to create a sample that is not normally distributed
 nodistribution
 ```
+<br?
 
+#### Using the ad.test() function 
 ```{r}
 ad.test(nodistribution)
 ```
@@ -566,7 +570,7 @@ Because the p-value is less than or equal to 0.05, it can be determined that the
 
 <br>
 
-#### Plotting the Data 
+#### Visualizing Results
 ```{r}
 hist(nodistribution, main= "Histogram Showing No Normal Distribution", prob = TRUE, col="red")
 lines(density(nodistribution), col = 4, lwd = 2)
@@ -574,18 +578,18 @@ lines(density(nodistribution), col = 4, lwd = 2)
 
 <br>
 
-#### Shortcut to Creating Data Sets and Using ad.test() all at once
+### Shortcut to Creating Poisson Data Sets and Using the ad.test() function all at once
 ```{r}
 ad.test(rnorm(100, mean = 5, sd = 3))
 ```
-The data set is normally distributed because the p-value >0.05
+The data set follows normal distribution because the p-value >0.05
 
 <br>
 
 ```{r}
 ad.test(rpois(100,5))
 ```
-The data set is not normally distributed because the p-value <0.05 
+The data set does not follow normal distribution because the p-value <0.05 
 
 
 <br> 
