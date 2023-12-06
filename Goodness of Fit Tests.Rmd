@@ -348,7 +348,7 @@ The Anderson Darling Test starts with a null hypothesis that your data is not st
 
 The formula below gets you the test statistic for your specified distribution, which will be modified to find the p-value. 
  
-A^2 = -N-S, where S= N∑i=1 ((2i−1)/N)(lnF(Yi)+ln(1−F(YN+1−i)) 
+![](Anderson-formula.png)
  
  - n is the sample size
  - F is the cumulative distribution function of the specified distribution. This gives you the cumulative (aditive) probability associated with a function. 
