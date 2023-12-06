@@ -40,12 +40,6 @@ Before starting to work with a data set you have to figure out what kind of data
 
 [K-S] Learn what conditions are ideal for a K-S Test.
 
-[A-D] Learn the Anderson Darling Equation and how it can be used in R.  
-
-[A-D] Go through the Anderson Darling Test step-by-step and how to interpret the results. 
-
-[A-D] Use the ad.test() built in function with Poisson functions. 
-
 [S-W] Learn the Shapiro-Wilk Function and how it is derived.
 
 [S-W] Use the shapiro.test() function in R and interpret the results. 
@@ -333,6 +327,12 @@ Here we can see that D is showing us the maximum distance between 2 graphs. If t
 
 # Anderson Darling Test
 
+- Learn the Anderson Darling Equation and how it can be used in R.  
+
+- Go through the Anderson Darling Test step-by-step and how to interpret the results. 
+
+- Use the ad.test() built in function with Poisson functions. 
+
 ## Introduction
 
 The Anderson Darling test is a form of the Goodness of Fit test used to determine if a sample of data comes from a specific kind of distribution. It is commonly used to determine if the sample of data came from a normal distribution. It is a modification of the Kolmogorov-Smirnov test that gives more weight to the tails. The more narrow the tails, the less disparities in the confidence intervals, meaning the results are more accurate. 
@@ -349,10 +349,11 @@ The Anderson Darling Test starts with a null hypothesis that your data is not st
 The formula below gets you the test statistic for your specified distribution, which will be modified to find the p-value. 
  
 ![](Anderson-formula.png)
- 
+ - AD is the formula for deriving the test statistic 
  - n is the sample size
- - F is the cumulative distribution function of the specified distribution. This gives you the cumulative (aditive) probability associated with a function. 
- - Yi is the ordered data. 
+ - F is the cumulative distribution function of the specified distribution. This gives you the cumulative (additive) probability associated with a function. 
+ 
+ Using the test statistic, you will then modify it using the following equation: Z = A(1.0 + 0.75/n + 2.25/n^2)
 
 
 ## Using the Anderson-Darling Test with Data Known as "chickwts" 
@@ -375,13 +376,13 @@ a <- d$weight
 a
 ```
 
-#### Determining the A Value Step by Step Needed to Determine the AA Value 
+#### Determining the Test Statistic (A Value) Step by Step Needed to Determine the Modified Test Statistic (AA Value) 
 ```{r}
-x <- sort(a[complete.cases(a)]) #a is the data set that you want to test, complete.cases() is for removing missing values from q vector
+x <- sort(a[complete.cases(a)]) #a is the data set that you want to test, complete.cases() is for removing missing values from a vector
 n <- length(x) #length must be greater than 7
 logp1 <- pnorm((x - mean(x))/sd(x), log.p = TRUE)
 logp2 <- pnorm(-(x - mean(x))/sd(x), log.p = TRUE)
-h <- (2 * seq(1:n) - 1) * (logp1 + rev(logp2))
+h <- (2 * seq(1:n) - 1) * (logp1 + rev(logp2)) 
 A <- -n - mean(h)
 A # The test statistic is computed 
 ```
@@ -389,7 +390,7 @@ A # The test statistic is computed
 #### Determining the AA Value from the A Value Needed to Determine the P Value  
 ```{r}
 AA <- (1 + 0.75/n + 2.25/n^2) * A
-AA #The AA value is computed (modified test statistic)
+AA #The modified test statistic is computed 
 ```
 
 #### Determining the P Value Step by Step
@@ -398,25 +399,30 @@ AA #The AA value is computed (modified test statistic)
 ### Criteria for Determining the P Value
 
   + Use this if AA > 10
+<br>
 pval <- 3.7e-24
 
   + Use this if AA < 0.2
-pval <- 1 - exp(-13.436 + 101.14 * AA - 223.73 * AA^2
+<br>
+pval <- 1 - exp(-13.436 + 101.14 * AA - 223.73 * AA^2)
     
- + Use this if AA < 0.34  
-pval <- 1 - exp(-8.318 + 42.796 * AA - 59.938 * AA^2
+ + Use this if AA < 0.34 
+<br>
+pval <- 1 - exp(-8.318 + 42.796 * AA - 59.938 * AA^2)
 
  + Use this if AA < 0.6
-pval <- exp(0.9177 - 4.279 * AA - 1.38 * AA^2
+ <br>
+pval <- exp(0.9177 - 4.279 * AA - 1.38 * AA^2)
 
  + Use this if AA < 10
-pval <- exp(1.2937 - 5.709 * AA + 0.0186 * AA^2
+ <br>
+pval <- exp(1.2937 - 5.709 * AA + 0.0186 * AA^2)
 
  + Use the AA Value to Determine the P Value 
 
 #### Using the AA Value to Determine the P Value
 ```{r}
-pval <- exp(1.2937 - 5.709 * AA + 0.0186 * AA^2)
+pval <- exp(0.9177 - 4.279 * AA - 1.38 * AA^2)
 pval #The p-value is computed
 ```
 It can be concluded that the weight in chickwts is normally distributed because the p value is greater than 0.05. 
@@ -443,13 +449,13 @@ logp1 <- pnorm((x - mean(x))/sd(x), log.p = TRUE)
 logp2 <- pnorm(-(x - mean(x))/sd(x), log.p = TRUE)
 h <- (2 * seq(1:n) - 1) * (logp1 + rev(logp2))
 A <- -n - mean(h)
-A # The A value is computed 
+A  
 ```
 
 #### Determining the AA Value
 ```{r}
 AA <- (1 + 0.75/n + 2.25/n^2) * A
-AA #The AA value is computed
+AA 
 ```
 
 #### Determine Which Equation to Use for the p Value based on the Criteria of AA
@@ -466,7 +472,7 @@ The p-value is greater than 0.05, so the test fails to reject the null hypothesi
 #### Creating a function that is normally distributed 
 ```{r}
 set.seed(1) #Use the set.seed() function to allow the data to repeatable
-ndistribution <- rnorm(100, 25, 1) #The rnorm() function generates a random sample that is normally distributed
+ndistribution <- rnorm(100, 5, 1) #The rnorm() function generates a random sample that is normally distributed
 ndistribution
 ```
 
@@ -489,7 +495,7 @@ Create a data set using a poisson function that is not distributed normally. Plo
 
 ```{r}
 set.seed(1)
-nodistribution <- rpois(100, 25) #rpois() can be used to create a sample that is not normally distributed
+nodistribution <- rpois(100, 5) #rpois() can be used to create a sample that is not normally distributed
 nodistribution
 ```
 
@@ -662,7 +668,7 @@ ad.test(goodness_of_fit)
 ```{r}
 shapiro.test(goodness_of_fit)
 ```
-Both p-values are relatively close being only 0.1122 points away from one another. The Shapiro-Wilk test is best used for data sets smaller than 50, while the Anderson Darling test is best for data sets that are greater than seven, but are recommended to be greater than 20, as a reminder. 
+Both p-values are relatively close being only 0.1122 points away from one another. Although the values are close, the Shapiro Wilk test is more powerful than the Anderson Darling test and would be more accurate in this scenario. For example, the p-value being higher for the Shapiro Wilk test indicates that it has more significance. 
 
 The p-value for each test is greater than 0.05 meaning that the null hypothesis can be accepted meaning the data set comes from normal distribution. This makes sense because it was created using the rnorm() function! 
 
