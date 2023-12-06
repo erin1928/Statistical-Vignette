@@ -1976,12 +1976,19 @@ a</code></pre>
 <p>The set of equations below are derived from the formula depicted
 above and taken from ad.test() the built in R function we will use later
 in this module:</p>
-<pre class="r"><code>x &lt;- sort(a[complete.cases(a)]) #a is the data set that you want to test, complete.cases() is for removing missing values from a vector
-n &lt;- length(x) # reminder that your sample data has to be greater than 7 
-logp1 &lt;- pnorm((x - mean(x))/sd(x), log.p = TRUE) #pnorm() provides the cumulative density of the normal distribution: of the equation F(Xi)
-logp2 &lt;- pnorm(-(x - mean(x))/sd(x), log.p = TRUE) #finding the cumulative density of the normal distribution: of the equation -F(Xn-i+1)
-h &lt;- (2 * seq(1:n) - 1) * (logp1 + rev(logp2)) #second half of the equation 
-A &lt;- -n - mean(h) #first half of the equation
+<pre class="r"><code>x &lt;- sort(a[complete.cases(a)]) #a is the data set that you want to test, complete.cases() is for removing missing values from a vector, sort() puts the data in ascending order, which is necessary to compute the anderson darling test statistic 
+x</code></pre>
+<pre><code>##  [1] 108 124 136 140 141 143 148 153 158 160 168 169 171 179 181 193 199 203 206
+## [20] 213 216 217 222 226 227 229 230 242 243 244 248 248 250 257 257 258 260 260
+## [39] 263 267 271 271 283 295 297 303 309 315 316 318 318 320 322 325 327 329 332
+## [58] 334 339 340 341 344 352 359 368 379 380 390 392 404 423</code></pre>
+<pre class="r"><code>n &lt;- length(x) # reminder that your sample data has to be greater than 7 
+n #n is 71 </code></pre>
+<pre><code>## [1] 71</code></pre>
+<pre class="r"><code>logp1 &lt;- pnorm((x - mean(x))/sd(x), log.p = TRUE) #F(Xi) is the cumulative distribution and pnorm() allows us to calculate that - the mean/standard deviation of each data point is subtracted from each data point and then log.p() is used 
+logp2 &lt;- pnorm(-(x - mean(x))/sd(x), log.p = TRUE) #using pnorm() to find the compared cumulative distribution which is the equation -F(Xn-i+1)</code></pre>
+<pre class="r"><code>h &lt;- (2 * seq(1:n) - 1) * (logp1 + rev(logp2)) #summation part of the equation (seq 1:n makes sure to order your data in ascending order, rev() is used to reverse the formula we computed in logp2)</code></pre>
+<pre class="r"><code>A &lt;- -n - mean(h) #computing the test statistic by combining the first half of the equation with the second half
 A # The test statistic is computed </code></pre>
 <pre><code>## [1] 0.4648545</code></pre>
 <p><br></p>
