@@ -619,6 +619,7 @@ Here, while the W statistic is close to 1, the p-value is less than 0.05 so the 
 ## Shapiro-Wilk Challenge 
 
 
+
 ![](S-W-PIC.jpeg)
 ToothGrowth is a data set in R showing the length of teeth of guinea pigs at three Vitamin C dosage levels(0.5, 1 and 2mg) with two delivery methods(orange juice or ascorbic acid). The column ‘len’ shows the tooth length. Test the normality of the distribution of these guinea pigs’ teeth lengths.
 
