@@ -32,11 +32,6 @@ Before starting to work with a data set you have to figure out what kind of data
 
 [2] Be able identify which test is most appropriate for your data set.
 
-[G] Understand when it is appropriate to use the G test.
-
-[G] Be able to run the G test by hand and through R package.
-
-
 [S-W] Learn the Shapiro-Wilk Function and how it is derived.
 
 [S-W] Use the shapiro.test() function in R and interpret the results. 
@@ -57,7 +52,7 @@ library(ggpubr)
 library(dplyr)
 ```
 
-# G–test 
+# G Test 
 
 Like the Chi-squared test in Module 14, the G test allows you to determine if there is a significant difference in proportions of a categorical variable to the theoretical expectation. Chi-squared test give approximately the same results as G test but you can perform more elaborate statistical analyses with G test results. Downside is that less people are familiar with the G test compared to the Chi-squared test. As they give similar results, it's best to pick one method that is most applicable to your data set rather than using both methods. Pick one and stick with it. 
 
@@ -79,7 +74,11 @@ It's more beneficial to use the G Test over the Chi-Squared Test if:
 **Null Hypothesis:** The observed data has the same proportions as the expected theoretical population. <br>
 **Alternate Hypothesis:** The observed data doesn't have the same proportions as the expected theoretical population. 
 
+## Objectives
 
+[1] Understand when it is appropriate to use the G test.
+
+[2] Be able to run the G test by hand and through an R package.
 
 ``` {r Generating Data, include=FALSE, eval=FALSE}
 
@@ -102,7 +101,7 @@ write.csv(Data, "C:\\Users\\Emily\\Documents\\Github\\Chisquare-repo\\Iris.csv",
 
 ![](Gtest_formula.png)
 
-O = Observed
+O = Observed <br>
 E = Expected
 
 
@@ -113,6 +112,7 @@ I was out in the field and collected data about 1200 Irises. I noted the color, 
 ![](iris.png)
 
 ```{r Tabulating Data}
+library(curl)
 f <- curl("https://raw.githubusercontent.com/YYangEmily/Chisquare-repo/main/Iris.csv")
 d <- read.csv(f, header = TRUE, sep = ",", stringsAsFactors = FALSE)
 head(d)
@@ -130,11 +130,11 @@ pchisq(725.9525, df=3, lower.tail = FALSE) # Finding the p-value
 We got an G value of 725.95 and the degree of freedom is options-1 = 3. Using those we calculated a p-value of 4.9e-157 which is below the critical p-value = 0.05. We can reject the null hypothesis and conclude that the flower color proportions of the Irises observed are not equally distributed.
 
 ```{r Coding}
+library(DescTools)
 
 #perform the G-test 
 GTest(x = c(121, 59, 628, 392), #observed values
       p = c(1/4, 1/4, 1/4, 1/4)) #expected proportions
-  
 ```
 
 Once again, the p-value is below 0.05. We can reject the null hypothesis and conclude that the flower color proportions of the Irises I observed are not equally distributed. 
