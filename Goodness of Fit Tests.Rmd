@@ -683,7 +683,7 @@ Now, let's compare it with the Kolmorgorov-Smirnov Test:
 ks.test(goodness_of_fit, "rnorm")
 ```
 
-The p-value appears to be far below 0.05, 0.0000000000000003331, which would mean that the null hypothesis is rejected and that this test deems the data set to be not normally distributed. This is an example as to why it is important to select the right goodness of fit test when analyzing data. 
+The p-value appears to be far below 0.05, which would mean that the null hypothesis is rejected and that this test deems the data set to be normally distributed. However, our D value is above 1, meaning the test did not run properly as we have too few samples. This test is very sensitive to sample size and can be easily thrown into disarray by incorrect sample sizing. This is an example as to why it is important to select the right goodness of fit test when analyzing data. 
 
 <br>
 
