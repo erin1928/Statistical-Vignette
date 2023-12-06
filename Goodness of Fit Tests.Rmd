@@ -327,10 +327,11 @@ Here we can see that D is showing us the maximum distance between 2 graphs. If t
 
 #### If you're curious about seeing a KS Test in action, feel free to check out <a href="Mizumoto&al2022.pdf">this</a> paper on same-sex sexual behavior in termites.
 
+<br>
+
 # Anderson Darling Test
 
 Objectives
-<br>
 
 - Learn about the Anderson Darling Equation and understand how it can be used in R.  
 
@@ -345,10 +346,14 @@ The Anderson Darling test is a type of the goodness of fit test used to determin
 It is important to note that the length of the sample data  must be **greater than 7**, but is advised to be **greater than 20**. 
 
 Hypotheses 
- - H0 is the data that follows a specific distribution (null hypothesis)
- - HA is the data that does not follow the specific distribution (alternative hypothesis)
+<br>
+
+- Null Hypothesis: H0 is the data that follows a specific distribution
+- Alternative Hypothesis: HA is the data that does not follow the specific distribution 
  
 The results will suggest that you can either reject the null, or fail to reject the null. The test rejects the null hypothesis of normality when the p-value is **less than or equal to 0.05** and accepts the null hypothesis (fails to reject the null) if it is **greater than 0.05.** 
+
+<br>
 
 ## Anderson Darling Test Statistic Equation: 
 
@@ -362,8 +367,9 @@ The equation below gives you the test statistic for your specified distribution.
 
 Once the test statistic is calculated, you will then modify it using the following equation: Z = AD(1.0 + 0.75/n + 2.25/n^2). From here, the p-value can be calculated based on an equation that is determined by the modified test statistic. Once we calculate the p-value, we can determine whether we can reject the null hypothesis or fail to reject the null.
 
+<br>
 
-## Using the Anderson-Darling Test with Data Known as "chickwts" 
+### Using the Anderson-Darling Test with Data Known as "chickwts" 
 
 Newly hatched chicks were randomly allocated into six groups, and each group was given a different feed supplement. Their weights in grams after six weeks are given along with feed types. 
 
@@ -475,7 +481,7 @@ It can be concluded that chick weight data follows normal distribution because t
 <br>
 
 
-## Challenge 1
+### Challenge 1
 
 Determine the test statistic (A), modified test statistic (AA), and p-value of a sample of the chickwts data set. Is this sample of the data set originating from normal distribution? How do you know this?
 
@@ -552,7 +558,7 @@ lines(density(ndistribution), col = 4, lwd = 2)
 
 <br> 
 
-## Challenge 2
+### Challenge 2
 Create a data set using a poisson function that is not normally distributed. Use the ad.test() to confirm that the data is not normally distributed. Plot the data using a histogram to visualize your results.
 
 ```{r}
