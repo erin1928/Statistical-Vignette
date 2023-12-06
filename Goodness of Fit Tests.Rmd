@@ -477,7 +477,8 @@ Because the p-value is greater than 0.05, it can be determined that the data is 
 
 #### Plotting the Data 
 ```{r}
-hist(ndistribution, main = "Histogram Showing Normal Distribution", col="blue")
+hist(ndistribution, main = "Histogram Showing Normal Distribution", prob = TRUE, col="blue")
+lines(density(ndistribution), col = 4, lwd = 2)
 ```
 
 <br> 
@@ -499,7 +500,8 @@ Because the p-value is less than or equal to 0.05, it can be determined that the
 
 #### Plotting the Data 
 ```{r}
-hist(nodistribution, main= "Histogram Showing No Normal Distribution", col="red")
+hist(nodistribution, main= "Histogram Showing No Normal Distribution", prob = TRUE, col="red")
+lines(density(nodistribution), col = 4, lwd = 2)
 ```
 
 #### Shortcut to Creating Data Sets and Using ad.test() all at once
