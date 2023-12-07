@@ -25,7 +25,7 @@ Before starting to work with a data set, you have to figure out what kind of dat
   + **G Test:** a variation of the chi-squared test and determines if your data matches an expected distribution. 
   + **Kolmogorov-Smirnov Test:** determines if the observed data matches a normally distributed population.
   + **Anderson-Darling Test:** derived from the Kolmogorov-Smirnov test and is more sensitive to the distribution edges. 
-  + **Shapiro-Wilks Test:** determines if a random sample is from a normally distributed population but is used for smaller sample populations under 2000.
+  + **Shapiro-Wilks Test:** determines if a random sample is from a normally distributed population but is used for smaller sample populations under 50.
 
 ## Objectives
 [1] Understand what a goodness of fit test is and how to apply it.
