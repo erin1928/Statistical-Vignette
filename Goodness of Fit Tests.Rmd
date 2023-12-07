@@ -641,17 +641,17 @@ In order to calculate the W statistic, here is the following procedure:
   - First, the sample size of n has to be sorted in increasing order and the resulting sorted sample is designated as y1, y2, ..yn 
   - Then, you calculate the sum of squares using this formula:
 
-![](SW-equation-SS.png) 
+![](SW-equation-SS.png){width=75%}
 
   - To calculate the numerator, if the sample size is an even number, then it is calculated using k = n/2
     - If the sample size is odd, the median must not be included so it's calculated as k = (n-1)/2 using this formula: 
 
-![](SW equation test.png)
+![](SW-SS.png){width=75%}
 
   - The test statistic is finally calculated as W = b^2 / (n-1)*S^2 
     - You analyze the value by using the critical threshold table:
     
-![](SW-table-1.png)
+![](SW-table-1.png){width=50%}
 
 **If the test statistic is smaller than the critical threshold then the assumption of a normal distribution is rejected.**
   
@@ -677,7 +677,7 @@ sd(example)
 ((39.7683)^2) / ((9-1)*15.52^2) 
 ```
 
-Our calculated value of 0.8207 is less than the critical threshold for n=9 (0.829) which means that our data is not normally distributed! 
+Our calculated value of 0.8207 is less than the critical threshold for n=9 (0.829) which means that our data is not normally distributed.
 
 
 As you can see, the Shapiro-Wilk Test can be really difficult to calculate, especially if you have more values, so there's a simple command in R to conduct this test! 
@@ -687,6 +687,7 @@ shapiro.test(example)
 ```
 Although the W statistic is pretty close to 1, it is under the critical threshold and the p-value is under 0.05 which reinforces the idea that this data is not normally distributed. 
 
+<br>
 
 #### Now, let's look at another data set where it may be of normal distribution. 
 ```{r SW creating dataset}
@@ -817,4 +818,6 @@ http://www.statistics4u.info/fundstat_eng/ee_shapiro_wilk_test.html# <br>
 http://blog.excelmasterseries.com/2015/05/how-to-create-completely-automated_4.html <br>
 https://www.graphpad.com/guides/prism/latest/statistics/stat_choosing_a_normality_test.htm <br>
 https://www.sciencedirect.com/topics/mathematics/wilk-test <br> 
+http://collbiom.up.lublin.pl/pdf/cb41_211.pdf
+
 
