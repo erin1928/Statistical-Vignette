@@ -336,17 +336,13 @@ Objectives
 
 The Anderson Darling test is a type of the goodness of fit test used to determine if a sample of data comes follows a specific kind of distribution, more commonly normal distribution. It is a modification of the Kolmogorov-Smirnov test that focuses more on whether or not the tails follow normal distribution, rather than the peak. 
 
-It is important to note that the length of the sample data  must be **greater than 7**, but is advised to be **greater than 20**. 
+It is important to note that the length of the sample data  must be **greater than 7**, but is advised to be **greater than 20**. The smaller the sample of data, the more likely it is to get false results.
 
 Hypotheses 
 <br>
 
 - Null Hypothesis: H0 is the data that follows a specific distribution
 - Alternative Hypothesis: HA is the data that does not follow the specific distribution 
- 
-The results will suggest that you can either reject the null, or fail to reject the null. The test rejects the null hypothesis of normality when the p-value is **less than or equal to 0.05** and accepts the null hypothesis (fails to reject the null) if it is **greater than 0.05.** 
-
-<br>
 
 ## Anderson Darling Test Statistic Equation: 
 
@@ -358,7 +354,18 @@ The equation below gives you the test statistic for your specified distribution.
 - F(Xi) = CDF (cumulative distribution function) for the specified distribution
 - i = the ith sample, calculated when the data is sorted in ascending order (1:n)
 
-Once the test statistic is calculated, you will then modify it using the following equation: Z = AD(1.0 + 0.75/n + 2.25/n^2). From here, the p-value can be calculated based on an equation that is determined by the modified test statistic. Once we calculate the p-value, we can determine whether we can reject the null hypothesis or fail to reject the null.
+Once the test statistic is calculated, you can use it to determine whether we can reject the null hypothesis or fail to reject the null. This is done by comparing it to a critical value that is determined by the kind of distribution you are testing for. 
+In this case, we will be testing for normality, so the critical value is **0.787.**
+
+The critical value is published in the following article: Stephens, M. A. (1974). EDF Statistics for Goodness of Fit and Some Comparisons, Journal of the American Statistical Association, 69, pp. 730-737.
+
+If the test statistic is **less then 0.787**, we can fail to reject the null hypothesis, meaning that the data follows normal distribution. If the critical value is **greater than 0.787**, the null hypothesis is rejected and the sample of data does not follow normal distribution. 
+
+However, the smaller the sample of data, the more likely you are to get false readings of normality. Therefore, it is best to use the p-value as your indicator in most scenarios or to confirm your results of the test statistic. 
+
+You will start by modifying the test statistic using the following equation: **Z = AD(1.0 + 0.75/n + 2.25/n^2).** From here, the p-value can be calculated based on an equation that is determined by the modified test statistic which we will discuss below. Once we calculate the p-value, we can determine whether we can reject the null hypothesis or fail to reject the null.
+
+The test rejects the null hypothesis of normality when the p-value is **less than or equal to the alpha value of 0.05** and accepts the null hypothesis (fails to reject the null) if it is **greater than the alpha value of 0.05.** 
 
 <br>
 
@@ -403,7 +410,7 @@ n #n is 71
 
 #### Calculating the Cumulative Distribution F(Xi) 
 ```{r}
-logp1 <- pnorm((x - mean(x))/sd(x), log.p = TRUE) #F(Xi) is the cumulative distribution and pnorm() allows us to calculate the cumulative probability for each data point using each data point and subtracting the data sets mean/standard deviation from each, log.p() gives each of these probabilities as a log()
+logp1 <- pnorm((x - mean(x))/sd(x), log.p = TRUE) #F(Xi) is the cumulative distribution and pnorm() allows us to calculate the cumulative probability for each data point using the mean and standard deviation, which are used to define normal distribution, log.p() gives each of these probabilities as a log()
 logp1
 ```
 <br>
@@ -417,17 +424,20 @@ logp2
 
 #### Calculating the Summation Portion of the Equation
 ```{r}
-h <- (2 * seq(1:n) - 1) * (logp1 + rev(logp2)) #summation part of the equation, rev() is used to reverse the formula we computed in logp2)
+h <- (2 * seq(1:n) - 1) * (logp1 + rev(logp2)) #summation part of the equation, rev() computes the function described in logp2 of each point of data in descending order, rather than ascending 
 ```
 
 <br>
+
 
 #### Calculating the Test Statistic 
 ```{r}
 A <- -n - mean(h) #computing the test statistic by combining the first half of the equation with the second half
 A # The test statistic is computed 
 ```
+The test statistic is less than the critical value of 0.787 meaning we can fail to reject the null - meaning the sample of data follows normal distribution. Because the sample of data is on the smaller side, 71, we can use the p-value to confirm our results. 
 <br>
+
 
 #### Calculating the Modified Test Statistic  
 ```{r}
@@ -469,7 +479,7 @@ pval <- exp(1.2937 - 5.709 * AA + 0.0186 * AA^2)
 pval <- exp(0.9177 - 4.279 * AA - 1.38 * AA^2)
 pval #The p-value is computed
 ```
-It can be concluded that chick weight data follows normal distribution because the p-value is greater than 0.05. 
+It can be concluded that chick weight data does follow normal distribution because the p-value is greater than 0.05. 
 
 <br>
 
@@ -498,6 +508,7 @@ h <- (2 * seq(1:n) - 1) * (logp1 + rev(logp2))
 A <- -n - mean(h)
 A  
 ```
+The test statistic is less than the critical value of 0.787 meaning we can fail to reject the null - meaning the sample of data follows normal distribution. Let's confirm this with our p-value!
 
 <br>
 
@@ -539,7 +550,7 @@ ndistribution
 ```{r}
 ad.test(ndistribution) #that was easy!
 ```
-Because the p-value is greater than 0.05, it can be determined that the data follows normal distribution and that the null hypothesis has failed being rejected. 
+Because the p-value is greater than 0.05 and the test statistic is less than the critical value of 0.787, it can be determined that the data follows normal distribution and that the null hypothesis has failed being rejected. 
 
 <br>
 
@@ -565,7 +576,7 @@ nodistribution
 ```{r}
 ad.test(nodistribution)
 ```
-Because the p-value is less than or equal to 0.05, it can be determined that the data is different than normal and the null hypothesis is rejected.
+Because the p-value is less than or equal to 0.05 and the test statistic is greater than the critical value of 0.787, it can be determined that the data is different than normal and the null hypothesis is rejected.
 
 <br>
 
@@ -581,14 +592,14 @@ lines(density(nodistribution), col = 4, lwd = 2)
 ```{r}
 ad.test(rnorm(100, mean = 5, sd = 3))
 ```
-The data set follows normal distribution because the p-value >0.05
+The data set follows normal distribution because the p-value >0.05 and the test statistic is less than the critical value of 0.787. 
 
 <br>
 
 ```{r}
 ad.test(rpois(100,5))
 ```
-The data set does not follow normal distribution because the p-value <0.05 
+The data set does not follow normal distribution because the p-value <0.05 and the test statistic is greater than the critical value of 0.787.
 
 
 <br> 
@@ -810,6 +821,7 @@ https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=d973dfd21d5c3ee5b
 https://search.r-project.org/CRAN/refmans/nortest/html/ad.test.html <br>
 https://www.statisticshowto.com/anderson-darling-test/ <br>
 https://welcometochickenlandia.com/blog/the-age-old-practice-of-cold-brooding-baby-chicks/ <br>
+https://www.jstor.org/stable/pdf/2286009.pdf?refreqid=fastly-default%3A97956dda812cf4fdf7108dba8f38485c&ab_segments=&origin=&initiator=&acceptTC=1 <br> 
 
 
 
