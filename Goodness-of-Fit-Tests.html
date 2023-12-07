@@ -1676,6 +1676,27 @@ There are equal proportions of each flower size.</p>
 <h2>G Test Challenges</h2>
 <p>Perform the G test with following columns in the iris data set:
 Flower.location and Flower.species. <br></p>
+<p>Alternate code via Lia Bao</p>
+<pre class="r"><code>unique(d$Flower.species) # unique elements in the data.</code></pre>
+<pre><code>## [1] &quot;Japanese&quot; &quot;Siberian&quot; &quot;Bearded&quot;  &quot;Dutch&quot;</code></pre>
+<pre class="r"><code>n &lt;- length(unique(d$Flower.species)) #number of elements
+n</code></pre>
+<pre><code>## [1] 4</code></pre>
+<pre class="r"><code>fs &lt;- c(as.numeric(table(d$Flower.species))) #extract the numerical data from table
+fs</code></pre>
+<pre><code>## [1] 280 297 305 318</code></pre>
+<pre class="r"><code>fp &lt;- c(rep(1/n, each=n)) # set equal proportions repeated
+fp</code></pre>
+<pre><code>## [1] 0.25 0.25 0.25 0.25</code></pre>
+<pre class="r"><code>GTest(x=fs, 
+      p=fp)</code></pre>
+<pre><code>## 
+##  Log likelihood ratio (G-test) goodness of fit test
+## 
+## data:  fs
+## G = 2.536, X-squared df = 3, p-value = 0.4688</code></pre>
+<p>This tells us that the species of each iris is equally
+distributed.</p>
 </div>
 <div id="g-test-of-independence" class="section level2">
 <h2>G Test of Independence</h2>

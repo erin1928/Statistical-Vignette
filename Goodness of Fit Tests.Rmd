@@ -157,6 +157,21 @@ As you can see this time the p-value = 0.1842 which is above the critical p-valu
 
 Perform the G test with following columns in the iris data set: Flower.location and Flower.species. <br>
 
+Alternate code via Lia Bao
+```{r}
+unique(d$Flower.species) # unique elements in the data.
+n <- length(unique(d$Flower.species)) #number of elements
+n
+fs <- c(as.numeric(table(d$Flower.species))) #extract the numerical data from table
+fs
+fp <- c(rep(1/n, each=n)) # set equal proportions repeated
+fp
+GTest(x=fs, 
+      p=fp)
+```
+This tells us that the species of each iris is equally distributed. 
+
+
 ## G Test of Independence
 
 In addition to goodness of fit test you can also use the G test for Independence. For example I want to test if flower color and flower size are independent variables. 
