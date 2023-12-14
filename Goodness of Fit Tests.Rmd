@@ -17,11 +17,13 @@ knitr::opts_chunk$set(echo = TRUE)
 ```
 
 
-## Introduction to Goodness-of-Fit Tests
+# Introduction to Goodness-of-Fit Tests
 
 Before starting to work with a data set, you have to figure out what kind of data it is. Goodness of fit tests report if your data is normal or matches with expected data. Then you are able to pick the best statistical test to run on your data. Different data types have different goodness of fit tests and each test is used to draw different conclusions. Each goodness of fit test has a null and alternate hypothesis and the calculated p-value allows us to reject the null. For a refresher on hypothesis testing see [Module 10](https://fuzzyatelin.github.io/bioanth-stats/module-10/module-10.html).<br>
 
+
 Previously in the course we learned to use the Chi-squared goodness of fit test in [Module 14](https://fuzzyatelin.github.io/bioanth-stats/module-14/module-14.html#Chi-Square_Tests_of_Goodness_of_Fit_and_Independence). Goodness of fit tests can be used to assess how well Generalized Linear Models fit the data [Module 16](https://fuzzyatelin.github.io/bioanth-stats/module-17/module-17.html).<br>
+
 
 #### Different Goodness-of-Fit tests we'll be covering:
   + **G Test:** a variation of the chi-squared test and determines if your data matches an expected distribution. 
@@ -29,7 +31,7 @@ Previously in the course we learned to use the Chi-squared goodness of fit test 
   + **Anderson-Darling Test:** derived from the Kolmogorov-Smirnov test and is more sensitive to the distribution edges. 
   + **Shapiro-Wilks Test:** determines if a random sample is from a normally distributed population but is used for smaller sample populations under 50.
 
-## Objectives
+## Module Objectives
 [1] Understand what a goodness of fit test is and how to apply it.
 
 [2] Be able identify which test is most appropriate for your data set.
