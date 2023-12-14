@@ -19,7 +19,9 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction to Goodness-of-Fit Tests
 
-Before starting to work with a data set, you have to figure out what kind of data it is. Goodness of fit tests report if your data is normal or matches with expected data. Then you are able to pick the best statistical test to run on your data. Different data types have different goodness of fit tests and each test is used to draw different conclusions. 
+Before starting to work with a data set, you have to figure out what kind of data it is. Goodness of fit tests report if your data is normal or matches with expected data. Then you are able to pick the best statistical test to run on your data. Different data types have different goodness of fit tests and each test is used to draw different conclusions. Each goodness of fit test has a null and alternate hypothesis and the calculated p-value allows us to reject the null. For a refresher on hypothesis testing see [Module 10](https://fuzzyatelin.github.io/bioanth-stats/module-10/module-10.html).<br>
+
+Previously in the course we learned to use the Chi-squared goodness of fit test in [Module 14](https://fuzzyatelin.github.io/bioanth-stats/module-14/module-14.html#Chi-Square_Tests_of_Goodness_of_Fit_and_Independence). Goodness of fit tests can be used to assess how well Generalized Linear Models fit the data [Module 16](https://fuzzyatelin.github.io/bioanth-stats/module-17/module-17.html).<br>
 
 #### Different Goodness-of-Fit tests we'll be covering:
   + **G Test:** a variation of the chi-squared test and determines if your data matches an expected distribution. 
@@ -39,6 +41,7 @@ Before starting to work with a data set, you have to figure out what kind of dat
 # G test
 library(DescTools)
 library(curl)
+library(tidyverse)
 
 # Anderson Darling test
 library(nortest)
@@ -46,7 +49,7 @@ library(nortest)
 
 # G Test 
 
-Like the Chi-squared test in Module 14, the G test allows you to determine if there is a significant difference in proportions of a categorical variable to the theoretical expectation. Chi-squared test give approximately the same results as G test but you can perform more elaborate statistical analyses with G test results. Downside is that less people are familiar with the G test compared to the Chi-squared test. As they give similar results, it's best to pick one method that is most applicable to your data set rather than using both methods. Pick one and stick with it. 
+Like the Chi-squared test in [Module 14](https://fuzzyatelin.github.io/bioanth-stats/module-14/module-14.html), the G test allows you to determine if there is a significant difference in proportions of a categorical variable to the theoretical expectation. Chi-squared test give approximately the same results as G test but you can perform more elaborate statistical analyses with G test results. Downside is that less people are familiar with the G test compared to the Chi-squared test. As they give similar results, it's best to pick one method that is most applicable to your data set rather than using both methods. Pick one and stick with it. 
 
 Both G test and Chi-squared Test data needs to fulfill certain assumptions: 
 
@@ -180,14 +183,13 @@ In addition to goodness of fit test you can also use the G test for Independence
 **Alternate Hypothesis:** The two variables are dependent.
 
 ```{r Independence}
-library(dplyr)
-d$Flower.color <- as.factor(d$Flower.color)
-d$Flower.size <- as.factor(d$Flower.size)
-d %>% 
-  count(Flower.color, Flower.size)
+library(tidyverse)
 
-obs <- rbind(c(64, 22, 327, 210), # Small
-             c(57, 37, 301, 182)) # Large
+d %>% group_by(Flower.color, Flower.size) %>%  # Group by independent variables
+  dplyr::count(Flower.color, Flower.size) # count how many are in each group
+
+obs <- rbind(c(64, 22, 327, 210), # Small flowers
+             c(57, 37, 301, 182)) # Large flowers
  
 GTest(obs, # Compare small vs large
       correct = "none") # no correction
@@ -821,9 +823,9 @@ ad.test(goodness_of_fit)
 ```{r}
 shapiro.test(goodness_of_fit)
 ```
-Both p-values are relatively close being only 0.1122 points away from one another. Although the values are close, the Shapiro Wilk test is more powerful than the Anderson Darling test and would be more accurate in this scenario. For example, the p-value being higher for the Shapiro Wilk test indicates that it has more significance. 
+Both p-values are relatively close being only 0.1122 points away from one another. Although the values are close, the Shapiro Wilk test is more powerful than the Anderson Darling test and would be more accurate in this scenario.
 
-The p-value for each test is greater than 0.05 meaning that the null hypothesis can be accepted meaning the data set comes from normal distribution. This makes sense because it was created using the rnorm() function! 
+The p-value for each test is greater than 0.05 meaning that we failed to reject the null hypothesis and that the data set comes from normal distribution. This makes sense because it was created using the rnorm() function! 
 
 Now, let's compare it with the Kolmorgorov-Smirnov Test:
 
