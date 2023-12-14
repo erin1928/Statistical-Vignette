@@ -19,27 +19,18 @@ knitr::opts_chunk$set(echo = TRUE)
 
 ## Introduction to Goodness-of-Fit Tests
 
-Before starting to work with a data set you have to figure out what kind of data it is. Goodness of fit tests report if your data is normal or matches with expected data. Then you are able to pick the best statistical test to run on your data. Different data types have different goodness of fit tests and each test is used to draw different conclusions. 
+Before starting to work with a data set, you have to figure out what kind of data it is. Goodness of fit tests report if your data is normal or matches with expected data. Then you are able to pick the best statistical test to run on your data. Different data types have different goodness of fit tests and each test is used to draw different conclusions. 
 
 #### Different Goodness-of-Fit tests we'll be covering:
   + **G Test:** a variation of the chi-squared test and determines if your data matches an expected distribution. 
   + **Kolmogorov-Smirnov Test:** determines if the observed data matches a normally distributed population.
   + **Anderson-Darling Test:** derived from the Kolmogorov-Smirnov test and is more sensitive to the distribution edges. 
-  + **Shapiro-Wilks Test:** determines if a random sample is from a normally distributed population but is used for smaller sample populations under 2000.
+  + **Shapiro-Wilks Test:** determines if a random sample is from a normally distributed population but is used for smaller sample populations under 50.
 
 ## Objectives
 [1] Understand what a goodness of fit test is and how to apply it.
 
 [2] Be able identify which test is most appropriate for your data set.
-
-[G] Understand when it is appropriate to use the G test.
-
-[G] Be able to run the G test by hand and through R package.
-
-
-[S-W] Learn the Shapiro-Wilk Function and how it is derived.
-
-[S-W] Use the shapiro.test() function in R and interpret the results. 
 
 
 
@@ -51,13 +42,9 @@ library(curl)
 
 # Anderson Darling test
 library(nortest)
-
-#Shapiro-Wilks
-library(ggpubr)
-library(dplyr)
 ```
 
-# G–test 
+# G Test 
 
 Like the Chi-squared test in Module 14, the G test allows you to determine if there is a significant difference in proportions of a categorical variable to the theoretical expectation. Chi-squared test give approximately the same results as G test but you can perform more elaborate statistical analyses with G test results. Downside is that less people are familiar with the G test compared to the Chi-squared test. As they give similar results, it's best to pick one method that is most applicable to your data set rather than using both methods. Pick one and stick with it. 
 
@@ -79,7 +66,11 @@ It's more beneficial to use the G Test over the Chi-Squared Test if:
 **Null Hypothesis:** The observed data has the same proportions as the expected theoretical population. <br>
 **Alternate Hypothesis:** The observed data doesn't have the same proportions as the expected theoretical population. 
 
+## Objectives
 
+[1] Understand when it is appropriate to use the G test.
+
+[2] Be able to run the G test by hand and through an R package.
 
 ``` {r Generating Data, include=FALSE, eval=FALSE}
 
@@ -102,7 +93,7 @@ write.csv(Data, "C:\\Users\\Emily\\Documents\\Github\\Chisquare-repo\\Iris.csv",
 
 ![](Gtest_formula.png)
 
-O = Observed
+O = Observed <br>
 E = Expected
 
 
@@ -113,6 +104,7 @@ I was out in the field and collected data about 1200 Irises. I noted the color, 
 ![](iris.png)
 
 ```{r Tabulating Data}
+library(curl)
 f <- curl("https://raw.githubusercontent.com/YYangEmily/Chisquare-repo/main/Iris.csv")
 d <- read.csv(f, header = TRUE, sep = ",", stringsAsFactors = FALSE)
 head(d)
@@ -130,11 +122,11 @@ pchisq(725.9525, df=3, lower.tail = FALSE) # Finding the p-value
 We got an G value of 725.95 and the degree of freedom is options-1 = 3. Using those we calculated a p-value of 4.9e-157 which is below the critical p-value = 0.05. We can reject the null hypothesis and conclude that the flower color proportions of the Irises observed are not equally distributed.
 
 ```{r Coding}
+library(DescTools)
 
 #perform the G-test 
 GTest(x = c(121, 59, 628, 392), #observed values
       p = c(1/4, 1/4, 1/4, 1/4)) #expected proportions
-  
 ```
 
 Once again, the p-value is below 0.05. We can reject the null hypothesis and conclude that the flower color proportions of the Irises I observed are not equally distributed. 
@@ -165,6 +157,21 @@ As you can see this time the p-value = 0.1842 which is above the critical p-valu
 
 Perform the G test with following columns in the iris data set: Flower.location and Flower.species. <br>
 
+Alternate code via Lia Bao
+```{r}
+unique(d$Flower.species) # unique elements in the data.
+n <- length(unique(d$Flower.species)) #number of elements
+n
+fs <- c(as.numeric(table(d$Flower.species))) #extract the numerical data from table
+fs
+fp <- c(rep(1/n, each=n)) # set equal proportions repeated
+fp
+GTest(x=fs, 
+      p=fp)
+```
+This tells us that the species of each iris is equally distributed. 
+
+
 ## G Test of Independence
 
 In addition to goodness of fit test you can also use the G test for Independence. For example I want to test if flower color and flower size are independent variables. 
@@ -173,6 +180,7 @@ In addition to goodness of fit test you can also use the G test for Independence
 **Alternate Hypothesis:** The two variables are dependent.
 
 ```{r Independence}
+library(dplyr)
 d$Flower.color <- as.factor(d$Flower.color)
 d$Flower.size <- as.factor(d$Flower.size)
 d %>% 
@@ -327,10 +335,13 @@ ks.test(data1, data2)
 
 #### If you're curious about seeing a KS Test in action, feel free to check out <a href="Mizumoto&al2022.pdf">this</a> paper on same-sex sexual behavior in termites.
 
+<br>
 
 # Anderson Darling Test
 
-- Learn the Anderson Darling Equation and how it can be used in R.  
+Objectives
+
+- Learn about the Anderson Darling Equation and understand how it can be used in R.  
 
 - Go through the Anderson Darling Test step-by-step and how to interpret the results. 
 
@@ -338,30 +349,44 @@ ks.test(data1, data2)
 
 ## Introduction
 
-The Anderson Darling test is a form of the Goodness of Fit test used to determine if a sample of data comes from a specific kind of distribution. It is commonly used to determine if the sample of data came from a normal distribution. It is a modification of the Kolmogorov-Smirnov test that gives more weight to the tails. The more narrow the tails, the less disparities in the confidence intervals, meaning the results are more accurate. 
+The Anderson Darling test is a type of the goodness of fit test used to determine if a sample of data comes follows a specific kind of distribution, more commonly normal distribution. It is a modification of the Kolmogorov-Smirnov test that focuses more on whether or not the tails follow normal distribution, rather than the peak. 
 
-The test is useful to test normality which is common for regression, ANOVA, t-tests and more. The data sets need to be **greater than 7**, but are advised to be **greater than 20**. 
+It is important to note that the length of the sample data  must be **greater than 7**, but is advised to be **greater than 20**. The smaller the sample of data, the more likely it is to get false results.
 
-The Anderson Darling Test starts with a null hypothesis that your data is not statistically different than normal. The alternate hypothesis is that it is different from normal. The results will suggest that you can either reject the null, or fail to reject the null. The test rejects the null hypothesis of normality when the p-value is **less than or equal to 0.05** and accepts the null hypothesis (fails to reject the null) if it is **greater than 0.05.** 
+Hypotheses 
+<br>
 
- - H0 is the data that follows a specific distribution (null hypothesis)
- - HA is the data that does not follow the specific distribution (alternative hypothesis)
+- Null Hypothesis: H0 is the data that follows a specific distribution
+- Alternative Hypothesis: HA is the data that does not follow the specific distribution 
 
-## Anderson Darling Test Formula: 
+## Anderson Darling Test Statistic Equation: 
 
-The formula below gets you the test statistic for your specified distribution, which will be modified to find the p-value. 
+The equation below gives you the test statistic for your specified distribution. 
  
 ![](Anderson-formula.png)
- - AD is the formula for deriving the test statistic 
- - n is the sample size
- - F is the cumulative distribution function of the specified distribution. This gives you the cumulative (additive) probability associated with a function. 
- 
- Using the test statistic, you will then modify it using the following equation: Z = A(1.0 + 0.75/n + 2.25/n^2)
 
+- n = the sample size
+- F(Xi) = CDF (cumulative distribution function) for the specified distribution
+- i = the ith sample, calculated when the data is sorted in ascending order (1:n)
 
-## Using the Anderson-Darling Test with Data Known as "chickwts" 
+Once the test statistic is calculated, you can use it to determine whether we can reject the null hypothesis or fail to reject the null. This is done by comparing it to a critical value that is determined by the kind of distribution you are testing for. 
+In this case, we will be testing for normality, so the critical value is **0.787.**
 
-<font size="+2"> Newly hatched chicks were randomly allocated into six groups, and each group was given a different feed supplement. Their weights in grams after six weeks are given along with feed types. </font>
+The critical value is published in the following article: Stephens, M. A. (1974). EDF Statistics for Goodness of Fit and Some Comparisons, Journal of the American Statistical Association, 69, pp. 730-737.
+
+If the test statistic is **less then 0.787**, we can fail to reject the null hypothesis, meaning that the data follows normal distribution. If the critical value is **greater than 0.787**, the null hypothesis is rejected and the sample of data does not follow normal distribution. 
+
+However, the smaller the sample of data, the more likely you are to get false readings of normality. Therefore, it is best to use the p-value as your indicator in most scenarios or to confirm your results of the test statistic. 
+
+You will start by modifying the test statistic using the following equation: **Z = AD(1.0 + 0.75/n + 2.25/n^2).** From here, the p-value can be calculated based on an equation that is determined by the modified test statistic which we will discuss below. Once we calculate the p-value, we can determine whether we can reject the null hypothesis or fail to reject the null.
+
+The test rejects the null hypothesis of normality when the p-value is **less than or equal to the alpha value of 0.05** and accepts the null hypothesis (fails to reject the null) if it is **greater than the alpha value of 0.05.** 
+
+<br>
+
+### Using the Anderson-Darling Test with Data Known as "chickwts" 
+
+Newly hatched chicks were randomly allocated into six groups, and each group was given a different feed supplement. Their weights in grams after six weeks are given along with feed types. 
 
 ![](chickwts.png)
 
@@ -372,34 +397,74 @@ set.seed(1)
 d <- chickwts
 head(d)
 ```
-#### Select a The Weight Variable to Test 
+<br>
+
+#### Determining if the Chick Weight Data follows Normal Distribution 
 
 ```{r}
-a <- d$weight
+a <- d$weight #assign the weight variable to a vector
 a
 ```
 
-#### Determining the Test Statistic (A Value) Step by Step Needed to Determine the Modified Test Statistic (AA Value) 
+<br>
+
+#### Calculating the Test Statistic in R Step-By-Step 
+The several equations below are derived from the formula depicted above and taken from ad.test(), the built in R function we will use later in this module: 
 ```{r}
-x <- sort(a[complete.cases(a)]) #a is the data set that you want to test, complete.cases() is for removing missing values from a vector
-n <- length(x) #length must be greater than 7
-logp1 <- pnorm((x - mean(x))/sd(x), log.p = TRUE)
-logp2 <- pnorm(-(x - mean(x))/sd(x), log.p = TRUE)
-h <- (2 * seq(1:n) - 1) * (logp1 + rev(logp2)) 
-A <- -n - mean(h)
-A # The test statistic is computed 
+x <- sort(a) #a is the data set that you want to test, sort() puts the data in ascending order, which is necessary to compute the anderson darling test statistic 
+x
+```
+<br>
+
+```{r}
+n <- length(x) #determine the length of the sample of data
+n #n is 71 
 ```
 
-#### Determining the AA Value from the A Value Needed to Determine the P Value  
+<br>
+
+#### Calculating the Cumulative Distribution F(Xi) 
 ```{r}
+logp1 <- pnorm((x - mean(x))/sd(x), log.p = TRUE) #F(Xi) is the cumulative distribution and pnorm() allows us to calculate the cumulative probability for each data point using the mean and standard deviation, which are used to define normal distribution, log.p() gives each of these probabilities as a log()
+logp1
+```
+<br>
+
+#### Calculating -F(Xn-i+1)
+```{r}
+logp2 <- pnorm(-(x - mean(x))/sd(x), log.p = TRUE) #using pnorm() to find -F(Xn-i+1) for each data point
+logp2
+```
+<br>
+
+#### Calculating the Summation Portion of the Equation
+```{r}
+h <- (2 * seq(1:n) - 1) * (logp1 + rev(logp2)) #summation part of the equation, rev() computes the function described in logp2 of each point of data in descending order, rather than ascending 
+```
+
+<br>
+
+
+#### Calculating the Test Statistic 
+```{r}
+A <- -n - mean(h) #computing the test statistic by combining the first half of the equation with the second half
+A # The test statistic is computed 
+```
+The test statistic is less than the critical value of 0.787 meaning we can fail to reject the null - meaning the sample of data follows normal distribution. Because the sample of data is on the smaller side, 71, we can use the p-value to confirm our results. 
+<br>
+
+
+#### Calculating the Modified Test Statistic  
+```{r}
+# Z = AD(1.0 + 0.75/n + 2.25/n^2)
 AA <- (1 + 0.75/n + 2.25/n^2) * A
 AA #The modified test statistic is computed 
 ```
 
-#### Determining the P Value Step by Step
-"The p-value is derived from a modified statistic Z = A(1.0 + 0.75/n + 2.25/n^2) according to Table 4.9 in Stephens (1986)."
+<br>
 
-### Criteria for Determining the P Value
+#### P Value Equations are Dependent Upon the Modified Test Statistic Value 
+The following formulas are taken from Agostino and Stephen’s Goodness of Fit Techniques: 
 
   + Use this if AA > 10
 <br>
@@ -421,21 +486,22 @@ pval <- exp(0.9177 - 4.279 * AA - 1.38 * AA^2)
  <br>
 pval <- exp(1.2937 - 5.709 * AA + 0.0186 * AA^2)
 
- + Use the AA Value to Determine the P Value 
+ 
+ <br>
 
-#### Using the AA Value to Determine the P Value
+#### Calculating the p-value
 ```{r}
 pval <- exp(0.9177 - 4.279 * AA - 1.38 * AA^2)
 pval #The p-value is computed
 ```
-It can be concluded that the weight in chickwts is normally distributed because the p value is greater than 0.05. 
+It can be concluded that chick weight data does follow normal distribution because the p-value is greater than 0.05. 
 
 <br>
 
 
-## Anderson Darling Test Challenge 1
+### Challenge 1
 
-Determine the A, AA, and P values of a sample of the chickwts data set. Is this sample of the data set originating from normal distribution? How do you know this?
+Determine the test statistic (A), modified test statistic (AA), and p-value of a sample of the chickwts data set. Is this sample of the data set originating from normal distribution? How do you know this?
 
 
 ```{r}
@@ -443,34 +509,48 @@ set.seed(1)
 b <- sample(a, size=71, replace=TRUE, prob=NULL) #I chose 71 because that is the length of the initial data set
 b
 ```
-#### Determine the A Value
+
+<br>
+
+#### Calculate the Test Statistic (A) 
 
 ```{r}
-x <- sort(b[complete.cases(b)]) #b is the data set that you want to test, complete.cases() is for removing missing values from q vector
-n <- length(x) #length must be greater than 7
+x <- sort(b) 
+n <- length(x) 
 logp1 <- pnorm((x - mean(x))/sd(x), log.p = TRUE)
 logp2 <- pnorm(-(x - mean(x))/sd(x), log.p = TRUE)
 h <- (2 * seq(1:n) - 1) * (logp1 + rev(logp2))
 A <- -n - mean(h)
 A  
 ```
+The test statistic is less than the critical value of 0.787 meaning we can fail to reject the null - meaning the sample of data follows normal distribution. Let's confirm this with our p-value!
 
-#### Determining the AA Value
+<br>
+
+#### Calculate the Modified Test Statistic (AA) 
 ```{r}
 AA <- (1 + 0.75/n + 2.25/n^2) * A
 AA 
 ```
 
-#### Determine Which Equation to Use for the p Value based on the Criteria of AA
+<br>
+
+#### Calculating the p-value with the equation based on the modified test statistic (AA)
 ```{r}
 pval <- exp(0.9177 - 4.279 * AA - 1.38 * AA^2)
 pval
 ```
-The p-value is greater than 0.05, so the test fails to reject the null hypothesis meaning it originates from normal distribution. 
+The p-value is greater than 0.05, so the test fails to reject the null hypothesis meaning the sample of chick weight data follows normal distribution. 
 
 <br>
 
-#### Perform the Anderson Darling Test on the Sample of Data using the ad.test() built in function
+#### Performing the Anderson Darling Test on the Sample of Data using the ad.test() built in function
+
+```{r} 
+library(nortest) #make sure your package is loaded 
+```
+
+<br>
 
 #### Creating a function that is normally distributed 
 ```{r}
@@ -479,12 +559,17 @@ ndistribution <- rnorm(100, 5, 1) #The rnorm() function generates a random sampl
 ndistribution
 ```
 
-```{r}
-ad.test(ndistribution)
-```
-Because the p-value is greater than 0.05, it can be determined that the data is normally distributed and that the null hypothesis can be accepted. 
+<br>
 
-#### Plotting the Data 
+#### Using the ad.test() function 
+```{r}
+ad.test(ndistribution) #that was easy!
+```
+Because the p-value is greater than 0.05 and the test statistic is less than the critical value of 0.787, it can be determined that the data follows normal distribution and that the null hypothesis has failed being rejected. 
+
+<br>
+
+#### Visualizing Results 
 ```{r}
 hist(ndistribution, main = "Histogram Showing Normal Distribution", prob = TRUE, col="blue")
 lines(density(ndistribution), col = 4, lwd = 2)
@@ -492,43 +577,57 @@ lines(density(ndistribution), col = 4, lwd = 2)
 
 <br> 
 
-## Anderson Darling Challenge 2
-Create a data set using a poisson function that is not distributed normally. Plot the data using a histogram and compare it to the normally distributed data. Use the ad.test() to confirm that the data is not normally distributed. 
-
+### Challenge 2
+Create a data set using a poisson function that is not normally distributed. Use the ad.test() to confirm that the data is not normally distributed. Plot the data using a histogram to visualize your results.
 
 ```{r}
 set.seed(1)
 nodistribution <- rpois(100, 5) #rpois() can be used to create a sample that is not normally distributed
 nodistribution
 ```
+<br>
 
+#### Using the ad.test() function 
 ```{r}
 ad.test(nodistribution)
 ```
-Because the p-value is less than or equal to 0.05, it can be determined that the data is different than normal and the null hypothesis is rejected.
+Because the p-value is less than or equal to 0.05 and the test statistic is greater than the critical value of 0.787, it can be determined that the data is different than normal and the null hypothesis is rejected.
 
-#### Plotting the Data 
+<br>
+
+#### Visualizing Results
 ```{r}
 hist(nodistribution, main= "Histogram Showing No Normal Distribution", prob = TRUE, col="red")
 lines(density(nodistribution), col = 4, lwd = 2)
 ```
 
-#### Shortcut to Creating Data Sets and Using ad.test() all at once
+<br>
+
+### Shortcut to Creating Poisson Data Sets and Using the ad.test() function all at once
 ```{r}
 ad.test(rnorm(100, mean = 5, sd = 3))
 ```
-Normally distributed p-value >0.05
+The data set follows normal distribution because the p-value >0.05 and the test statistic is less than the critical value of 0.787. 
+
+<br>
 
 ```{r}
 ad.test(rpois(100,5))
 ```
-Not normally distributed p-value <0.05 
+The data set does not follow normal distribution because the p-value <0.05 and the test statistic is greater than the critical value of 0.787.
 
 
 <br> 
 
 
 # Shapiro-Wilk Test 
+
+***Objectives:***
+
+[1] Learn the Shapiro-Wilk Function and how it is derived.
+
+[2] Use the shapiro.test() function in R and interpret the results. 
+
 
 Like the other Goodness of Fit tests, the **Shapiro-Wilk test** is a test of normality that is used to determine whether a sample came from a normal distribution. The S-W test compares the actual SD of data to the computed SD from the slope of a QQ plot for the data and looks at its ratio. If the data are sampled from a normal distribution, the values should be really similar and the ratio will be close to 1.0.
 
@@ -540,6 +639,7 @@ Like the other Goodness of Fit tests, the **Shapiro-Wilk test** is a test of nor
   + Used on one sample with univariate, continuous data 
   + More appropriate method for smaller samples (n<50)
       + May be better for wildlife samples that are typically smaller 
+  + More powerful than the Anderson-Darling test
 
 
 ## Cautions when using the Shapiro-Wilk test
@@ -548,21 +648,77 @@ Like the other Goodness of Fit tests, the **Shapiro-Wilk test** is a test of nor
   + Not ideal if several values within the data are identical 
 
 
-To perform the S–W test for normality, assume that the sample is composed of n independent and identically distributed observations (x1,x2,…xn) from a normal distribution with unspecified mean and variance. If x[1],x[2],…x[n] represents the n observations arranged in ascending sequence, the test statistic is 
+To perform the S–W test for normality, assume that the sample is composed of n independent and identically distributed observations (x1,x2,…xn) from a normal distribution with unspecified mean and variance. If x[1],x[2],…x[n] represents the n observations arranged in ascending sequence, the test statistic is:
 
 ![](Shapiro-Wilk-Test-001.webp)
 
-The denominator is essentially the sum of squares equation which calculates variances while the numerator is the estimate slope of the Q-Q plot. The a values are constants generated from the means, variances and co-variances of the order statistics of a sample size (n) from a normal distribution. They incorporate the normal order statistic, the structure of data around the best-fit line, and normalize for the sample size of the data. Ideally, the slope of the Q-Q plot should be equal to the standard deviation if it is normally distributed so if you were to square this value, then it should equal to variance. 
+The denominator is essentially the sum of squares equation which calculates variances while the numerator is the estimate slope of the Q-Q plot. The a values are constants generated from the means, variances and co-variances of the order statistics of a sample size (n) from a normal distribution. Ideally, the slope of the Q-Q plot should be equal to the standard deviation if it is normally distributed so if you were to square this value, then it should equal to variance. 
 
   - If the null hypothesis is true, then the W statistic should be variance over variance (both values are the same) which should equal to one. 
   - If the W statistic is less than one, then there is a difference between the data and its normal distribution 
     - The p value will determine whether the W statistic is significant 
 
+<br>
+
+## Calculating the W statistic
+
+In order to calculate the W statistic, here is the following procedure:
+
+  - First, the sample size of n has to be sorted in increasing order and the resulting sorted sample is designated as y1, y2, ..yn 
+  - Then, you calculate the sum of squares using this formula:
+
+![](SW-equation-SS.png){width=75%}
+
+  - To calculate the numerator, if the sample size is an even number, then it is calculated using k = n/2
+    - If the sample size is odd, the median must not be included so it's calculated as k = (n-1)/2 using this formula: 
+
+![](SW-SS.png){width=75%}
+
+  - The test statistic is finally calculated as W = b^2 / (n-1)*S^2 
+    - You analyze the value by using the critical threshold table:
+    
+![](SW-table-1.png){width=50%}
+
+**If the test statistic is smaller than the critical threshold then the assumption of a normal distribution is rejected.**
+  
+<br> 
 
 ### Conducting a Shapiro-Wilk Test 
 
-Let's conduct a Shapiro-Wilk Test on a normalized distribution to see how it is calculated!
+Let's go through with a very small list of values to see how the W statistic can be calculated. We will work to a 95% degree of confidence (0.05). 
+```{r SW calc 1}
+example <- c(20, 20, 21, 26, 43, 43, 54, 54, 55) # list of numbers in chronological order 
+
+hist(example) # looking at the data 
+qqnorm(example) 
+qqline(example, col = "dodgerblue4", lwd = 2)
+
+# using coefficients for n=9 to calculate the numerator
+0.5888*(55-20) + 0.3244*(54-20) + 0.1976*(54-21) + 0.0947*(43-26) 
+
+# calculating the standard deviation
+sd(example)
+
+# calculating the W statistic
+((39.7683)^2) / ((9-1)*15.52^2) 
+```
+
+Our calculated value of 0.8207 is less than the critical threshold for n=9 (0.829) which means that our data is not normally distributed.
+
+
+As you can see, the Shapiro-Wilk Test can be really difficult to calculate, especially if you have more values, so there's a simple command in R to conduct this test! 
+
+```{r SW calculations }
+shapiro.test(example) 
+```
+Although the W statistic is pretty close to 1, it is under the critical threshold and the p-value is under 0.05 which reinforces the idea that this data is not normally distributed. 
+
+<br>
+
+#### Now, let's look at another data set where it may be of normal distribution. 
 ```{r SW creating dataset}
+library(ggpubr)
+library(dplyr)
 set.seed(123)
 normdata <- rnorm(35, mean = 25, sd = 3) # making a normally distributed graph
 hist(normdata) 
@@ -574,53 +730,15 @@ As we can see, the data set we created follows the guidelines of being normally 
  
   1.  **Null hypothesis:** the data follows a normal distribution
   2.  **Alt hypothesis:** the data does not follow a normal distribution 
-
-## Calculating the W statistic
-
-In order to calculate the W statistic, here is the following procedure:
-
-  - First, the sample size of n has to be sorted in increasing order and the resulting sorted sample is designated as y1, y2, ..yn 
-  - Then, you calculate the sum of squares using this formula:
-
-![](SW-equation-SS.png) 
-
-  - To calculate the numerator, if the sample size is an even number, then it is calculated using k = n/2
-    - If the sample size is odd, the median must not be included so it's calculated as k = (n-1)/2 using this formula: 
-
-![](SW equation test.png)
-
-  - The test statistic is finally calculated as W = b^2 / S^2 
-    - You analyze the value by using the critical threshold table:
-    
-![](SW-table-1.png)
-
-**If the test statistic is smaller than the critical threshold then the assumption of a normal distribution is rejected.**
-    
-However, the Shapiro-Wilk Test can be really difficult to calculate, especially if you have more values, so there's a simple command in R to conduct this test! 
-
-```{r SW calculations }
-shapiro.test(normdata) 
-```
-The W statistic is really really close to 1 which means there's only a little variation and the p-value is greater than 0.05 which means that we have failed to have rejected the null hypothesis. 
-
-
-#### Now, let's look at another data set where it may not be of normal distribution. 
-```{r SW non normal data}
-set.seed(1)
-dataset2 <- rpois(35, lambda = 3) # making a poisson distributed data set
-hist(dataset2) # looks skewed
-qqnorm(dataset2) 
-qqline(dataset2, col = "dodgerblue4", lwd = 2)
-```
+  
 
 ```{r SW not normal dist}
-shapiro.test(dataset2)
+shapiro.test(normdata)
 ```
-Here, while the W statistic is close to 1, the p-value is less than 0.05 so the null hypothesis is rejected. 
+Here, the W statistic is really close to 1 and the p-value is greater than 0.05 so the null hypothesis is not rejected.  
 
 
 ## Shapiro-Wilk Challenge 
-
 
 
 ![](S-W-PIC.jpeg)
@@ -629,7 +747,7 @@ ToothGrowth is a data set in R showing the length of teeth of guinea pigs at thr
 ```{r SW ToothGrowth}
 data("ToothGrowth")
 head(ToothGrowth)
-hist(ToothGrowth$len)
+hist(ToothGrowth$len)  
 qqnorm(ToothGrowth$len)
 qqline(ToothGrowth$len, col = "dodgerblue4", lwd = 2) #looks fairly normal but might have some difference
 ```
@@ -718,6 +836,7 @@ https://citeseerx.ist.psu.edu/document?repid=rep1&type=pdf&doi=d973dfd21d5c3ee5b
 https://search.r-project.org/CRAN/refmans/nortest/html/ad.test.html <br>
 https://www.statisticshowto.com/anderson-darling-test/ <br>
 https://welcometochickenlandia.com/blog/the-age-old-practice-of-cold-brooding-baby-chicks/ <br>
+https://www.jstor.org/stable/pdf/2286009.pdf?refreqid=fastly-default%3A97956dda812cf4fdf7108dba8f38485c&ab_segments=&origin=&initiator=&acceptTC=1 <br> 
 
 
 
@@ -726,4 +845,6 @@ http://www.statistics4u.info/fundstat_eng/ee_shapiro_wilk_test.html# <br>
 http://blog.excelmasterseries.com/2015/05/how-to-create-completely-automated_4.html <br>
 https://www.graphpad.com/guides/prism/latest/statistics/stat_choosing_a_normality_test.htm <br>
 https://www.sciencedirect.com/topics/mathematics/wilk-test <br> 
+http://collbiom.up.lublin.pl/pdf/cb41_211.pdf
+
 
