@@ -240,6 +240,7 @@ If the calculated value is <b>less</b> than the critical value <b>D</b> we must 
 If the calculated value is <b>greater</b> than the critical value we can <b> reject the null hypothesis</b>
 
 ![](Visualize_D.png)
+
 Here we can see that D is showing us the maximum distance between 2 graphs. If the two data sets come from the exact same distribution, our D value (i.e. distance between the graphs) would be small (theoretically 0). If we have data coming from two very distributions our maximum distance between our graphs is large (maximum of 1).
 
 ## One-Sample Test ##
@@ -330,12 +331,41 @@ data2 <- rnorm(100)
 #using our pre-made function, we are going to fill both arguments with the data sets to ensure a comparison
 ks.test(data1, data2)
 ```
+Let's take a look at this value graphically! To do this we are going to use are data1 and data2 sets we created, and then graph them using an ECDF. An ECDF creates a cumulative distribution function for our observed data, which we are able to graph together and view the difference in. This code was originally created by Matt Harris (you can check out his site <a href=https://rpubs.com/mharris/KSplot>here</a>)
+```{r test, include = TRUE}
+#group both of our data sets into one variable we can call later on.
+group <- c(rep("data1", length(data1)), rep("data2", length(data2)))
+#create a data frame to work with and call from.
+dat <- data.frame(KSD = c(data1,data2), group = group)
+# create ECDF of our dats in base are and calling it a memorable variable
+ecdf1 <- ecdf(data1) 
+ecdf2 <- ecdf(data2) 
+# find minimum and maximum statistics! This will allow us to draw our line between our data sets
+minMax <- seq(min(data1, data2), max(data1, data2), length.out=length(data1)) 
+x0 <- minMax[which( abs(ecdf1(minMax) - ecdf2(minMax)) == max(abs(ecdf1(minMax) - ecdf2(minMax))) )] 
+y0 <- ecdf1(x0) 
+y1 <- ecdf2(x0) 
 
-
-
-#### If you're curious about seeing a KS Test in action, feel free to check out <a href="Mizumoto&al2022.pdf">this</a> paper on same-sex sexual behavior in termites.
+# png(file = "c:/temp/ks.png", width = 1024, height = 768, type="cairo-png")
+library(ggplot2)
+ggplot(dat, aes(x = KSD, group = group, color = group))+
+  stat_ecdf(size=1) +
+    theme_bw(base_size = 30) +
+    theme(legend.position ="top") +
+    xlab("Data") +
+    ylab("ECDF") +
+    #geom_line(size=1) +
+    geom_segment(aes(x = x0[1], y = y0[1], xend = x0[1], yend = y1[1]),
+        linetype = "dashed", color = "red") +
+    geom_point(aes(x = x0[1] , y= y0[1]), color="red", size=8) +
+    geom_point(aes(x = x0[1] , y= y1[1]), color="red", size=8) +
+    ggtitle("K-S Test: data 1 / data 2") +
+    theme(legend.title=element_blank())
+```
+If you're curious about seeing a KS Test in action, feel free to check out <a href="Mizumoto&al2022.pdf">this</a> paper on same-sex sexual behavior in termites.
 
 <br>
+
 
 # Anderson Darling Test
 
