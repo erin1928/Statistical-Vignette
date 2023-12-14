@@ -190,7 +190,7 @@ We find a p-value of 0.1342 which is above  the critical p-value of 0.05 and fai
 
 # Kolmorgorov-Smirnov Test
 
-We can use the <b>Kolmorgorov-Smirnov Test</b> as a way to reject null hypotheses. By using this statistical method, we are aiming to prove that the two data sets we are working with do not come from the same distribution.
+We can use the <b>Kolmorgorov-Smirnov Test</b> as a way to test if our hypothesized results are correct (one-sample) or if two data sets come from the same distribution (two-sample). By using this statistical method, we are aiming to prove that the two data sets we are working with do not come from the same distribution.
 
 The most common way to reject the null is with a student's t-test, however, this can only be accurately used when we know our data set is <b>normal</b>. If we are using data that we aren't sure about, or know isn't of a normal distribution, it can be trickier to reject this hypothesis. This test is more effective with larger data sets (n &ge; 50) when compared to the Shapiro-Wilks test which is only effective for smaller data sets. 
 
@@ -231,6 +231,8 @@ If the calculated value is <b>less</b> than the critical value <b>D</b> we must 
 
 If the calculated value is <b>greater</b> than the critical value we can <b> reject the null hypothesis</b>
 
+![](Visualize_D.png)
+Here we can see that D is showing us the maximum distance between 2 graphs. If the two data sets come from the exact same distribution, our D value (i.e. distance between the graphs) would be small (theoretically 0). If we have data coming from two very distributions our maximum distance between our graphs is large (maximum of 1).
 
 ## One-Sample Test ##
 Let's do an example! <br>
@@ -320,10 +322,8 @@ data2 <- rnorm(100)
 #using our pre-made function, we are going to fill both arguments with the data sets to ensure a comparison
 ks.test(data1, data2)
 ```
-To visually represent why D is interpreted the way it is, let's take a look at this graph.
 
-![](Visualize_D.png)
-Here we can see that D is showing us the maximum distance between 2 graphs. If the two data sets come from the exact same distribution, our D value (i.e. distance between the graphs) would be small (theoretically 0). If we have data coming from two very distributions our maximum distance between our graphs is large (maximum of 1).
+
 
 #### If you're curious about seeing a KS Test in action, feel free to check out <a href="Mizumoto&al2022.pdf">this</a> paper on same-sex sexual behavior in termites.
 
