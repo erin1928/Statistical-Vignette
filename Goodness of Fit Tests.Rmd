@@ -383,7 +383,7 @@ Objectives
 
 ## Introduction
 
-The Anderson Darling test is a type of the goodness of fit test used to determine if a sample of data comes follows a specific kind of distribution, more commonly normal distribution. It is a modification of the Kolmogorov-Smirnov test that focuses more on whether or not the tails follow normal distribution, rather than the peak. 
+The Anderson Darling test is a type of the goodness of fit test used to determine if a sample of data follows a specific kind of distribution, more commonly normal distribution. It is a modification of the Kolmogorov-Smirnov test that focuses more on whether or not the tails follow normal distribution, rather than the peak. 
 
 It is important to note that the length of the sample data  must be **greater than 7**, but is advised to be **greater than 20**. The smaller the sample of data, the more likely it is to get false results.
 
@@ -485,6 +485,7 @@ A <- -n - mean(h) #computing the test statistic by combining the first half of t
 A # The test statistic is computed 
 ```
 The test statistic is less than the critical value of 0.787 meaning we can fail to reject the null - meaning the sample of data follows normal distribution. Because the sample of data is on the smaller side, 71, we can use the p-value to confirm our results. 
+
 <br>
 
 
@@ -825,9 +826,8 @@ ad.test(goodness_of_fit)
 ```{r}
 shapiro.test(goodness_of_fit)
 ```
-Both p-values are relatively close being only 0.1122 points away from one another. Although the values are close, the Shapiro Wilk test is more powerful than the Anderson Darling test and would be more accurate in this scenario.
-
-The p-value for each test is greater than 0.05 meaning that we failed to reject the null hypothesis and that the data set comes from normal distribution. This makes sense because it was created using the rnorm() function! 
+The p-value for each test is greater than 0.05 meaning that we can fail to reject the null hypothesis and that the data set does indeed follow normal distribution. This makes sense because it was created using the rnorm() function! Although both tests show that the data set follows normal distribution, the Shapiro Wilk test is more powerful than the Anderson Darling test and would be more accurate in this scenario.
+ 
 
 Now, let's compare it with the Kolmorgorov-Smirnov Test:
 
